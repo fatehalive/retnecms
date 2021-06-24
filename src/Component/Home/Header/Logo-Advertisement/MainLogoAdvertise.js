@@ -1,10 +1,10 @@
+import BrandAndToggle from './BrandAndToggle/BrandAndTogle'
 
 // <!-- Logo & advertisement -->
 const MainLogoAdvertise = ()=>{
     return <div className="logo-advertisement">
-            <div className="container">
-            </div>
+        <BrandAndToggle />
     </div>
-
-
 }
+
+export default MainLogoAdvertise;

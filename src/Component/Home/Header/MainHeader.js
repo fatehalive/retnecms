@@ -1,4 +1,5 @@
 import TopLine from './Top-Line/Top-LIne'
+import BrandAndToggle from './Logo-Advertisement/MainLogoAdvertise'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 const Header = ()=>{
@@ -12,6 +13,7 @@ const Header = ()=>{
                     <Switch>
                         <Route/>
                     </Switch>
+                    <BrandAndToggle/>
                 </Router>
             </div>
         </div>
