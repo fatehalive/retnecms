@@ -1,7 +1,7 @@
-import video1 from '../../../../Upload/news-posts/video1.jpg'
-import video2 from '../../../../Upload/news-posts/video2.jpg'
-import video3 from '../../../../Upload/news-posts/video3.jpg'
-import video4 from '../../../../Upload/news-posts/video4.jpg'
+import video1 from '../../../Upload/news-posts/video1.jpg'
+import video2 from '../../../Upload/news-posts/video2.jpg'
+import video3 from '../../../Upload/news-posts/video3.jpg'
+import video4 from '../../../Upload/news-posts/video4.jpg'
 
 const Data = [{
             title: 'Donec odio. Quisque volutpat mattis eros. ',
