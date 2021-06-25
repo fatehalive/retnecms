@@ -4,7 +4,7 @@ import Header from "../../Component/Header/MainHeader"
 class SinglePost extends Component{
   render(){
     return(
-      <div id="container">
+      <div >
         <Header/>
       </div>
     )
