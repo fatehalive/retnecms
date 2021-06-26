@@ -45,7 +45,7 @@ const Data = [{
             date: '27 may 2013',
             comment: 23,
             img: st1,
-            category:"travel",
+            category:"Travel",
             user: "Muhammad Didi"
         },
         {
@@ -53,8 +53,8 @@ const Data = [{
             date: '27 may 2013',
             comment: 23,
             img: st4,
-            category:"Food & Healt",
-            user: "aflaha ayubi"
+            category:"Food & Health",
+            user: "aflaha ayub"
         },
         {
             title: 'Donec odio. Quisque volutpat mattis eros. ',
@@ -70,7 +70,7 @@ const Data = [{
             comment: 23,
             img: st8,
             category:"Sport",
-            user:"Aflaha Ayubi"
+            user:"Aflaha Ayub"
         },
 ]
 
