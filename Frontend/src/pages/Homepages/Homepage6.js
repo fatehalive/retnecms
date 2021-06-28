@@ -12,7 +12,6 @@ import Footer from '../../Component/Home/Footer/Footer'
 class HomePage extends React.Component {
     render() {
       return<div className="container-fluid">
-        <Router>
           {/* HEADER */}
           <Header/>
           {/* Feature Today */}
@@ -25,7 +24,6 @@ class HomePage extends React.Component {
           <MainBlockWrap2/>
           {/* FOOTER */}
           <Footer/>
-        </Router>
       </div>
     }
   }
