@@ -4,11 +4,11 @@ function Main() {
             <header className="page-header">
                 <div className="d-flex align-items-center">
                     <div className="mr-auto">
-                        <h1 className="separator">Blank Page</h1>
+                        <h1 className="separator">Dashboard</h1>
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
-                                <li className="breadcrumb-item"><a href="index.html"><i className="icon dripicons-home"></i></a></li>
-                                <li className="breadcrumb-item"><a href="javascript:void(0)">Layout</a></li>
+                                <li className="breadcrumb-item"><a href="/"><i className="icon dripicons-home"></i></a></li>
+                                <li className="breadcrumb-item"><a href="/">Layout</a></li>
                                 <li className="breadcrumb-item active" aria-current="page">Blank Page</li>
                             </ol>
                         </nav>
@@ -22,4 +22,4 @@ function Main() {
     )
 }
 
-export default Main;
+export default Main

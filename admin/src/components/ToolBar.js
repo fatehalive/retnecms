@@ -5,9 +5,9 @@ function ToolBar() {
             <ul className="site-logo">
                 <li>
                     {/* <--! START LOGO --> */}
-                    <a href="index.html">
+                    <a href="/">
                         <div className="logo">
-                            <img src="./logo192.png" id="logo" style={{width:"1.5em",height:"1.5em",objectFit:"cover"}} />
+                            <img src="./logo192.png" id="logo" style={{width:"1em",height:"1em",objectFit:"cover"}} />
                         </div>
                         <h1 className="brand-text">Retne CMS</h1>
                     </a>
@@ -16,7 +16,7 @@ function ToolBar() {
             </ul>
             <ul className="navbar-nav nav-right">
                 <li className="nav-item dropdown">
-                    <a className="nav-link nav-pill user-avatar" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <a className="nav-link nav-pill user-avatar" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">
                         <img src="assets/img/avatars/1.jpg" className="w-35 rounded-circle" alt="Albert Einstein" />
                     </a>
                         <div className="dropdown-menu dropdown-menu-right dropdown-menu-accout">
@@ -29,18 +29,18 @@ function ToolBar() {
                                     </div>
                                 </div>
                             </div>
-                            <a className="dropdown-item" href="apps.messages.html">
+                            <a className="dropdown-item" href="/">
                                 <i className="icon dripicons-mail"></i>Message<span className="badge badge-accent rounded-circle w-15 h-15 p-0 font-size-10">4</span>
                             </a>
-                            <a className="dropdown-item" href="pages.profile.html">
+                            <a className="dropdown-item" href="/">
                                 <i className="icon dripicons-user"></i>Profile
                             </a>
-                            <a className="dropdown-item" href="pages.my-account.html">
+                            <a className="dropdown-item" href="/">
                                 <i className="icon dripicons-gear"></i>Account Settings
                             </a>
                             <div className="dropdown-divider"></div>
-                            <a className="dropdown-item" href="#"><i className="icon dripicons-lock"></i>Lock Account</a>
-                            <a className="dropdown-item" href="auth.sign-in.html"><i className="icon dripicons-lock-open"></i>Sign Out</a>
+                            <a className="dropdown-item" href="/"><i className="icon dripicons-lock"></i>Lock Account</a>
+                            <a className="dropdown-item" href="/"><i className="icon dripicons-lock-open"></i>Sign Out</a>
                         </div>
                 </li>
             </ul>
@@ -48,4 +48,4 @@ function ToolBar() {
     )
 }
 
-export default ToolBar;
+export default ToolBar
