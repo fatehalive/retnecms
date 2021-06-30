@@ -1,5 +1,5 @@
 const { Sequelize, Models, DataType } = require('sequelize')
-const Category = require("../Models/Category")
+const Category = require("../models/Category")
 
 exports.getCategory = (req, res, next) => {
   Category.findAll({order: [["category_name", "ASC"]]}).then(response => {
