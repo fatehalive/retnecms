@@ -11,7 +11,7 @@ import Footer from '../../Component/Home/Footer/Footer'
 
 class HomePage extends React.Component {
     render() {
-      return<div className="container-fluid">
+      return<div>
           {/* HEADER */}
           <Header/>
           {/* Feature Today */}
