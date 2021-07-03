@@ -1,23 +1,24 @@
 {
   "development": {
     "username": "postgres",
-    "password": "postgres",
-    "database": "postgres",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "password": "didi",
+    "database": "api-news",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port": 5400
   },
   "test": {
-    "username": "postgres",
-    "password": "postgres",
-    "database": "postgres",
+    "username": "root",
+    "password": null,
+    "database": "database_test",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "mysql"
   },
   "production": {
-    "username": "postgres",
-    "password": "postgres",
+    "username": "root",
+    "password": null,
     "database": "database_production",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "mysql"
   }
 }

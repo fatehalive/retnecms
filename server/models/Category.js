@@ -1,21 +1,35 @@
-const { Sequeilze, DataTypes } = require('sequelize')
-const sequelize = require('../util/databaseconnect')
-const News_Article = require('./News_Article')
-
-const Category = sequelize.define('category', {
-  uuid: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-    primaryKey: true
-  },
-  category_name: DataTypes.STRING
-})
-
-Category.hasMany(News_Article, {
-  foreignKey: {
-    type: DataTypes.UUID
-  }
-})
-News_Article.belongsTo(Category)
-
-module.exports = Category
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Category extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+      Category.hasMany(models.News_Article, {
+        foreignKey: 'category_uuid',
+        as: 'news_artilce'
+      })
+    }
+  };
+  Category.init({
+    uuid: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
+    category_name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
+  }, {
+    sequelize,
+    modelName: 'Category',
+  });
+  return Category;
+};

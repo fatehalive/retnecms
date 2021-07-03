@@ -1,19 +1,51 @@
-const dotenv = require('dotenv');
-dotenv.config();
-
-const express = require("express");
-const app = express();
+require('dotenv').config();
 const cors = require("cors");
-const sequelize = require('./util/databaseconnect');
-const routes = require('./router/routes');
+const express = require('express');
+const db = require('./models');
+const app = express();
 
-// Middleware
+
+global.__basedir = __dirname + '/..';
+
 app.use(cors())
-app.use(express.json())
-app.use(express.urlencoded({extended:true}))
-// Routes
-app.use(routes)
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+// app.use(cookieParser());
+app.use(express.static(__dirname));
+require('./routes/index')(app, express);
 
-sequelize.sync()
-    .then(app.listen(5000, console.log('server is running at port 5000')))
-    .catch(error => { console.log(error) })
+
+const port = process.env.PORT;
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  if (req.method === 'OPTIONS') {
+    res.header(
+      'Access-Control-Allow-Methods',
+      'PUT, POST, PATCH, DELETE, GET'
+    );
+    return res.status(200).json({});
+  }
+  next();
+});
+
+// require('./app/routes/index')(app, express);
+
+db.sequelize
+  .sync()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Server is Okay ${port}`);
+    });
+  })
+  .catch(() => {
+    console.log('Failed Connect Database');
+  });

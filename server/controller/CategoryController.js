@@ -1,11 +1,62 @@
-const { Sequelize, Models, DataType } = require('sequelize')
-const Category = require("../models/Category")
+const Category = require("../models").Category
+const AppError = require("../utils/appError");
+const message = require('../config/message');
+const Pagination = require('../utils/pagination');
 
-exports.getCategory = (req, res, next) => {
-  Category.findAll({order: [["category_name", "ASC"]]}).then(response => {
+const {
+  Op
+} = require("sequelize");
+
+exports.getCategoryFiltered = (req, res, next) => {
+  const {
+    pageNumber,
+    pageSize,
+    filter: {
+      category_name
+    }
+  } = req.body;
+
+  let condition = {
+    [Op.and]: [{
+      category_name: {
+        [Op.iLike]: `%${category_name}%`
+      }
+    }]
+  };
+
+  const {
+    limit,
+    offset
+  } = Pagination.getPagination(pageNumber, pageSize);
+
+  return Category.findAndCountAll({
+    where: condition,
+    order: [
+      ['createdAt', 'DESC']
+    ],
+    limit,
+    offset,
+    distinct: true
+  }).then(data => {
+    const response = Pagination.getPagingData(data, pageNumber, limit);
+
+    res.json({
+      data: response,
+      message: `Get Category ${message.SUCCESSFULLY}`
+    });
+  }).catch(err => {
+    next(err);
+  });
+};
+
+exports.getCategoryAll = (req, res, next) => {
+  Category.findAndCountAll({ order: [["category_name", "ASC"]] }).then(response => {
     res.status(200).json({
-      Category: response
+      data: response,
+      message: message.SUCCESSFULLY
     })
+  }).catch(error => {
+    next(error)
   })
 }
 
@@ -16,13 +67,73 @@ exports.postCategory = async (req, res, next) => {
       category_name: category_name
     })
     res.status(200).json({
-      newEntry: newCategory
+      data: newCategory,
+      message: message.SUCCESSFULLY_CREATED
     })
   } catch (error) {
-    console.log(error)
+    next(error)
   }
-
 }
+
+exports.getCategoryById = (req, res, next) => {
+  return Category.findByPk(req.params.id)
+    .then(data => {
+
+      if (!data) {
+        throw new AppError(404, message.ID_Category_NOT_FOUND);
+      }
+
+      res.json({
+        data: data,
+        message: `Get Id Category ${message.SUCCESSFULLY}`
+      });
+
+    }).catch(err => {
+      next(err);
+    });
+};
+
+exports.updateCategory = async (req, res, next) => {
+  try {
+    const CategoryData = await Category.findByPk(req.params.id);
+    if (!CategoryData) {
+      throw new AppError(404, message.ID_Category_NOT_FOUND);
+    }
+
+    const data = await CategoryData.update({
+      category_name: req.body.category_name
+    });
+
+    res.json({
+      data: data,
+      message: `Category ${message.SUCCESSFULLY_UPDATED}`
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteCategory = async (req, res, next) => {
+  try {
+
+    const CategoryData = await Category.destroy({
+      where: {
+        uuid: req.params.id
+      }
+    });
+
+    if (!CategoryData) {
+      throw new AppError(404, message.ID_Category_NOT_FOUND);
+    }
+
+    res.json({
+      message: `Category ${message.SUCCESSFULLY_DELETED}`
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 
 // exports.updateTodos = async (req, res, next) => {
 //   const id = req.params.id
