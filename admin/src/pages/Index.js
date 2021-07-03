@@ -1,13 +1,11 @@
-import ToolBar from '../components/ToolBar';
-import SideBar from '../components/SideBar';
+import Header from '../components/Header';
 import Main from '../components/Main';
 
 function Index() {
     return (
         <div id="App">
-            <ToolBar />
+            <Header />
             <div className="content-wrapper">
-                <SideBar />
                 <Main />
             </div>
         </div>
