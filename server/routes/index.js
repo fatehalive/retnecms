@@ -3,6 +3,7 @@ const AppError = require('../utils/appError');
 const categoryRoutes = require('./category')
 const newsArticleRoutes = require('./news_article')
 const roleRoutes = require('./role')
+const userRoutes = require('./user')
 
 module.exports = function (app, express) {
   /*Definisikan semua route dihalaman ini*/
@@ -23,6 +24,11 @@ module.exports = function (app, express) {
     '/role',
     // [verifyJwtController.verifyToken, acl.authorize],
     roleRoutes
+  );
+  ROUTER.use(
+    '/user',
+    // [verifyJwtController.verifyToken, acl.authorize],
+    userRoutes
   );
 
   // Set Global baseUrl
