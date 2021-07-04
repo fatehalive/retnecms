@@ -45,6 +45,7 @@ const getUser = (req, res, next) => {
     include: [{
       model: Role,
       as: 'role',
+      attributes: ['role'],
       where: conditions,
     }],
     where,
@@ -71,6 +72,7 @@ const getUserById = (req, res, next) => {
     include: [{
       model: Role,
       as: 'role',
+      attributes: ['role'],
     }],
     where: {
       uuid: req.params.id
@@ -94,7 +96,7 @@ const getUserAll = (req, res, next) => {
     include: [{
       model: Role,
       as: 'role',
-      attribute: ['role']
+      attributes: ['role'],
     }],
   }).then(data => {
     res.json({
