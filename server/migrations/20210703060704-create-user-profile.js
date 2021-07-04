@@ -40,6 +40,10 @@ module.exports = {
       website: {
         type: Sequelize.STRING
       },
+      user_uuid: {
+        type: Sequelize.UUID,
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

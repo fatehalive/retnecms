@@ -30,6 +30,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      category_uuid: {
+        type: Sequelize.UUID,
+        allowNull: false
+      },
+      user_uuid: {
+        type: Sequelize.UUID,
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
