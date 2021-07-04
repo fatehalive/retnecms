@@ -19,6 +19,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      jwt_token: {
+        type: Sequelize.STRING
+      },
       role_uuid: {
         type: Sequelize.UUID,
         allowNull: false

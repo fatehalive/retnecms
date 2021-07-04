@@ -43,6 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    jwt_token: DataTypes.TEXT,
   }, {
     sequelize,
     tableName: 'users',
