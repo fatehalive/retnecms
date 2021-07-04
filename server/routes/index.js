@@ -16,7 +16,7 @@ module.exports = function (app, express) {
     categoryRoutes
   );
   ROUTER.use(
-    '/news_article',
+    '/news-article',
     // [verifyJwtController.verifyToken, acl.authorize],
     newsArticleRoutes
   );

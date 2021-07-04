@@ -1,11 +1,11 @@
 const categoryAPI = require('./CategoryController')
 const roleAPI = require('./RoleController')
-const newsArticle = require('./NewsArticleController')
+const newsArticleAPI = require('./NewsArticleController')
 const userAPI = require('./UsersController')
 
 module.exports = {
   categoryAPI,
-  newsArticle,
+  newsArticleAPI,
   roleAPI,
   userAPI
 }
