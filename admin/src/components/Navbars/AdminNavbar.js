@@ -1,4 +1,4 @@
-function Header() {
+function AdminNavbar() {
     return (
         <>
         {/* <!-- HEADER START */}
@@ -66,4 +66,4 @@ function Header() {
     )
 }
 
-export default Header;
+export default AdminNavbar;
