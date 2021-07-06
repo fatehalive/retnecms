@@ -1,16 +1,17 @@
-import ToolBar from './components/ToolBar';
-import SideBar from './components/SideBar';
-import Main from './components/Main';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+
+import Index from './pages/Index';
+import NotFound from './pages/NotFound';
 
 function App() {
     return (
-        <div id="App">
-            <ToolBar />
-            <div className="content-wrapper">
-                <SideBar />
-                <Main />
-            </div>
-        </div>
+        <BrowserRouter>
+            <Switch>
+                <Route exact path="/admin" component={Index}></Route>
+                <Redirect from="/" to="/admin" />
+                <Route component={NotFound}></Route>
+            </Switch>
+        </BrowserRouter>
     )
 }
 
