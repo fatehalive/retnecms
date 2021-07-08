@@ -1,10 +1,7 @@
 function AdminNavbar() {
     return (
-        <>
-        {/* <!-- HEADER START */}
         <nav className="top-toolbar navbar navbar-desktop flex-nowrap">
 
-            {/* <!-- Navleft Start --> */}
             <ul className="navbar-nav nav-left">
                 <li className="nav-item">
                     <a href="javascript:void(0)" data-toggle-state="content-menu-close">
@@ -12,9 +9,7 @@ function AdminNavbar() {
                     </a>
                 </li>
             </ul>
-            {/* <!-- Navleft end --> */}
 
-            {/* <!-- Logo Start --> */}
             <ul className="site-logo">
                 <li>
                     <a href="/admin">
@@ -25,9 +20,7 @@ function AdminNavbar() {
                     </a>
                 </li>
             </ul>
-            {/* <!-- Logo End --> */}
 
-            {/* <!-- Navright Start --> */}
             <ul className="navbar-nav nav-right">
                 <li className="nav-item dropdown">
                     <a className="nav-link nav-pill user-avatar" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">
@@ -58,11 +51,8 @@ function AdminNavbar() {
                     </div>
                 </li>
             </ul>
-            {/* <!-- Navright End --> */}
             
         </nav>
-        {/* <!-- HEADER END */}
-        </>
     )
 }
 
