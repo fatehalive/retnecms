@@ -1,4 +1,4 @@
-function Users() {
+function List() {
     return (
         <main className="content container-fluid">
             <header className="page-header">
@@ -46,4 +46,4 @@ function Users() {
     )
 }
 
-export default Users;
+export default List;

@@ -20,17 +20,21 @@ function SideBar() {
                         <li className="nav-dropdown">
                             <NavLink to="/admin/posts/index" className="has-arrow"><i className="icon dripicons-document-edit"></i><span>Posts</span></NavLink>
                             <ul className="collapse nav-sub">
-                                <li><NavLink to="/admin/posts/index"><span>Published</span></NavLink></li>
+                                <li><NavLink to="/admin/posts/index"><span>List</span></NavLink></li>
+                                <li><NavLink to="/admin/posts/published"><span>Published</span></NavLink></li>
                                 <li><NavLink to="/admin/posts/draft"><span>Draft</span></NavLink></li>
-                                <li><NavLink to="/admin/posts/trash"><span>Trash</span></NavLink></li>
                             </ul>
+                        </li>
+
+                        <li>
+                            <NavLink to="/admin/categories/index"><i className="icon dripicons-tags"></i><span>Categories</span></NavLink>
                         </li>
 
                         <li className="nav-dropdown">
                             <NavLink to="/admin/users/index" className="has-arrow"><i className="icon dripicons-user-group"></i><span>Users</span></NavLink>
                             <ul className="collapse nav-sub">
                                 <li><NavLink to="/admin/users/index"><span>List</span></NavLink></li>
-                                <li><NavLink to="/admin/users/roles"><span>Roles</span></NavLink></li>
+                                <li><NavLink to="/admin/roles/index"><span>Roles</span></NavLink></li>
                             </ul>
                         </li>
 
