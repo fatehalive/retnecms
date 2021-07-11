@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 // // Data test
 // const roles = [
@@ -19,8 +19,13 @@ import { Link } from 'react-router-dom';
 // ];
 
 function List() {
+    // Hook: state
     const [roles, setRoles] = React.useState([]);
 
+    // Router methods
+    const history = useHistory();
+
+    // Hook: useEffect to get all role user then store it to state
     React.useEffect(() => {
         axios.get('http://localhost:5000/role')
             .then(response => {
@@ -38,6 +43,34 @@ function List() {
                 console.log(error);
             })
     }, []);
+
+    // Event
+    const handleDelete = async (id) => {
+        if (window.confirm('Yakin mau dihapus?')) {
+            try {
+                const response = await axios.delete('http://localhost:5000/role/' + id);
+                const { message } = response.data;
+                alert(message);
+                axios.get('http://localhost:5000/role')
+                    .then(response => {
+                        const { message, data } = response.data;
+                        if (message === 'Successfully') {
+                            console.log(data.rows);
+                            setRoles(response.data.data.rows);
+                        } else {
+                            alert(`Your Server is okay, check your DB`);
+                            console.log(message);
+                        }
+                    })
+                    .catch(error => {
+                        alert(`Check Your Server!`);
+                        console.log(error);
+                    })
+            } catch (error) {
+                alert('Network Error');
+            }
+        }
+    };
 
     return (
         <main className="content container-fluid">
@@ -73,8 +106,9 @@ function List() {
                                             <thead>
                                                 <tr>
                                                     <th style={{ width: "2.5%" }}>No.</th>
-                                                    <th style={{ width: "80%" }}>Role</th>
-                                                    <th>Create Date</th>
+                                                    <th style={{ width: "57.5%" }}>Role</th>
+                                                    <th>Created Date</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -85,17 +119,11 @@ function List() {
                                                             <td>{index + 1}</td>
                                                             <td><strong><Link to={`/admin/roles/single/${role.uuid}`}>{role.role}</Link></strong></td>
                                                             <td>{d.slice(0, 10)}</td>
+                                                            <td><button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/roles/update/${role.uuid}`)}><i className="icons dripicons-pencil text-light"></i>Edit</button><button className="btn btn-danger btn-rounded btn-sm" onClick={() => handleDelete(role.uuid)}><i className="icons dripicons-trash text-light"></i>Delete</button></td>
                                                         </tr>
                                                     )
                                                 })}
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th>No.</th>
-                                                    <th>Role</th>
-                                                    <th>Create Date</th>
-                                                </tr>
-                                            </tfoot>
                                         </table>
                                     </div>
                                 </div>

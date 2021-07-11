@@ -76,7 +76,7 @@ function Create() {
                                         <div className="col-md-12">
                                             <div className="row">
                                                 <div className="offset-sm-3">
-                                                    <button onClick={handleSubmit} className="btn btn-primary btn-rounded">Save</button>
+                                                    <button onClick={handleSubmit} className="btn btn-primary btn-rounded">Create</button>
                                                     <button onClick={() => history.push('/admin/roles/index')} className="btn btn-secondary clear-form btn-rounded btn-outline">Back</button>
                                                 </div>
                                             </div>
