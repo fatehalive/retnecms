@@ -33,49 +33,49 @@ function AdminMain() {
                 <Route path="/admin/posts/index">
                     <PostsList />
                 </Route>
-                <Route path="/admin/posts/single">
+                <Route path="/admin/posts/single/:postId">
                     <PostsSingle />
                 </Route>
                 <Route path="/admin/posts/create">
                     <PostsCreate />
                 </Route>
-                <Route path="/admin/posts/update">
+                <Route path="/admin/posts/update/:postId">
                     <PostsUpdate />
                 </Route>
                 <Route path="/admin/users/index">
                     <UsersList />
                 </Route>
-                <Route path="/admin/users/single">
+                <Route path="/admin/users/single/:userId">
                     <UsersSingle />
                 </Route>
                 <Route path="/admin/users/create">
                     <UsersCreate />
                 </Route>
-                <Route path="/admin/users/update">
+                <Route path="/admin/users/update/:userId">
                     <UsersUpdate />
                 </Route>
-                <Route path="/admin/Roles/index">
+                <Route path="/admin/roles/index">
                     <RolesList />
                 </Route>
-                <Route path="/admin/Roles/single/:roleId">
+                <Route path="/admin/roles/single/:roleId">
                     <RolesSingle />
                 </Route>
-                <Route path="/admin/Roles/create">
+                <Route path="/admin/roles/create">
                     <RolesCreate />
                 </Route>
-                <Route path="/admin/Roles/update/:roleId">
+                <Route path="/admin/roles/update/:roleId">
                     <RolesUpdate />
                 </Route>
                 <Route path="/admin/categories/index">
                     <CategoriesList />
                 </Route>
-                <Route path="/admin/categories/single">
+                <Route path="/admin/categories/single/:categoryId">
                     <CategoriesSingle />
                 </Route>
                 <Route path="/admin/categories/create">
                     <CategoriesCreate />
                 </Route>
-                <Route path="/admin/categories/update">
+                <Route path="/admin/categories/update/:categoryId">
                     <CategoriesUpdate />
                 </Route>
                 <Redirect from="/" to="/admin/index" />

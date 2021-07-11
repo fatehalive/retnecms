@@ -4,8 +4,8 @@ import axios from 'axios';
 
 function Create() {
     // Hooks: states
-    const [roles, setRoles] = React.useState({
-        role: ''
+    const [category, setCategory] = React.useState({
+        category_name: ''
     });
 
     // React-router methods
@@ -14,18 +14,18 @@ function Create() {
     // Event handlers
     const handleChange = (e, name) => {
         const value = e.target.value
-        setRoles({ ...roles, [name]: value })
+        setCategory({ ...category, [name]: value })
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         try {
-            const response = await axios.post('http://localhost:5000/role', roles)
+            const response = await axios.post('http://localhost:5000/category', category)
             const { message } = response.data;
             if (message === 'Successfully Created') {
                 alert(message);
-                history.push('/admin/roles/index');
+                history.push('/admin/categories/index');
             } else {
                 alert(`Server is okay, check your DB`);
                 console.log(message);
@@ -41,12 +41,12 @@ function Create() {
             <header className="page-header">
                 <div className="d-flex align-items-center">
                     <div className="mr-auto">
-                        <h1 className="separator">Roles</h1>
+                        <h1 className="separator">Category</h1>
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><a href="/admin/index"><i className="icon dripicons-home"></i></a></li>
-                                <li className="breadcrumb-item"><a href="/admin/roles/index">Roles</a></li>
-                                <li className="breadcrumb-item active" aria-current="page">Create</li>
+                                <li className="breadcrumb-item"><a href="/admin/categories/index">categories</a></li>
+                                <li className="breadcrumb-item active" aria-current="page">create</li>
                             </ol>
                         </nav>
                     </div>
@@ -57,14 +57,14 @@ function Create() {
                     <div className="col-12">
                         <div className="card">
 
-                            <h5 className="card-header">Create Role</h5>
+                            <h5 className="card-header">Create Category</h5>
                             <div className="card-body">
                                 <form className="form-horizontal">
                                     <div className="form-body">
                                         <div className="form-group row">
-                                            <label className="control-label text-right col-md-3">Role Name</label>
+                                            <label className="control-label text-right col-md-3">Category Name</label>
                                             <div className="col-md-5">
-                                                <input type="text" className="form-control" value={roles.name} onChange={(e) => handleChange(e, 'role')} placeholder="ex: Editor"/>
+                                                <input type="text" className="form-control" value={category.category_name} onChange={(e) => handleChange(e, 'category_name')} placeholder="ex: Health&Fitness/Travel/Gadgets"/>
                                             </div>
                                         </div>
                                     </div>
@@ -77,7 +77,7 @@ function Create() {
                                             <div className="row">
                                                 <div className="offset-sm-3">
                                                     <button onClick={handleSubmit} className="btn btn-primary btn-rounded">Create</button>
-                                                    <button onClick={() => history.push('/admin/roles/index')} className="btn btn-secondary clear-form btn-rounded btn-outline">Back</button>
+                                                    <button onClick={() => history.push('/admin/categories/index')} className="btn btn-secondary clear-form btn-rounded btn-outline">Back</button>
                                                 </div>
                                             </div>
                                         </div>
