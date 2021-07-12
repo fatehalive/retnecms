@@ -40,6 +40,7 @@ function Single() {
                 const response = await axios.delete('http://localhost:5000/category/' + id);
                 const { message } = response.data;
                 alert(message);
+                history.push('/admin/categories/index')
             } catch (error) {
                 alert('Network Error');
             }

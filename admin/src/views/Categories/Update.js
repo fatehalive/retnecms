@@ -83,7 +83,7 @@ function Update() {
                                         <div className="form-group row">
                                             <label className="control-label text-right col-md-3">Category Name</label>
                                             <div className="col-md-5">
-                                                <input type="text" className="form-control" value={category.category_name} onChange={(e) => handleChange(e, 'rcategory_name')}/>
+                                                <input type="text" className="form-control" value={category.category_name} onChange={(e) => handleChange(e, 'category_name')}/>
                                             </div>
                                         </div>
                                     </div>

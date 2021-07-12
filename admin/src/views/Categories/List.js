@@ -5,15 +5,15 @@ import { Link, useHistory } from 'react-router-dom';
 // // Data test
 // const categories = [
 //     {
-//         role: "Super Admin",
+//         category_name: "Uncategorized",
 //         createdAt: 20210701
 //     },
 //     {
-//         role: "Editor",
+//         category_name: "Health&Fitness",
 //         createdAt: 20210702
 //     },
 //     {
-//         role: "Author",
+//         category_name: "Economics&Finance",
 //         createdAt: 20210703
 //     }
 // ];
