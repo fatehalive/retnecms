@@ -31,11 +31,13 @@ function List() {
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Successfully') {
-                    console.log(data.rows);
+                    console.table(data.rows);
+                    let x = data.rows.sort(function (x, y) { return x.createdAt - y.createdAt })
+                    console.table(x)
                     setRoles(response.data.data.rows);
                 } else {
                     alert(`Your Server is okay, check your DB`);
-                    console.log(message);
+                    console.warn(response);
                 }
             })
             .catch(error => {
@@ -55,22 +57,25 @@ function List() {
                     .then(response => {
                         const { message, data } = response.data;
                         if (message === 'Successfully') {
-                            console.log(data.rows);
+                            console.table(data.rows);
                             setRoles(response.data.data.rows);
                         } else {
                             alert(`Your Server is okay, check your DB`);
-                            console.log(message);
+                            console.warn(response);
                         }
                     })
                     .catch(error => {
                         alert(`Check Your Server!`);
-                        console.log(error);
+                        console.error(error);
                     })
             } catch (error) {
                 alert('Network Error');
             }
         }
     };
+
+    // Custom
+
 
     return (
         <main className="content container-fluid">

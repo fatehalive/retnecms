@@ -10,7 +10,7 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Switch>
-        <Route exact path="/admin" component={AdminLayout}></Route>
+        <Route path="/admin" component={AdminLayout}></Route>
         <Redirect from="/" to="/admin" />
         <Route component={NotFound}></Route>
       </Switch>

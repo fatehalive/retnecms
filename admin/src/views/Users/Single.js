@@ -25,31 +25,31 @@ function Single() {
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id User Successfully') {
-                    console.log(data);
+                    console.table(data);
                     setUser(response.data.data);
                 } else {
                     alert(`Something wrong`);
-                    console.log(message);
+                    console.warn(response);
                 }
             })
             .catch(error => {
                 alert(`Check Your API Server`);
-                console.log(error);
+                console.error(error);
             });
         axios.get('http://localhost:5000/role')
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Successfully') {
-                    console.log(data.rows);
+                    console.table(data.rows);
                     setRoles(response.data.data.rows);
                 } else {
                     alert(`Your Server is okay, check your DB`);
-                    console.log(message);
+                    console.warn(message);
                 }
             })
             .catch(error => {
                 alert(`Check Your Server!`);
-                console.log(error);
+                console.error(error);
             });
     }, [userId]);
 

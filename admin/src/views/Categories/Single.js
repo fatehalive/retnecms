@@ -20,16 +20,16 @@ function Single() {
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id Category Successfully') {
-                    console.log(data);
+                    console.table(data);
                     setCategory(response.data.data);
                 } else {
                     alert(`Your Server is okay, check your DB`);
-                    console.log(message);
+                    console.warn(response);
                 }
             })
             .catch(error => {
                 alert(`Check Your Server!`);
-                console.log(error);
+                console.error(error);
             });
     }, [categoryId]);
 

@@ -21,8 +21,8 @@ function SideBar() {
                             <NavLink to="/admin/posts/index" className="has-arrow"><i className="icon dripicons-document-edit"></i><span>Posts</span></NavLink>
                             <ul className="collapse nav-sub">
                                 <li><NavLink to="/admin/posts/index"><span>List</span></NavLink></li>
-                                <li><NavLink to="/admin/posts/published"><span>Published</span></NavLink></li>
                                 <li><NavLink to="/admin/posts/draft"><span>Draft</span></NavLink></li>
+                                <li><NavLink to="/admin/posts/published"><span>Published</span></NavLink></li>
                             </ul>
                         </li>
 

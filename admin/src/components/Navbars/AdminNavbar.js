@@ -14,7 +14,7 @@ function AdminNavbar() {
                 <li>
                     <a href="/admin">
                         <div className="logo">
-                            <img src="./logo192.png" id="logo" style={{ width: "1em", height: "1em", objectFit: "cover" }} alt="" />
+                            <img src="/logo192.png" id="logo" style={{ width: "1em", height: "1em", objectFit: "cover" }} alt="" />
                         </div>
                         <h1 className="brand-text">Retne CMS</h1>
                     </a>

@@ -24,16 +24,16 @@ function Create() {
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Successfully') {
-                    console.log(data.rows);
+                    console.table(data.rows);
                     setRoles(response.data.data.rows);
                 } else {
                     alert(`Your Server is okay, check your DB`);
-                    console.log(message);
+                    console.warn(response);
                 }
             })
             .catch(error => {
                 alert(`Check Your Server!`);
-                console.log(error);
+                console.error(error);
             })
     }, []);
 

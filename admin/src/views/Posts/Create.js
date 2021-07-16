@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Create() {
     // Hooks: states
@@ -15,8 +16,45 @@ function Create() {
         category_uuid: ''
     });
 
+    const [users, setUsers] = React.useState([]);
+    const [categories, setCategories] = React.useState();
+
     // React-router methods
     const history = useHistory();
+
+    // Hook: useEffect
+    React.useEffect(() => {
+        axios.get('http://localhost:5000/user')
+            .then(response => {
+                const { message, data } = response.data;
+                if (message === 'Get User Successfully') {
+                    console.table(data.rows);
+                    setUsers(response.data.data.rows);
+                } else {
+                    notifyError(`API okay, Check Response`);
+                    console.warn(response);
+                }
+            })
+            .catch(error => {
+                notifyError(`Check Your Network`);
+                console.error(error);
+            })
+        axios.get('http://localhost:5000/category')
+            .then(response => {
+                const { message, data } = response.data;
+                if (message === 'Successfully') {
+                    console.table(data.rows);
+                    setCategories(response.data.data.rows);
+                } else {
+                    alert(`API okay, Check Response`);
+                    console.warn(response);
+                }
+            })
+            .catch(error => {
+                notifyError(`Check Your Network`);
+                console.error(error);
+            })
+    }, []);
 
     // Event handlers
     const handleChange = (e, name) => {
@@ -29,17 +67,39 @@ function Create() {
 
         try {
             const response = await axios.post('http://localhost:5000/news-article', posts)
-            const { status, message } = response.data;
-            if (status === 'success') {
-                alert(message)
-                history.push('/admin/posts/index')
+            const { message } = response.data;
+            if (message === 'News Article Successfully Created') {
+                notifySuccess(message);
+                window.setTimeout(() => history.push('/admin/posts/index'), 1500);
             } else {
-                alert(message)
+                notifyError(`API okay, Check Response`);
+                console.warn(response);
             }
         } catch (error) {
-            alert('Network Error');
+            notifyError('Check Your Network');
+            console.error(error);
         }
     }
+
+    const notifySuccess = (x) => toast.success(x, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
+
+    const notifyError = (y) => toast.error(y, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
 
     return (
         <main className="content content-fluid">
@@ -57,6 +117,7 @@ function Create() {
                     </div>
                 </div>
             </header>
+
             <section className="page-content content-fluid">
                 <div className="row">
                     <div className="col-12">
@@ -66,44 +127,91 @@ function Create() {
                             <div className="card-body">
                                 <form className="form-horizontal">
                                     <div className="form-body">
-                                        
+                                        <div className="form-group row">
+                                            <label className="control-label text-right col-md-3">Category</label>
+                                            <div className="col-md-7">
+                                                <select className="form-control" value={posts.category_uuid} onChange={(e) => handleChange(e, 'category_uuid')}>
+                                                    <option value={null}>--- Select Category ---</option>
+                                                    {categories && categories.map((category, index) => {
+                                                        return (
+                                                            <option key={index} value={category.uuid}>{category.category_name}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="control-label text-right col-md-3">Title</label>
+                                            <div className="col-md-7">
+                                                <input type="text" className="form-control" value={posts.article_title} onChange={(e) => handleChange(e, 'article_title')} />
+                                            </div>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="control-label text-right col-md-3">Meta Description</label>
+                                            <div className="col-md-7">
+                                                <textarea type="number" className="form-control" rows="5" value={posts.article_summary} onChange={(e) => handleChange(e, 'article_summary')}></textarea>
+                                            </div>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="control-label text-right col-md-3">Main Content</label>
+                                            <div className="col-md-7">
+                                                <textarea id="editor1" type="number" className="form-control" rows="15" value={posts.article_content} onChange={(e) => handleChange(e, 'article_content')}></textarea>
+                                            </div>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="control-label text-right col-md-3">Status</label>
+                                            <div className="col-md-7">
+                                                <select className="form-control" value={posts.status} onChange={(e) => handleChange(e, 'status')}>
+                                                    <option value={null}>--- Select Status ---</option>
+                                                    <option value="draft">Draft</option>
+                                                    <option value="publish">Publish</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="control-label text-right col-md-3">Writer</label>
+                                            <div className="col-md-7">
+                                                <select className="form-control" value={posts.user_uuid} onChange={(e) => handleChange(e, 'user_uuid')}>
+                                                    <option value={null}>--- Select Writer ---</option>
+                                                    {users && users.map((user, index) => {
+                                                        return (
+                                                            <option key={index} value={user.uuid}>{user.username}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    <div className="form-group mt-4">
-                                        <label>Title</label>
-                                        <input type="text" className="form-control" size={50} value={posts.article_title} onChange={(e) => handleChange(e, 'article_title')} />
-                                    </div>
-
-                                    <div className="form-group mt-4">
-                                        <label>Post Summary</label>
-                                        <input type="number" className="form-control" value={posts.article_summary} onChange={(e) => handleChange(e, 'article_summary')} />
-                                    </div>
-
-                                    <div className="form-group mt-4">
-                                        <label>Main Content</label>
-                                        <input type="number" className="form-control" size={30} onChange={(e) => handleChange(e, 'article_content')} />
-                                    </div>
-
-                                    <div className="form-group mt-4">
-                                        <label>Status</label>
-                                        <select className="form-control">
-                                            <option value="">-- Choose Status --</option>
-                                            <option value={false}>Off</option>
-                                            <option value={true}>On</option>
-                                        </select>
-                                    </div>
-
-                                    <button onClick={handleSubmit} className="btn btn-primary mt-4">Submit</button>
-                                    <button onClick={() => history.push('/admin/posts/index')} className="btn btn-success mt-4 mr-2">Back</button>
                                 </form>
+                            </div>
+                            <div className="card-footer bg-light">
+                                <div className="form-actions">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <div className="row">
+                                                <div className="offset-sm-3">
+                                                    <button onClick={handleSubmit} className="btn btn-primary btn-rounded">Save</button>
+                                                    <button onClick={() => history.push('/admin/posts/index')} className="btn btn-secondary clear-form btn-rounded btn-outline">Back</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
                     </div>
                 </div>
-
             </section>
-
+            <ToastContainer position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover />
         </main>
     )
 }
