@@ -53,7 +53,7 @@ const getUser = (req, res, next) => {
     offset,
     distinct: true,
     order: [
-      ['createdAt', 'DESC']
+      ['createdAt', 'ASC']
     ]
   }).then(data => {
     const response = Pagination.getPagingData(data, pageNumber, limit);

@@ -50,7 +50,7 @@ exports.getRoleFiltered = (req, res, next) => {
 };
 
 exports.getRoleAll = (req, res, next) => {
-  Role.findAndCountAll({ order: [["role", "ASC"]] }).then(response => {
+  Role.findAndCountAll({ order: [["createdAt", "ASC"]] }).then(response => {
     res.status(200).json({
       data: response,
       message: message.SUCCESSFULLY
