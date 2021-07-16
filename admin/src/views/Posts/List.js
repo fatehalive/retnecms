@@ -13,6 +13,7 @@ function List() {
     const [deleteMessage, setDeleteMessage] = React.useState(null);
     const [deleteId, setDeleteId] = React.useState(null);
 
+    // Router methods
     const history = useHistory();
 
     // Hook: useEffect to get data from api then store to state
@@ -56,7 +57,8 @@ function List() {
                     console.error(error);
                 })
         } catch (error) {
-            notifyError('Network Error');
+            notifyError('Check Your Network');
+            console.error(error);
         }
         setDisplayConfirmationModal(false);
     };
@@ -70,7 +72,7 @@ function List() {
     const hideConfirmationModal = () => {
         setDisplayConfirmationModal(false);
     };
-    
+
     const notifySuccess = (x) => toast.success(x, {
         position: "top-right",
         autoClose: 1500,
@@ -163,7 +165,7 @@ function List() {
                     </div>
                 </div>
             </section>
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={handleDelete} hideModal={hideConfirmationModal} id={deleteId} message={deleteMessage} />
         </main>
     )

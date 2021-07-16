@@ -1,9 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 import { useHistory, useParams, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Update() {
-    // Hook: state
+    // Hook: States
     const [user, setUser] = React.useState({
         username: '',
         email: '',
@@ -24,35 +25,35 @@ function Update() {
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id User Successfully') {
-                    console.log(data);
+                    console.table(data);
                     setUser(response.data.data);
                 } else {
-                    alert(`Your Server is okay, check your DB`);
-                    console.log(message);
+                    notifyError(`API okay, Check Response`);
+                    console.warn(response);
                 }
             })
             .catch(error => {
-                alert(`Check Your Server!`);
-                console.log(error);
+                notifyError(`Check Your Network`);
+                console.error(error);
             });
         axios.get('http://localhost:5000/role')
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Successfully') {
-                    console.log(data.rows);
+                    console.table(data.rows);
                     setRoles(response.data.data.rows);
                 } else {
-                    alert(`Your Server is okay, check your DB`);
-                    console.log(message);
+                    alert(`API okay, Check Response`);
+                    console.warn(response);
                 }
             })
             .catch(error => {
-                alert(`Check Your Server!`);
-                console.log(error);
+                notifyError(`Check Your Network`);
+                console.error(error);
             })
     }, [userId]);
 
-    // Events
+    // Event Handlers
     const handleChange = (e, name) => {
         const value = e.target.value;
         setUser({ ...user, [name]: value })
@@ -60,21 +61,41 @@ function Update() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         try {
             const response = await axios.put(`http://localhost:5000/user/${userId}`, user);
-            const { data, message } = response.data;
+            const { message } = response.data;
             if (message === 'User Successfully Updated') {
-                alert(message)
-                history.push('/admin/users/index')
+                notifySuccess(message)
+                window.setTimeout(() => history.push('/admin/users/index'), 1500);
             } else {
-                alert(message)
-                console.log(data)
+                notifyError(`API okay, Check Response`)
+                console.error(response);
             }
         } catch (error) {
-            alert('Network Error')
+            notifyError('Check Your Network');
+            console.error(error);
         }
     };
+
+    const notifySuccess = (x) => toast.success(x, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
+
+    const notifyError = (y) => toast.error(y, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
 
     return (
         <main className="content container-fluid">
@@ -152,6 +173,7 @@ function Update() {
                     </div>
                 </div>
             </section>
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </main>
     )
 }

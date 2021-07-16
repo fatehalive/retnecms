@@ -18,7 +18,6 @@ function Single() {
         user_uuid: '',
         category_uuid: ''
     });
-
     const [categories, setCategories] = React.useState([]);
     const [users, setUsers] = React.useState([]);
     const [displayConfirmationModal, setDisplayConfirmationModal] = React.useState(false);
@@ -86,7 +85,8 @@ function Single() {
             notifySuccess(message);
             window.setTimeout(() => history.push('/admin/posts/index'), 1500);
         } catch (error) {
-            notifyError('Network Error');
+            notifyError('Check Your Network');
+            console.error(error);
         }
         setDisplayConfirmationModal(false);
     };
@@ -198,7 +198,7 @@ function Single() {
                     </div>
                 </div>
             </section>
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={handleDelete} hideModal={hideConfirmationModal} id={deleteId} message={deleteMessage} />
         </main>
     )

@@ -1,9 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Create() {
-    // Hooks: states
+    // Hooks: States
     const [user, setUser] = React.useState({
         username: '',
         email: '',
@@ -32,12 +33,12 @@ function Create() {
                 }
             })
             .catch(error => {
-                alert(`Check Your Server!`);
+                notifyError(`Check Your Server!`);
                 console.error(error);
             })
     }, []);
 
-    // Event handlers
+    // Event Handlers
     const handleChange = (e, name) => {
         const value = e.target.value
         setUser({ ...user, [name]: value })
@@ -45,34 +46,53 @@ function Create() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         try {
             const response = await axios.post('http://localhost:5000/user', user)
             const { message } = response.data;
             if (message === 'User Successfully Created') {
-                alert(message);
-                history.push('/admin/users/index');
+                notifySuccess(message);
+                window.setTimeout(() => history.push('/admin/users/index'), 1500);
             } else {
-                alert(`Server is okay, check your DB`);
-                console.log(message);
+                notifyError(`API okay, Check Response`);
+                console.warn(response);
             }
         } catch (error) {
-            alert('Check Your Server!');
-            console.log(error);
+            notifyError('Check Your Server!');
+            console.error(error);
         }
     };
+
+    const notifySuccess = (x) => toast.success(x, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
+
+    const notifyError = (y) => toast.error(y, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
 
     return (
         <main className="content content-fluid">
             <header className="page-header">
                 <div className="d-flex align-items-center">
                     <div className="mr-auto">
-                        <h1 className="separator">Create Page</h1>
+                        <h1 className="separator">Users</h1>
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><a href="/admin/index"><i className="icon dripicons-home"></i></a></li>
-                                <li className="breadcrumb-item"><a href="/admin/users/index">users</a></li>
-                                <li className="breadcrumb-item active" aria-current="page">create</li>
+                                <li className="breadcrumb-item"><a href="/admin/users/index">Users</a></li>
+                                <li className="breadcrumb-item active" aria-current="page">Create</li>
                             </ol>
                         </nav>
                     </div>
@@ -139,9 +159,8 @@ function Create() {
                         </div>
                     </div>
                 </div>
-
             </section>
-
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </main>
     )
 }

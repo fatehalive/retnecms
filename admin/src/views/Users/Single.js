@@ -1,9 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 import { useHistory, useParams, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+
+// Modal
+import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
 
 function Single() {
-    // Hook: state
+    // Hook: States
     const [user, setUser] = React.useState({
         username: '',
         email: '',
@@ -12,8 +16,10 @@ function Single() {
         updatedAt: '',
         role_uuid: ''
     });
-
     const [roles, setRoles] = React.useState([]);
+    const [displayConfirmationModal, setDisplayConfirmationModal] = React.useState(false);
+    const [deleteMessage, setDeleteMessage] = React.useState(null);
+    const [deleteId, setDeleteId] = React.useState(null);
 
     // Router methods
     const { userId } = useParams();
@@ -28,12 +34,12 @@ function Single() {
                     console.table(data);
                     setUser(response.data.data);
                 } else {
-                    alert(`Something wrong`);
+                    notifyError(`API okay, Check Response`);
                     console.warn(response);
                 }
             })
             .catch(error => {
-                alert(`Check Your API Server`);
+                notifyError(`Check Your Network`);
                 console.error(error);
             });
         axios.get('http://localhost:5000/role')
@@ -43,31 +49,60 @@ function Single() {
                     console.table(data.rows);
                     setRoles(response.data.data.rows);
                 } else {
-                    alert(`Your Server is okay, check your DB`);
+                    notifyError(`API okay, Check Response`);
                     console.warn(message);
                 }
             })
             .catch(error => {
-                alert(`Check Your Server!`);
+                notifyError(`Check Your Network`);
                 console.error(error);
             });
     }, [userId]);
 
-    // Event
+    // Event Handlers
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure?\nThis action will delete user')) {
-            try {
-                const response = await axios.delete('http://localhost:5000/user/' + id);
-                const { message } = response.data;
-                alert(message);
-                history.push('/admin/users/index');
-            } catch (error) {
-                alert('Network Error');
-            }
+        try {
+            const response = await axios.delete('http://localhost:5000/user/' + id);
+            const { message } = response.data;
+            notifySuccess(message);
+            window.setTimeout(() => history.push('/admin/users/index'), 1500);
+        } catch (error) {
+            notifyError(`Check Your Network`);
+            console.warn(error);
         }
+        setDisplayConfirmationModal(false);
     };
 
-    // Custom variables
+    const showDeleteModal = (id) => {
+        setDeleteId(id)
+        setDeleteMessage(`Are you sure you want to delete ${id}?`);
+        setDisplayConfirmationModal(true);
+    };
+
+    const hideConfirmationModal = () => {
+        setDisplayConfirmationModal(false);
+    };
+
+    const notifySuccess = (x) => toast.success(x, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
+
+    const notifyError = (y) => toast.error(y, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
+
     let cd = new Date(user.createdAt);
     let ud = new Date(user.updatedAt);
     function getRoleName(x) {
@@ -81,7 +116,7 @@ function Single() {
             <header className="page-header">
                 <div className="d-flex align-items-center">
                     <div className="mr-auto">
-                        <h1 className="separator">Show Details</h1>
+                        <h1 className="separator">Users</h1>
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><Link to="/admin/index"><i className="icon dripicons-home"></i></Link></li>
@@ -136,7 +171,7 @@ function Single() {
                                         <div className="col-md-12">
                                             <div className="row">
                                                 <div className="offset-sm-3">
-                                                    <button onClick={() => handleDelete(user.uuid)} className="btn btn-danger btn-rounded">Delete</button>
+                                                    <button onClick={() => showDeleteModal(user.uuid)} className="btn btn-danger btn-rounded">Delete</button>
                                                     <button onClick={() => history.push('/admin/users/index')} className="btn btn-secondary clear-form btn-rounded btn-outline">Back</button>
                                                 </div>
                                             </div>
@@ -148,6 +183,8 @@ function Single() {
                     </div>
                 </div>
             </section>
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+            <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={handleDelete} hideModal={hideConfirmationModal} id={deleteId} message={deleteMessage} />
         </main>
     )
 };

@@ -4,7 +4,7 @@ import { useHistory, useParams, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 function Update() {
-    // Hook: state
+    // Hook: States
     const [post, setPost] = React.useState({
         article_title: '',
         article_summary: '',
@@ -47,7 +47,7 @@ function Update() {
                     setUsers(response.data.data.rows);
                 } else {
                     notifyError(`API okay, Check Response`);
-                    console.error(response);
+                    console.warn(response);
                 }
             })
             .catch(error => {
@@ -71,7 +71,7 @@ function Update() {
             })
     }, [postId]);
 
-    // Events
+    // Event Handlers
     const handleChange = (e, name) => {
         const value = e.target.value;
         setPost({ ...post, [name]: value })
@@ -79,13 +79,12 @@ function Update() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         try {
             const response = await axios.put(`http://localhost:5000/news-article/${postId}`, post);
             const { message } = response.data;
             if (message === 'News_Article Successfully Updated') {
                 notifySuccess(message)
-                window.setTimeout(() => history.push('/admin/posts/index'), 3000);
+                window.setTimeout(() => history.push('/admin/posts/index'), 1500);
             } else {
                 notifyError(`API okay, Check Response`)
                 console.error(response);
@@ -98,7 +97,7 @@ function Update() {
 
     const notifySuccess = (x) => toast.success(x, {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: false,
@@ -108,7 +107,7 @@ function Update() {
 
     const notifyError = (y) => toast.error(y, {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: false,
@@ -218,15 +217,7 @@ function Update() {
                     </div>
                 </div>
             </section>
-            <ToastContainer position="top-right"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover />
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </main>
     )
 }

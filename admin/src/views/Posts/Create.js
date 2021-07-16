@@ -4,7 +4,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
 function Create() {
-    // Hooks: states
+    // Hooks: States
     const [posts, setPosts] = React.useState({
         article_title: '',
         article_summary: '',
@@ -15,14 +15,13 @@ function Create() {
         user_uuid: '',
         category_uuid: ''
     });
-
     const [users, setUsers] = React.useState([]);
     const [categories, setCategories] = React.useState();
 
     // React-router methods
     const history = useHistory();
 
-    // Hook: useEffect
+    // Hook: useEffect to get roles data from api then attach it to state
     React.useEffect(() => {
         axios.get('http://localhost:5000/user')
             .then(response => {
@@ -56,7 +55,7 @@ function Create() {
             })
     }, []);
 
-    // Event handlers
+    // Event Handlers
     const handleChange = (e, name) => {
         const value = e.target.value
         setPosts({ ...posts, [name]: value })
@@ -64,7 +63,6 @@ function Create() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         try {
             const response = await axios.post('http://localhost:5000/news-article', posts)
             const { message } = response.data;
@@ -203,15 +201,7 @@ function Create() {
                     </div>
                 </div>
             </section>
-            <ToastContainer position="top-right"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover />
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </main>
     )
 }
