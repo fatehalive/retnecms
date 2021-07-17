@@ -1,9 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 import { useHistory, useParams, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Update() {
-    // Hook: state
+    // Hook: State
     const [role, setRole] = React.useState({
         role: ''
     });
@@ -18,42 +19,62 @@ function Update() {
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id Role Successfully') {
-                    console.log(data);
+                    console.table(data);
                     setRole(response.data.data);
                 } else {
-                    alert(`Your Server is okay, check your DB`);
-                    console.log(message);
+                    notifyError(`API okay, Check Response`);
+                    console.warn(response);
                 }
             })
             .catch(error => {
-                alert(`Check Your Server!`);
-                console.log(error);
+                notifyError(`Check Your Network`);
+                console.error(error);
             });
     }, [roleId]);
 
-    // Events
+    // Event Handlers
     const handleChange = (e, name) => {
         const value = e.target.value;
-        setRole({...role, [name]: value})
+        setRole({ ...role, [name]: value })
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         try {
             const response = await axios.put(`http://localhost:5000/role/${roleId}`, role);
             const { data, message } = response.data;
             if (message === 'Role Successfully Updated') {
-                alert(message)
-                history.push('/admin/roles/index')
+                notifySuccess(message)
+                window.setTimeout(() => history.push('/admin/roles/index'), 1500);
             } else {
-                alert(message)
-                console.log(data)
+                notifyError(`API okay, Check Response`)
+                console.error(response);
             }
         } catch (error) {
-            alert('Network Error')
+            notifyError(`Check Your Network`);
+            console.error(error);
         }
     };
+
+    const notifySuccess = (x) => toast.success(x, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
+
+    const notifyError = (y) => toast.error(y, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
 
     return (
         <main className="content container-fluid">
@@ -83,7 +104,7 @@ function Update() {
                                         <div className="form-group row">
                                             <label className="control-label text-right col-md-3">Role Name</label>
                                             <div className="col-md-5">
-                                                <input type="text" className="form-control" value={role.role} onChange={(e) => handleChange(e, 'role')}/>
+                                                <input type="text" className="form-control" value={role.role} onChange={(e) => handleChange(e, 'role')} />
                                             </div>
                                         </div>
                                     </div>
@@ -107,6 +128,7 @@ function Update() {
                     </div>
                 </div>
             </section>
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </main>
     )
 }

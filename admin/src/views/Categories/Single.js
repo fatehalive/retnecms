@@ -1,14 +1,21 @@
 import React from 'react';
 import axios from 'axios';
 import { useHistory, useParams, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+
+// Modal
+import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
 
 function Single() {
-    // Hook: state
+    // Hook: States
     const [category, setCategory] = React.useState({
         category_name: '',
         createdAt: '',
         updatedAt: ''
     });
+    const [displayConfirmationModal, setDisplayConfirmationModal] = React.useState(false);
+    const [deleteMessage, setDeleteMessage] = React.useState(null);
+    const [deleteId, setDeleteId] = React.useState(null);
 
     // Router methods
     const { categoryId } = useParams();
@@ -23,29 +30,59 @@ function Single() {
                     console.table(data);
                     setCategory(response.data.data);
                 } else {
-                    alert(`Your Server is okay, check your DB`);
+                    notifyError(`API okay, Check Response`);
                     console.warn(response);
                 }
             })
             .catch(error => {
-                alert(`Check Your Server!`);
+                notifyError(`Check Your Network`);
                 console.error(error);
             });
     }, [categoryId]);
 
     // Event
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure?\nThis action will delete data')) {
-            try {
-                const response = await axios.delete('http://localhost:5000/category/' + id);
-                const { message } = response.data;
-                alert(message);
-                history.push('/admin/categories/index')
-            } catch (error) {
-                alert('Network Error');
-            }
+        try {
+            const response = await axios.delete('http://localhost:5000/category/' + id);
+            const { message } = response.data;
+            notifySuccess(message);
+            window.setTimeout(() => history.push('/admin/categories/index'), 1500);
+        } catch (error) {
+            notifyError(`Check Your Network`);
+            console.warn(error);
         }
+        setDisplayConfirmationModal(false);
     };
+
+    const showDeleteModal = (id) => {
+        setDeleteId(id)
+        setDeleteMessage(`Are you sure you want to delete ${id}?`);
+        setDisplayConfirmationModal(true);
+    };
+
+    const hideConfirmationModal = () => {
+        setDisplayConfirmationModal(false);
+    };
+
+    const notifySuccess = (x) => toast.success(x, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
+
+    const notifyError = (y) => toast.error(y, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
 
     // Custom variables
     let cd = new Date(category.createdAt);
@@ -56,12 +93,12 @@ function Single() {
             <header className="page-header">
                 <div className="d-flex align-items-center">
                     <div className="mr-auto">
-                        <h1 className="separator">Single</h1>
+                        <h1 className="separator">Category</h1>
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><Link to="/admin/index"><i className="icon dripicons-home"></i></Link></li>
-                                <li className="breadcrumb-item"><Link to="/admin/categories/index">categories</Link></li>
-                                <li className="breadcrumb-item active" aria-current="page">single</li>
+                                <li className="breadcrumb-item"><Link to="/admin/categories/index">Categories</Link></li>
+                                <li className="breadcrumb-item active" aria-current="page">Detail</li>
                             </ol>
                         </nav>
                     </div>
@@ -72,7 +109,7 @@ function Single() {
                 <div className="row">
                     <div className="col-12">
                         <div className="card">
-                            <h5 className="card-header">{category.category_name} Category</h5>
+                            <h5 className="card-header">Category Details</h5>
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-sm-12">
@@ -105,7 +142,7 @@ function Single() {
                                         <div className="col-md-12">
                                             <div className="row">
                                                 <div className="offset-sm-3">
-                                                    <button onClick={() => handleDelete(category.uuid)} className="btn btn-danger btn-rounded">Delete</button>
+                                                    <button onClick={() => showDeleteModal(category.uuid)} className="btn btn-danger btn-rounded">Delete</button>
                                                     <button onClick={() => history.push('/admin/categories/index')} className="btn btn-secondary clear-form btn-rounded btn-outline">Back</button>
                                                 </div>
                                             </div>
@@ -117,6 +154,8 @@ function Single() {
                     </div>
                 </div>
             </section>
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+            <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={handleDelete} hideModal={hideConfirmationModal} id={deleteId} message={deleteMessage} />
         </main>
     )
 };

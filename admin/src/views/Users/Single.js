@@ -116,7 +116,7 @@ function Single() {
             <header className="page-header">
                 <div className="d-flex align-items-center">
                     <div className="mr-auto">
-                        <h1 className="separator">Users</h1>
+                        <h1 className="separator">User</h1>
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><Link to="/admin/index"><i className="icon dripicons-home"></i></Link></li>
@@ -132,7 +132,7 @@ function Single() {
                 <div className="row">
                     <div className="col-12">
                         <div className="card">
-                            <h5 className="card-header">View {user.username} Details</h5>
+                            <h5 className="card-header">User Details</h5>
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-sm-12">

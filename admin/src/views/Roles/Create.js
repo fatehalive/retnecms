@@ -1,9 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Create() {
-    // Hooks: states
+    // Hook: States
     const [roles, setRoles] = React.useState({
         role: ''
     });
@@ -11,7 +12,7 @@ function Create() {
     // React-router methods
     const history = useHistory();
 
-    // Event handlers
+    // Event Handlers
     const handleChange = (e, name) => {
         const value = e.target.value
         setRoles({ ...roles, [name]: value })
@@ -19,29 +20,48 @@ function Create() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         try {
             const response = await axios.post('http://localhost:5000/role', roles)
             const { message } = response.data;
             if (message === 'Successfully Created') {
-                alert(message);
-                history.push('/admin/roles/index');
+                notifySuccess(message);
+                window.setTimeout(() => history.push('/admin/roles/index'), 1500);
             } else {
-                alert(`Server is okay, check your DB`);
-                console.log(message);
+                notifyError(`API okay, Check Response`);
+                console.warn(response);
             }
         } catch (error) {
-            alert('Check Your Server!');
-            console.log(error);
+            notifyError('Check Your Server!');
+            console.error(error);
         }
     };
+
+    const notifySuccess = (x) => toast.success(x, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
+
+    const notifyError = (y) => toast.error(y, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
 
     return (
         <main className="content content-fluid">
             <header className="page-header">
                 <div className="d-flex align-items-center">
                     <div className="mr-auto">
-                        <h1 className="separator">Roles</h1>
+                        <h1 className="separator">Role</h1>
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><a href="/admin/index"><i className="icon dripicons-home"></i></a></li>
@@ -84,13 +104,11 @@ function Create() {
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
             </section>
-
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </main>
     )
 }

@@ -133,8 +133,8 @@ function List() {
                                                         <th style={{ width: "2.5%" }}>No.</th>
                                                         <th>Title</th>
                                                         <th>Meta Description</th>
-                                                        <th>Status</th>
-                                                        <th>Date</th>
+                                                        <th style={{ width: "5%" }}>Status</th>
+                                                        <th style={{ width: "5%" }}>Date</th>
                                                         <th style={{ width: "13%" }}>Actions</th>
                                                     </tr>
                                                 </thead>
@@ -145,7 +145,7 @@ function List() {
                                                                 <td>{index + 1}</td>
                                                                 <td><b><Link to={`/admin/posts/single/${post.uuid}`}>{post.article_title}</Link></b></td>
                                                                 <td>{post.article_summary}</td>
-                                                                <td>{post.status}</td>
+                                                                {(post.status === 'publish') ? <td><span className="badge badge-success">{post.status}</span></td> : <td><span className="badge badge-secondary">{post.status}</span></td>}
                                                                 <td>{post.createdAt.slice(0, 10)}</td>
                                                                 <td>
                                                                     <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/posts/update/${post.uuid}`)}><i className="icons dripicons-pencil text-light"></i>Edit</button>

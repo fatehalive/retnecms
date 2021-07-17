@@ -1,9 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 import { useHistory, useParams, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Update() {
-    // Hook: state
+    // Hook: States
     const [category, setCategory] = React.useState({
         category_name: ''
     });
@@ -18,42 +19,62 @@ function Update() {
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id Category Successfully') {
-                    console.log(data);
+                    console.table(data);
                     setCategory(response.data.data);
                 } else {
-                    alert(`Your Server is okay, check your DB`);
-                    console.log(message);
+                    notifyError(`API okay, Check Response`);
+                    console.warn(response);
                 }
             })
             .catch(error => {
-                alert(`Check Your Server!`);
-                console.log(error);
+                notifyError(`Check Your Network`);
+                console.error(error);
             });
     }, [categoryId]);
 
-    // Events
+    // Event Handlers
     const handleChange = (e, name) => {
         const value = e.target.value;
-        setCategory({...category, [name]: value})
+        setCategory({ ...category, [name]: value })
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
         try {
-            const response = await axios.put(`http://localhost:5000/categories/${categoryId}`, category);
-            const { data, message } = response.data;
+            const response = await axios.put(`http://localhost:5000/category/${categoryId}`, category);
+            const { message } = response.data;
             if (message === 'Category Successfully Updated') {
-                alert(message)
-                history.push('/admin/roles/index')
+                notifySuccess(message)
+                window.setTimeout(() => history.push('/admin/categories/index'), 1500);
             } else {
-                alert(message)
-                console.log(data)
+                notifyError(`API okay, Check Response`)
+                console.error(response);
             }
         } catch (error) {
-            alert('Network Error')
+            notifyError(`Check Your Network`);
+            console.error(error);
         }
     };
+
+    const notifySuccess = (x) => toast.success(x, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
+
+    const notifyError = (y) => toast.error(y, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
 
     return (
         <main className="content container-fluid">
@@ -64,8 +85,8 @@ function Update() {
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><Link to="/admin/index"><i className="icon dripicons-home"></i></Link></li>
-                                <li className="breadcrumb-item"><Link to="/admin/categories/index">categories</Link></li>
-                                <li className="breadcrumb-item active" aria-current="page">edit</li>
+                                <li className="breadcrumb-item"><Link to="/admin/categories/index">Categories</Link></li>
+                                <li className="breadcrumb-item active" aria-current="page">Edit</li>
                             </ol>
                         </nav>
                     </div>
@@ -83,7 +104,7 @@ function Update() {
                                         <div className="form-group row">
                                             <label className="control-label text-right col-md-3">Category Name</label>
                                             <div className="col-md-5">
-                                                <input type="text" className="form-control" value={category.category_name} onChange={(e) => handleChange(e, 'category_name')}/>
+                                                <input type="text" className="form-control" value={category.category_name} onChange={(e) => handleChange(e, 'category_name')} />
                                             </div>
                                         </div>
                                     </div>
@@ -107,6 +128,7 @@ function Update() {
                     </div>
                 </div>
             </section>
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </main>
     )
 }

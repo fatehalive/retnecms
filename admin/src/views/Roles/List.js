@@ -1,26 +1,17 @@
 import React from 'react';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
-// // Data test
-// const roles = [
-//     {
-//         role: "Super Admin",
-//         createdAt: 20210701
-//     },
-//     {
-//         role: "Editor",
-//         createdAt: 20210702
-//     },
-//     {
-//         role: "Author",
-//         createdAt: 20210703
-//     }
-// ];
+// Modal
+import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
 
 function List() {
-    // Hook: state
+    // Hook: States
     const [roles, setRoles] = React.useState([]);
+    const [displayConfirmationModal, setDisplayConfirmationModal] = React.useState(false);
+    const [deleteMessage, setDeleteMessage] = React.useState(null);
+    const [deleteId, setDeleteId] = React.useState(null);
 
     // Router methods
     const history = useHistory();
@@ -32,50 +23,75 @@ function List() {
                 const { message, data } = response.data;
                 if (message === 'Successfully') {
                     console.table(data.rows);
-                    let x = data.rows.sort(function (x, y) { return x.createdAt - y.createdAt })
-                    console.table(x)
                     setRoles(response.data.data.rows);
                 } else {
-                    alert(`Your Server is okay, check your DB`);
+                    notifyError(`API okay, Check Response`);
                     console.warn(response);
                 }
             })
             .catch(error => {
-                alert(`Check Your Server!`);
-                console.log(error);
+                notifyError(`Check Your Network`);
+                console.error(error);
             })
     }, []);
 
-    // Event
+    // Event Handlers
     const handleDelete = async (id) => {
-        if (window.confirm('Yakin mau dihapus?')) {
-            try {
-                const response = await axios.delete('http://localhost:5000/role/' + id);
-                const { message } = response.data;
-                alert(message);
-                axios.get('http://localhost:5000/role')
-                    .then(response => {
-                        const { message, data } = response.data;
-                        if (message === 'Successfully') {
-                            console.table(data.rows);
-                            setRoles(response.data.data.rows);
-                        } else {
-                            alert(`Your Server is okay, check your DB`);
-                            console.warn(response);
-                        }
-                    })
-                    .catch(error => {
-                        alert(`Check Your Server!`);
-                        console.error(error);
-                    })
-            } catch (error) {
-                alert('Network Error');
-            }
+        try {
+            const response = await axios.delete('http://localhost:5000/role/' + id);
+            const { message } = response.data;
+            notifySuccess(message);
+            axios.get('http://localhost:5000/role')
+                .then(response => {
+                    const { message, data } = response.data;
+                    if (message === 'Successfully') {
+                        console.table(data.rows);
+                        setRoles(response.data.data.rows);
+                    } else {
+                        notifyError(`API okay, Check Response`);
+                        console.warn(response);
+                    }
+                })
+                .catch(error => {
+                    notifyError(`Check Your Network`);
+                    console.error(error);
+                })
+        } catch (error) {
+            notifyError(`Check Your Network`);
+            console.error(error);
         }
+        setDisplayConfirmationModal(false);
     };
 
-    // Custom
+    const showDeleteModal = (id) => {
+        setDeleteId(id)
+        setDeleteMessage(`Are you sure you want to delete ${id}?`);
+        setDisplayConfirmationModal(true);
+    };
 
+    const hideConfirmationModal = () => {
+        setDisplayConfirmationModal(false);
+    };
+
+    const notifySuccess = (x) => toast.success(x, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
+
+    const notifyError = (y) => toast.error(y, {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+    });
 
     return (
         <main className="content container-fluid">
@@ -98,7 +114,7 @@ function List() {
                 <div className="row">
                     <div className="col-12">
                         <div className="card">
-                            <h5 className="card-header">Roles List</h5>
+                            <h5 className="card-header">Role List</h5>
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-sm-12">
@@ -124,10 +140,12 @@ function List() {
                                                             <td>{index + 1}</td>
                                                             <td><strong><Link to={`/admin/roles/single/${role.uuid}`}>{role.role}</Link></strong></td>
                                                             <td>{d.slice(0, 10)}</td>
-                                                            <td><button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/roles/update/${role.uuid}`)}><i className="icons dripicons-pencil text-light"></i>Edit</button><button className="btn btn-danger btn-rounded btn-sm" onClick={() => handleDelete(role.uuid)}><i className="icons dripicons-trash text-light"></i>Delete</button></td>
+                                                            <td>
+                                                                <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/roles/update/${role.uuid}`)}><i className="icons dripicons-pencil text-light"></i>Edit</button>
+                                                                <button className="btn btn-danger btn-rounded btn-sm" onClick={() => showDeleteModal(role.uuid)}><i className="icons dripicons-trash text-light"></i>Delete</button>
+                                                            </td>
                                                         </tr>
-                                                    )
-                                                })}
+                                                    )})}
                                             </tbody>
                                         </table>
                                     </div>
@@ -137,6 +155,8 @@ function List() {
                     </div>
                 </div>
             </section>
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+            <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={handleDelete} hideModal={hideConfirmationModal} id={deleteId} message={deleteMessage} />
         </main>
     )
 }
