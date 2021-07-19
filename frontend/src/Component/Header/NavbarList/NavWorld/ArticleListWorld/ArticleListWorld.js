@@ -13,7 +13,7 @@ const ArticleListWorld = ()=>{
 						</div>
 						<div class="post-content">
                             <h2>
-                                <Link to="single-post.html">{Data.title}</Link>
+                                <Link to="/article">{Data.title}</Link>
                             </h2>
                             <ul className="post-tags">
                                 <li><i className="fa fa-clock-o"></i>{Data.date}</li>
@@ -26,7 +26,6 @@ const ArticleListWorld = ()=>{
 					    </div>
 					</div>
                     })}
-                    
                     
                 </div>
 

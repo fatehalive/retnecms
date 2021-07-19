@@ -15,7 +15,7 @@ const BrandAndToggle = ()=>{
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                   </button>
-                <Link className="navbar-brand" to="/index">
+                <Link className="navbar-brand" to="/">
                   <img src={data.logo} alt=""/>
                 </Link>
               </div>
