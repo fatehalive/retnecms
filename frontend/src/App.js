@@ -12,7 +12,7 @@ function App() {
       <Router>
         {/* HEADER */}
         <Header/>
-        {/* main */}
+        {/* MAIN */}
         <Switch>
           <Route path="/article">
             <SinglePost/>
