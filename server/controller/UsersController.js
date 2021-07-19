@@ -32,6 +32,9 @@ const getUser = (req, res, next) => {
 
   if (role_uuid) where[`role_uuid`] = role_uuid
 
+  where[`is_deleted`] = false
+
+
   const {
     limit,
     offset
@@ -98,6 +101,9 @@ const getUserAll = (req, res, next) => {
       as: 'role',
       attributes: ['role'],
     }],
+    where: {
+      is_deleted: false
+    }
   }).then(data => {
     res.json({
       data: data,
@@ -186,6 +192,27 @@ const getByUsername = async (req, res, next) => {
   }
 };
 
+const deleteUser = async (req, res, next) => {
+  try {
+    const UserData = await User.findByPk(req.params.id);
+    if (!UserData) {
+      throw new AppError(404, message.ID_USER_NOT_FOUND);
+    }
+    const data = await UserData.update({
+      is_deleted: true
+    });
+
+    res.json({
+      data: data,
+      message: `User ${message.SUCCESSFULLY_DELETED}`
+    });
+  } catch (error) {
+    next(error)
+  }
+
+
+}
+
 
 module.exports = {
   getUser,
@@ -193,5 +220,6 @@ module.exports = {
   getUserAll,
   createUser,
   updateUser,
-  getByUsername
+  getByUsername,
+  deleteUser
 };

@@ -44,6 +44,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     jwt_token: DataTypes.TEXT,
+    is_deleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   }, {
     sequelize,
     tableName: 'users',

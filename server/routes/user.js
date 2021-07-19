@@ -9,6 +9,7 @@ router.post('/', UserController.createUser);
 router.post('/find', UserController.getUser);
 router.post('/search', UserController.getByUsername);
 router.put('/:id', UserController.updateUser);
+router.delete('/:id', UserController.deleteUser)
 
 
 module.exports = router;
