@@ -32,7 +32,7 @@ function Update() {
             });
     }, [roleId]);
 
-    const axiosPut = React.useCallback( async () => {
+    const axiosPut = React.useCallback(async() => {
         try {
             const response = await axios.put(`http://localhost:5000/role/${roleId}`, role);
             const { message } = response.data;
@@ -65,25 +65,8 @@ function Update() {
         axiosPut();
     };
 
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
-
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     return (
         <main className="content container-fluid">

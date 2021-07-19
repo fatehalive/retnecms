@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 function Create() {
     // Hook: States
-    const [roles, setRoles] = React.useState({
+    const [role, setRole] = React.useState({
         role: ''
     });
 
@@ -13,9 +13,9 @@ function Create() {
     const history = useHistory();
 
     // Function to Interact API
-    const axiosPost = React.useCallback( async () => {
+    const axiosPost = React.useCallback(async() => {
         try {
-            const response = await axios.post('http://localhost:5000/role', roles)
+            const response = await axios.post('http://localhost:5000/role', role)
             const { message } = response.data;
             if (message === 'Successfully Created') {
                 notifySuccess(message);
@@ -28,12 +28,12 @@ function Create() {
             notifyError('Check Your Server!');
             console.error(error);
         }
-    }, [roles, history]);
+    }, [role, history]);
 
     // Event Handlers
     const handleChange = (e, name) => {
         const value = e.target.value
-        setRoles({ ...roles, [name]: value })
+        setRole({ ...role, [name]: value })
     };
 
     const handleSubmit = async (e) => {
@@ -41,25 +41,8 @@ function Create() {
         axiosPost();
     };
 
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
-
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     return (
         <main className="content content-fluid">
@@ -89,7 +72,7 @@ function Create() {
                                         <div className="form-group row">
                                             <label className="control-label text-right col-md-3">Role Name</label>
                                             <div className="col-md-5">
-                                                <input type="text" className="form-control" value={roles.name} onChange={(e) => handleChange(e, 'role')} placeholder="ex: Editor"/>
+                                                <input type="text" className="form-control" value={role.name} onChange={(e) => handleChange(e, 'role')} placeholder="ex: Editor"/>
                                             </div>
                                         </div>
                                     </div>

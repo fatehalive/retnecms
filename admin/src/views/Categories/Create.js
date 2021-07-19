@@ -12,14 +12,8 @@ function Create() {
     // React-router methods
     const history = useHistory();
 
-    // Event Handlers
-    const handleChange = (e, name) => {
-        const value = e.target.value
-        setCategory({ ...category, [name]: value })
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    // Function to Interact API
+    const axiosPost = React.useCallback(async ()=> {
         try {
             const response = await axios.post('http://localhost:5000/category', category)
             const { message } = response.data;
@@ -34,27 +28,21 @@ function Create() {
             notifyError('Check Your Server!');
             console.error(error);
         }
+    }, [category, history]);
+
+    // Event Handlers
+    const handleChange = (e, name) => {
+        const value = e.target.value
+        setCategory({ ...category, [name]: value })
     };
 
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        axiosPost();
+    };
 
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     return (
         <main className="content content-fluid">

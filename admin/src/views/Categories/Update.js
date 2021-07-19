@@ -13,33 +13,25 @@ function Update() {
     const { categoryId } = useParams();
     const history = useHistory();
 
-    // Hook: useEffect to get data then store to state
-    React.useEffect(() => {
+    const axiosGetId = React.useCallback(async() => {
         axios.get(`http://localhost:5000/category/${categoryId}`)
-            .then(response => {
-                const { message, data } = response.data;
-                if (message === 'Get Id Category Successfully') {
-                    console.table(data);
-                    setCategory(response.data.data);
-                } else {
-                    notifyError(`API okay, Check Response`);
-                    console.warn(response);
-                }
-            })
-            .catch(error => {
-                notifyError(`Check Your Network`);
-                console.error(error);
-            });
+        .then(response => {
+            const { message, data } = response.data;
+            if (message === 'Get Id Category Successfully') {
+                console.table(data);
+                setCategory(response.data.data);
+            } else {
+                notifyError(`API okay, Check Response`);
+                console.warn(response);
+            }
+        })
+        .catch(error => {
+            notifyError(`Check Your Network`);
+            console.error(error);
+        });
     }, [categoryId]);
 
-    // Event Handlers
-    const handleChange = (e, name) => {
-        const value = e.target.value;
-        setCategory({ ...category, [name]: value })
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    const axiosPut = React.useCallback(async() => {
         try {
             const response = await axios.put(`http://localhost:5000/category/${categoryId}`, category);
             const { message } = response.data;
@@ -54,27 +46,26 @@ function Update() {
             notifyError(`Check Your Network`);
             console.error(error);
         }
+    }, [category, categoryId, history]);
+
+    // Hook: useEffect to get data then store to state
+    React.useEffect(() => {
+        axiosGetId();
+    }, [axiosGetId]);
+
+    // Event Handlers
+    const handleChange = (e, name) => {
+        const value = e.target.value;
+        setCategory({ ...category, [name]: value })
     };
 
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        axiosPut()
+    };
 
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     return (
         <main className="content container-fluid">

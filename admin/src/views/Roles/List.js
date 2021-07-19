@@ -19,7 +19,7 @@ function List() {
     const history = useHistory();
 
     // Function to Interact API
-    const axiosGet = React.useCallback(async () => {
+    const axiosGet = React.useCallback(async() => {
         try {
             axios.get('http://localhost:5000/role')
                 .then(response => {
@@ -37,20 +37,13 @@ function List() {
                     notifyError(`Check Your Network`);
                     console.error(error);
                 })
-            setLoading(true);
         } catch (error) {
             notifyError(`Check Your Network`);
             console.error(error);
         }
     }, []);
 
-    // Hook: useEffect to get all role user then store it to state
-    React.useEffect(() => {
-        axiosGet()
-    }, [axiosGet]);
-
-    // Event Handlers
-    const handleDelete = async (id) => {
+    const axiosDelete = React.useCallback(async(id) => {
         try {
             const response = await axios.delete('http://localhost:5000/role/' + id);
             const { message } = response.data;
@@ -60,6 +53,17 @@ function List() {
             notifyError(`Check Your Network`);
             console.error(error);
         }
+    }, [axiosGet]);
+
+    // Hook: useEffect to get all role user then store it to state
+    React.useEffect(() => {
+        axiosGet()
+        setLoading(true);
+    }, [axiosGet]);
+
+    // Event Handlers
+    const handleDelete = (id) => {
+        axiosDelete(id)
         setDisplayConfirmationModal(false);
     };
 
@@ -73,25 +77,8 @@ function List() {
         setDisplayConfirmationModal(false);
     };
 
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
-
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (x) => toast.success(x);
+    const notifyError = (y) => toast.error(y);
 
     return (
         <main className="content container-fluid">

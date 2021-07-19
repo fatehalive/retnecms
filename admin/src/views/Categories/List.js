@@ -2,22 +2,24 @@ import React from 'react';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { Spinner } from 'react-bootstrap';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
 
 function List() {
     // Hook: States
-    const [categories, setCategories] = React.useState([]);
+    const [categories, setCategories] = React.useState();
     const [displayConfirmationModal, setDisplayConfirmationModal] = React.useState(false);
     const [deleteMessage, setDeleteMessage] = React.useState(null);
     const [deleteId, setDeleteId] = React.useState(null);
+    const [loading, setLoading] = React.useState(false);
 
     // Router methods
     const history = useHistory();
 
-    // Hook: useEffect to get all role user then store it to state
-    React.useEffect(() => {
+    // Function to Interact API
+    const axiosGet = React.useCallback(async () => {
         axios.get('http://localhost:5000/category')
             .then(response => {
                 const { message, data } = response.data;
@@ -35,31 +37,27 @@ function List() {
             })
     }, []);
 
-    // Event Handlers
-    const handleDelete = async (id) => {
+    const axiosDelete = React.useCallback(async (id) => {
         try {
             const response = await axios.delete('http://localhost:5000/category/' + id);
             const { message } = response.data;
             notifySuccess(message);
-            axios.get('http://localhost:5000/category')
-                .then(response => {
-                    const { message, data } = response.data;
-                    if (message === 'Successfully') {
-                        console.table(data.rows);
-                        setCategories(response.data.data.rows);
-                    } else {
-                        notifyError(`API okay, Check Response`);
-                        console.warn(response);
-                    }
-                })
-                .catch(error => {
-                    notifyError(`Check Your Network`);
-                    console.error(error);
-                })
+            axiosGet();
         } catch (error) {
             notifyError(`Check Your Network`);
             console.error(error);
         }
+    }, [axiosGet]);
+
+    // Hook: useEffect to get all role user then store it to state
+    React.useEffect(() => {
+        axiosGet()
+        setLoading(true);
+    }, [axiosGet]);
+
+    // Event Handlers
+    const handleDelete = (id) => {
+        axiosDelete(id)
         setDisplayConfirmationModal(false);
     };
 
@@ -73,25 +71,8 @@ function List() {
         setDisplayConfirmationModal(false);
     };
 
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
-
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (x) => toast.success(x);
+    const notifyError = (y) => toast.error(y);
 
     return (
         <main className="content container-fluid">
@@ -133,7 +114,7 @@ function List() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {categories && categories.map((category, index) => {
+                                                {(loading && categories) ? categories.map((category, index) => {
                                                     let d = category.createdAt;
                                                     return (
                                                         <tr key={index}>
@@ -146,7 +127,7 @@ function List() {
                                                             </td>
                                                         </tr>
                                                     )
-                                                })}
+                                                }) : <Spinner className="text-center" animation="border" variant="primary" />}
                                             </tbody>
                                         </table>
                                     </div>

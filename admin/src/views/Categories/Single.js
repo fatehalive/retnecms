@@ -21,27 +21,26 @@ function Single() {
     const { categoryId } = useParams();
     const history = useHistory();
 
-    // Hook: useEffect to get data then store to state
-    React.useEffect(() => {
+    // Function to Interact API
+    const axiosGetId = React.useCallback(async() => {
         axios.get(`http://localhost:5000/category/${categoryId}`)
-            .then(response => {
-                const { message, data } = response.data;
-                if (message === 'Get Id Category Successfully') {
-                    console.table(data);
-                    setCategory(response.data.data);
-                } else {
-                    notifyError(`API okay, Check Response`);
-                    console.warn(response);
-                }
-            })
-            .catch(error => {
-                notifyError(`Check Your Network`);
-                console.error(error);
-            });
+        .then(response => {
+            const { message, data } = response.data;
+            if (message === 'Get Id Category Successfully') {
+                console.table(data);
+                setCategory(response.data.data);
+            } else {
+                notifyError(`API okay, Check Response`);
+                console.warn(response);
+            }
+        })
+        .catch(error => {
+            notifyError(`Check Your Network`);
+            console.error(error);
+        });
     }, [categoryId]);
 
-    // Event
-    const handleDelete = async (id) => {
+    const axiosDelete = React.useCallback(async(id)=> {
         try {
             const response = await axios.delete('http://localhost:5000/category/' + id);
             const { message } = response.data;
@@ -51,6 +50,16 @@ function Single() {
             notifyError(`Check Your Network`);
             console.warn(error);
         }
+    }, [history]);
+
+    // Hook: useEffect to get data then store to state
+    React.useEffect(() => {
+        axiosGetId();
+    }, [axiosGetId]);
+
+    // Event Handlers
+    const handleDelete = (id) => {
+        axiosDelete(id);
         setDisplayConfirmationModal(false);
     };
 
@@ -64,25 +73,8 @@ function Single() {
         setDisplayConfirmationModal(false);
     };
 
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
-
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     // Custom variables
     let cd = new Date(category.createdAt);

@@ -9,7 +9,6 @@ import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
 function Single() {
     // Hook: States
     const [role, setRole] = React.useState({
-        uuid: 0,
         role: '',
         createdAt: '',
         updatedAt: ''
@@ -23,7 +22,7 @@ function Single() {
     const history = useHistory();
 
     // Function to Interact API
-    const axiosGetId = React.useCallback( async () => {
+    const axiosGetId = React.useCallback(async() => {
         axios.get(`http://localhost:5000/role/${roleId}`)
             .then(response => {
                 const { message, data } = response.data;
@@ -41,13 +40,7 @@ function Single() {
             });
     },[roleId]);
 
-    // Hook: useEffect to get data then store to state
-    React.useEffect(() => {
-        axiosGetId();
-    }, [axiosGetId]);
-
-    // Event
-    const handleDelete = async (id) => {
+    const axiosDelete = React.useCallback(async(id) => {
         try {
             const response = await axios.delete('http://localhost:5000/role/' + id);
             const { message } = response.data;
@@ -57,6 +50,16 @@ function Single() {
             notifyError(`Check Your Network`);
             console.warn(error);
         }
+    }, [history]);
+
+    // Hook: useEffect to get data then store to state
+    React.useEffect(() => {
+        axiosGetId();
+    }, [axiosGetId]);
+
+    // Event Handlers
+    const handleDelete = (id) => {
+        axiosDelete(id);
         setDisplayConfirmationModal(false);
     };
 
@@ -70,25 +73,8 @@ function Single() {
         setDisplayConfirmationModal(false);
     };
 
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
-
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     // Custom variables
     let cd = new Date(role.createdAt);
