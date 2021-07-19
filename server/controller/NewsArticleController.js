@@ -3,7 +3,7 @@ const News_Article = require("../models").News_Article
 const AppError = require("../utils/appError");
 const message = require('../config/message');
 const bcrypt = require('bcryptjs');
-
+const { v4: uuidv4 } = require('uuid');
 const Category = require('../models').Category
 const User = require('../models').User
 
@@ -139,12 +139,28 @@ const getNewsArticleAll = (req, res, next) => {
 
 const createNewsArticle = async (req, res, next) => {
   try {
+
+    uuidValue = uuidv4()
+
+
+    if (!req.files) {
+      throw new AppError(404, message.FILE_NOT_FOUND);
+    }
+    let image1 = {
+      uuid: req.files.image1[0].filename.slice(0, 36),
+      type: req.files.image1[0].originalname.split('.').pop(),
+    };
+    let image2 = {
+      uuid: req.files.image2[0].filename.slice(0, 36),
+      type: req.files.image2[0].originalname.split('.').pop(),
+    };
     const newNews_Article = await News_Article.create({
+      uuid: uuidValue,
       article_title: req.body.article_title,
       article_summary: req.body.article_summary,
       article_content: req.body.article_content,
-      image1_url: req.body.image1_url,
-      image2_url: req.body.image2_url ? req.body.image2_url : null,
+      image1_url: `http://localhost:5000/public/image/${image1.uuid}.${image1.type}`,
+      image2_url: `http://localhost:5000/public/image/${image2.uuid}.${image2.type}`,
       status: req.body.status,
       user_uuid: req.body.user_uuid,
       category_uuid: req.body.category_uuid
