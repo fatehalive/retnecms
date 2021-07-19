@@ -22,8 +22,8 @@ function Single() {
     const { roleId } = useParams();
     const history = useHistory();
 
-    // Hook: useEffect to get data then store to state
-    React.useEffect(() => {
+    // Function to Interact API
+    const axiosGetId = React.useCallback( async () => {
         axios.get(`http://localhost:5000/role/${roleId}`)
             .then(response => {
                 const { message, data } = response.data;
@@ -39,7 +39,12 @@ function Single() {
                 notifyError(`Check Your Network`);
                 console.error(error);
             });
-    }, [roleId]);
+    },[roleId]);
+
+    // Hook: useEffect to get data then store to state
+    React.useEffect(() => {
+        axiosGetId();
+    }, [axiosGetId]);
 
     // Event
     const handleDelete = async (id) => {

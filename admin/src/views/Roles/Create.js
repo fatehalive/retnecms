@@ -12,14 +12,8 @@ function Create() {
     // React-router methods
     const history = useHistory();
 
-    // Event Handlers
-    const handleChange = (e, name) => {
-        const value = e.target.value
-        setRoles({ ...roles, [name]: value })
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    // Function to Interact API
+    const axiosPost = React.useCallback( async () => {
         try {
             const response = await axios.post('http://localhost:5000/role', roles)
             const { message } = response.data;
@@ -34,6 +28,17 @@ function Create() {
             notifyError('Check Your Server!');
             console.error(error);
         }
+    }, [roles, history]);
+
+    // Event Handlers
+    const handleChange = (e, name) => {
+        const value = e.target.value
+        setRoles({ ...roles, [name]: value })
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        axiosPost();
     };
 
     const notifySuccess = (x) => toast.success(x, {
@@ -111,6 +116,6 @@ function Create() {
             <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </main>
     )
-}
+};
 
 export default Create;

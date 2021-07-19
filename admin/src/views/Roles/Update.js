@@ -13,8 +13,8 @@ function Update() {
     const { roleId } = useParams();
     const history = useHistory();
 
-    // Hook: useEffect to get data then store to state
-    React.useEffect(() => {
+    // Function to Interact API
+    const axiosGetId = React.useCallback(() => {
         axios.get(`http://localhost:5000/role/${roleId}`)
             .then(response => {
                 const { message, data } = response.data;
@@ -32,14 +32,7 @@ function Update() {
             });
     }, [roleId]);
 
-    // Event Handlers
-    const handleChange = (e, name) => {
-        const value = e.target.value;
-        setRole({ ...role, [name]: value })
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    const axiosPut = React.useCallback( async () => {
         try {
             const response = await axios.put(`http://localhost:5000/role/${roleId}`, role);
             const { message } = response.data;
@@ -54,6 +47,22 @@ function Update() {
             notifyError(`Check Your Network`);
             console.error(error);
         }
+    }, [role, roleId, history]);
+
+    // Hook: useEffect to get data then store to state
+    React.useEffect(() => {
+        axiosGetId();
+    }, [axiosGetId]);
+
+    // Event Handlers
+    const handleChange = (e, name) => {
+        const value = e.target.value;
+        setRole({...role, [name]: value })
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        axiosPut();
     };
 
     const notifySuccess = (x) => toast.success(x, {

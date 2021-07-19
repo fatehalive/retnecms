@@ -18,7 +18,7 @@ function List() {
     // Router methods
     const history = useHistory();
 
-    // Fetchbusiness
+    // Function to Interact API
     const axiosGet = React.useCallback(async () => {
         try {
             axios.get('http://localhost:5000/role')
