@@ -42,7 +42,7 @@ function Update() {
         e.preventDefault()
         try {
             const response = await axios.put(`http://localhost:5000/role/${roleId}`, role);
-            const { data, message } = response.data;
+            const { message } = response.data;
             if (message === 'Role Successfully Updated') {
                 notifySuccess(message)
                 window.setTimeout(() => history.push('/admin/roles/index'), 1500);

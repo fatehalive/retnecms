@@ -2,45 +2,25 @@ import React from 'react';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { Spinner } from 'react-bootstrap';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
 
 function List() {
     // Hook: States
-    const [roles, setRoles] = React.useState([]);
+    const [roles, setRoles] = React.useState();
     const [displayConfirmationModal, setDisplayConfirmationModal] = React.useState(false);
     const [deleteMessage, setDeleteMessage] = React.useState(null);
     const [deleteId, setDeleteId] = React.useState(null);
+    const [loading, setLoading] = React.useState(false);
 
     // Router methods
     const history = useHistory();
 
-    // Hook: useEffect to get all role user then store it to state
-    React.useEffect(() => {
-        axios.get('http://localhost:5000/role')
-            .then(response => {
-                const { message, data } = response.data;
-                if (message === 'Successfully') {
-                    console.table(data.rows);
-                    setRoles(response.data.data.rows);
-                } else {
-                    notifyError(`API okay, Check Response`);
-                    console.warn(response);
-                }
-            })
-            .catch(error => {
-                notifyError(`Check Your Network`);
-                console.error(error);
-            })
-    }, []);
-
-    // Event Handlers
-    const handleDelete = async (id) => {
+    // Fetchbusiness
+    const axiosGet = React.useCallback(async () => {
         try {
-            const response = await axios.delete('http://localhost:5000/role/' + id);
-            const { message } = response.data;
-            notifySuccess(message);
             axios.get('http://localhost:5000/role')
                 .then(response => {
                     const { message, data } = response.data;
@@ -52,10 +32,30 @@ function List() {
                         console.warn(response);
                     }
                 })
+                // Saya kurang tau kenapa catch yg try catch tidak kepanggil. saya tambah catch di promise ini
                 .catch(error => {
                     notifyError(`Check Your Network`);
                     console.error(error);
                 })
+            setLoading(true);
+        } catch (error) {
+            notifyError(`Check Your Network`);
+            console.error(error);
+        }
+    }, []);
+
+    // Hook: useEffect to get all role user then store it to state
+    React.useEffect(() => {
+        axiosGet()
+    }, [axiosGet]);
+
+    // Event Handlers
+    const handleDelete = async (id) => {
+        try {
+            const response = await axios.delete('http://localhost:5000/role/' + id);
+            const { message } = response.data;
+            notifySuccess(message);
+            axiosGet();
         } catch (error) {
             notifyError(`Check Your Network`);
             console.error(error);
@@ -133,19 +133,20 @@ function List() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {roles && roles.map((role, index) => {
+                                                {(loading && roles) ? roles.map((role, index) => {
                                                     let d = role.createdAt;
                                                     return (
                                                         <tr key={index}>
                                                             <td>{index + 1}</td>
-                                                            <td><strong><Link to={`/admin/roles/single/${role.uuid}`}>{role.role}</Link></strong></td>
+                                                            <td><b><Link to={`/admin/roles/single/${role.uuid}`}>{role.role}</Link></b></td>
                                                             <td>{d.slice(0, 10)}</td>
                                                             <td>
                                                                 <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/roles/update/${role.uuid}`)}><i className="icons dripicons-pencil text-light"></i>Edit</button>
                                                                 <button className="btn btn-danger btn-rounded btn-sm" onClick={() => showDeleteModal(role.uuid)}><i className="icons dripicons-trash text-light"></i>Delete</button>
                                                             </td>
                                                         </tr>
-                                                    )})}
+                                                    )
+                                                }) : <Spinner className="text-center" animation="border" variant="primary" />}
                                             </tbody>
                                         </table>
                                     </div>
