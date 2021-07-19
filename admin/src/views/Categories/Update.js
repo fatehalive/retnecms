@@ -13,6 +13,7 @@ function Update() {
     const { categoryId } = useParams();
     const history = useHistory();
 
+    // Function to Interact API
     const axiosGetId = React.useCallback(async() => {
         axios.get(`http://localhost:5000/category/${categoryId}`)
         .then(response => {

@@ -25,8 +25,26 @@ function Single() {
     const { userId } = useParams();
     const history = useHistory();
 
-    // Hook: useEffect to get data then store to state
-    React.useEffect(() => {
+    // Function to Interact API
+    const axiosGet = React.useCallback(async() => {
+        axios.get('http://localhost:5000/role')
+        .then(response => {
+            const { message, data } = response.data;
+            if (message === 'Successfully') {
+                console.table(data.rows);
+                setRoles(response.data.data.rows);
+            } else {
+                notifyError(`API okay, Check Response`);
+                console.warn(message);
+            }
+        })
+        .catch(error => {
+            notifyError(`Check Your Network`);
+            console.error(error);
+        });
+    }, []);
+
+    const axiosGetId = React.useCallback(async () => {
         axios.get(`http://localhost:5000/user/${userId}`)
             .then(response => {
                 const { message, data } = response.data;
@@ -42,25 +60,9 @@ function Single() {
                 notifyError(`Check Your Network`);
                 console.error(error);
             });
-        axios.get('http://localhost:5000/role')
-            .then(response => {
-                const { message, data } = response.data;
-                if (message === 'Successfully') {
-                    console.table(data.rows);
-                    setRoles(response.data.data.rows);
-                } else {
-                    notifyError(`API okay, Check Response`);
-                    console.warn(message);
-                }
-            })
-            .catch(error => {
-                notifyError(`Check Your Network`);
-                console.error(error);
-            });
     }, [userId]);
 
-    // Event Handlers
-    const handleDelete = async (id) => {
+    const axiosDelete = React.useCallback(async(id) => {
         try {
             const response = await axios.delete('http://localhost:5000/user/' + id);
             const { message } = response.data;
@@ -70,6 +72,17 @@ function Single() {
             notifyError(`Check Your Network`);
             console.warn(error);
         }
+    }, [history]);
+
+    // Hook: useEffect to get data then store to state
+    React.useEffect(() => {
+        axiosGet();
+        axiosGetId();
+    }, [axiosGet, axiosGetId]);
+
+    // Event Handlers
+    const handleDelete = (id) => {
+        axiosDelete(id);
         setDisplayConfirmationModal(false);
     };
 
@@ -83,26 +96,10 @@ function Single() {
         setDisplayConfirmationModal(false);
     };
 
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
-
+    // Custom
     let cd = new Date(user.createdAt);
     let ud = new Date(user.updatedAt);
     function getRoleName(x) {

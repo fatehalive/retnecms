@@ -13,7 +13,7 @@ function Create() {
     const history = useHistory();
 
     // Function to Interact API
-    const axiosPost = React.useCallback(async ()=> {
+    const axiosPost = React.useCallback(async()=> {
         try {
             const response = await axios.post('http://localhost:5000/category', category)
             const { message } = response.data;
@@ -53,13 +53,14 @@ function Create() {
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><a href="/admin/index"><i className="icon dripicons-home"></i></a></li>
-                                <li className="breadcrumb-item"><a href="/admin/categories/index">categories</a></li>
-                                <li className="breadcrumb-item active" aria-current="page">create</li>
+                                <li className="breadcrumb-item"><a href="/admin/categories/index">Categories</a></li>
+                                <li className="breadcrumb-item active" aria-current="page">Create</li>
                             </ol>
                         </nav>
                     </div>
                 </div>
             </header>
+            
             <section className="page-content content-fluid">
                 <div className="row">
                     <div className="col-12">

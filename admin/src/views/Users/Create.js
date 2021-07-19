@@ -19,8 +19,8 @@ function Create() {
     // React-router methods
     const history = useHistory();
 
-    // Hook: useEffect to get roles data from api then attach it to state
-    React.useEffect(() => {
+    // Function to Interact API
+    const axiosGet = React.useCallback(async() => {
         axios.get('http://localhost:5000/role')
             .then(response => {
                 const { message, data } = response.data;
@@ -38,14 +38,7 @@ function Create() {
             })
     }, []);
 
-    // Event Handlers
-    const handleChange = (e, name) => {
-        const value = e.target.value
-        setUser({ ...user, [name]: value })
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    const axiosPost = React.useCallback(async() => {
         try {
             const response = await axios.post('http://localhost:5000/user', user)
             const { message } = response.data;
@@ -60,27 +53,26 @@ function Create() {
             notifyError('Check Your Server!');
             console.error(error);
         }
+    }, [user, history]);
+
+    // Hook: useEffect to get roles data from api then attach it to state
+    React.useEffect(() => {
+        axiosGet();
+    }, [axiosGet]);
+
+    // Event Handlers
+    const handleChange = (e, name) => {
+        const value = e.target.value
+        setUser({ ...user, [name]: value })
     };
 
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        axiosPost();
+    };
 
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     return (
         <main className="content content-fluid">

@@ -2,64 +2,62 @@ import React from 'react';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { Spinner } from 'react-bootstrap';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
 
 function List() {
     // Hook: States
-    const [users, setUsers] = React.useState([]);
+    const [users, setUsers] = React.useState();
     const [displayConfirmationModal, setDisplayConfirmationModal] = React.useState(false);
     const [deleteMessage, setDeleteMessage] = React.useState(null);
     const [deleteId, setDeleteId] = React.useState(null);
+    const [loading, setLoading] = React.useState(false);
 
     // Router methods
     const history = useHistory();
 
-    // Hook: useEffect to get all user then store it to state
-    React.useEffect(() => {
+    // Function to Interact API
+    const axiosGet = React.useCallback(async() => {
         axios.get('http://localhost:5000/user')
-            .then(response => {
-                const { message, data } = response.data;
-                if (message === 'Get User Successfully') {
-                    console.table(data.rows);
-                    setUsers(response.data.data.rows);
-                } else {
-                    notifyError(`API okay, Check Response`);
-                    console.warn(response);
-                }
-            })
-            .catch(error => {
-                notifyError(`Check Your Network`);
-                console.error(error);
-            })
+        .then(response => {
+            const { message, data } = response.data;
+            if (message === 'Get User Successfully') {
+                console.table(data.rows);
+                setUsers(response.data.data.rows);
+            } else {
+                notifyError(`API okay, Check Response`);
+                console.warn(response);
+            }
+        })
+        .catch(error => {
+            notifyError(`Check Your Network`);
+            console.error(error);
+        })
     }, []);
 
-    // Event Handlers
-    const handleDelete = async (id) => {
+    const axiosDelete = React.useCallback(async(id) => {
         try {
             const response = await axios.delete(`http://localhost:5000/user/${id}`);
             const { message } = response.data;
             notifySuccess(message);
-            axios.get('http://localhost:5000/category')
-                .then(response => {
-                    const { message, data } = response.data;
-                    if (message === 'Successfully') {
-                        console.table(data.rows);
-                        setUsers(response.data.data.rows);
-                    } else {
-                        notifyError(`API okay, Check Response`);
-                        console.warn(response);
-                    }
-                })
-                .catch(error => {
-                    notifyError(`Check Your Network`);
-                    console.error(error);
-                })
+            axiosGet();
         } catch (error) {
             notifyError('Check Your Network');
             console.error(error)
         }
+    }, [axiosGet]);
+
+    // Hook: useEffect to get all user then store it to state
+    React.useEffect(() => {
+        axiosGet();
+        setLoading(true);
+    }, [axiosGet]);
+
+    // Event Handlers
+    const handleDelete = (id) => {
+        axiosDelete(id)
         setDisplayConfirmationModal(false);
     };
 
@@ -73,25 +71,8 @@ function List() {
         setDisplayConfirmationModal(false);
     };
 
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
-
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     return (
         <main className="content container-fluid">
@@ -133,7 +114,7 @@ function List() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {users && users.map((user, index) => {
+                                                {(users && loading) ? users.map((user, index) => {
                                                     let d = user.createdAt;
                                                     return (
                                                         <tr key={index}>
@@ -146,7 +127,7 @@ function List() {
                                                             </td>
                                                         </tr>
                                                     )
-                                                })}
+                                                }) : <Spinner className="text-center" animation="border" variant="primary" />}
                                             </tbody>
                                         </table>
                                     </div>
