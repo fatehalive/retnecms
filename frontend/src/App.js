@@ -8,6 +8,7 @@ function App() {
   return (
     <div>
       <Router>
+        {/* tambahin */}
         <Switch>
           <Route path="/article">
             <SinglePost/>
