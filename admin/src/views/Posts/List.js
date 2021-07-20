@@ -2,21 +2,24 @@ import React from 'react';
 import axios from 'axios';
 import { useHistory, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { Spinner } from 'react-bootstrap';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
 
 function List() {
     // Hook: States
-    const [posts, setPosts] = React.useState([]);
+    const [posts, setPosts] = React.useState();
     const [displayConfirmationModal, setDisplayConfirmationModal] = React.useState(false);
     const [deleteMessage, setDeleteMessage] = React.useState(null);
     const [deleteId, setDeleteId] = React.useState(null);
+    const [loading, setLoading] = React.useState(false);
 
+    // Router methods
     const history = useHistory();
 
-    // Hook: useEffect to get data from api then store to state
-    React.useEffect(() => {
+    // Functions to Interact with API
+    const axiosGet = React.useCallback(async () => {
         axios.get('http://localhost:5000/news-article')
             .then(response => {
                 const { message } = response.data;
@@ -34,30 +37,27 @@ function List() {
             })
     }, []);
 
-    // Event Handlers
-    const handleDelete = async (id) => {
+    const axiosDelete = React.useCallback(async (id) => {
         try {
             const response = await axios.delete('http://localhost:5000/news-article/' + id);
             const { message } = response.data;
             notifySuccess(message);
-            axios.get('http://localhost:5000/news-article')
-                .then(response => {
-                    const { message, data } = response.data;
-                    if (message === 'Get News_Article Successfully') {
-                        console.table(data.rows);
-                        setPosts(response.data.data.rows);
-                    } else {
-                        notifyError(`API okay, Check Response`);
-                        console.warn(response);
-                    }
-                })
-                .catch(error => {
-                    notifyError(`Check Your Network`);
-                    console.error(error);
-                })
+            axiosGet();
         } catch (error) {
-            notifyError('Network Error');
+            notifyError('Check Your Network');
+            console.error(error);
         }
+    }, [axiosGet]);
+
+    // Hook: useEffect to get data from api then store to state
+    React.useEffect(() => {
+        axiosGet();
+        setLoading(true);
+    }, [axiosGet]);
+
+    // Event Handlers
+    const handleDelete = (id) => {
+        axiosDelete(id);
         setDisplayConfirmationModal(false);
     };
 
@@ -70,26 +70,9 @@ function List() {
     const hideConfirmationModal = () => {
         setDisplayConfirmationModal(false);
     };
-    
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
 
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     return (
         <main className="content container-fluid">
@@ -131,27 +114,27 @@ function List() {
                                                         <th style={{ width: "2.5%" }}>No.</th>
                                                         <th>Title</th>
                                                         <th>Meta Description</th>
-                                                        <th>Status</th>
-                                                        <th>Date</th>
+                                                        <th style={{ width: "5%" }}>Status</th>
+                                                        <th style={{ width: "5%" }}>Date</th>
                                                         <th style={{ width: "13%" }}>Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {posts && posts.map((post, index) => {
+                                                    {(posts && loading) ? posts.map((post, index) => {
                                                         return (
                                                             <tr key={index}>
                                                                 <td>{index + 1}</td>
                                                                 <td><b><Link to={`/admin/posts/single/${post.uuid}`}>{post.article_title}</Link></b></td>
                                                                 <td>{post.article_summary}</td>
-                                                                <td>{post.status}</td>
+                                                                {(post.status === 'publish') ? <td><span className="badge badge-success">{post.status}</span></td> : <td><span className="badge badge-secondary">{post.status}</span></td>}
                                                                 <td>{post.createdAt.slice(0, 10)}</td>
                                                                 <td>
-                                                                    <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/posts/update/${post.uuid}`)}><i className="icons dripicons-pencil text-light"></i>Edit</button>
-                                                                    <button className="btn btn-danger btn-rounded btn-sm" onClick={() => showDeleteModal(post.uuid)}><i className="icons dripicons-trash text-light"></i>Delete</button>
+                                                                    <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/posts/update/${post.uuid}`)}><i className="icons dripicons-pencil text-light"></i></button>
+                                                                    <button className="btn btn-danger btn-rounded btn-sm" onClick={() => showDeleteModal(post.uuid)}><i className="icons dripicons-trash text-light"></i></button>
                                                                 </td>
                                                             </tr>
                                                         )
-                                                    })}
+                                                    }): <tr><td className="text-center" colSpan="4" style={{backgroundColor: "white"}}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>}
                                                 </tbody>
                                             </table>
                                         </div>
@@ -163,7 +146,7 @@ function List() {
                     </div>
                 </div>
             </section>
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={handleDelete} hideModal={hideConfirmationModal} id={deleteId} message={deleteMessage} />
         </main>
     )

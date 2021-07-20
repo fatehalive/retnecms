@@ -1,9 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Create() {
-    // Hooks: states
+    // Hook: States
     const [category, setCategory] = React.useState({
         category_name: ''
     });
@@ -11,30 +12,37 @@ function Create() {
     // React-router methods
     const history = useHistory();
 
-    // Event handlers
+    // Function to Interact API
+    const axiosPost = React.useCallback(async()=> {
+        try {
+            const response = await axios.post('http://localhost:5000/category', category)
+            const { message } = response.data;
+            if (message === 'Successfully Created') {
+                notifySuccess(message);
+                window.setTimeout(() => history.push('/admin/categories/index'), 1500);
+            } else {
+                notifyError(`API okay, Check Response`);
+                console.warn(response);
+            }
+        } catch (error) {
+            notifyError('Check Your Server!');
+            console.error(error);
+        }
+    }, [category, history]);
+
+    // Event Handlers
     const handleChange = (e, name) => {
         const value = e.target.value
         setCategory({ ...category, [name]: value })
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
-
-        try {
-            const response = await axios.post('http://localhost:5000/category', category)
-            const { message } = response.data;
-            if (message === 'Successfully Created') {
-                alert(message);
-                history.push('/admin/categories/index');
-            } else {
-                alert(`Server is okay, check your DB`);
-                console.log(message);
-            }
-        } catch (error) {
-            alert('Check Your Server!');
-            console.log(error);
-        }
+        axiosPost();
     };
+
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     return (
         <main className="content content-fluid">
@@ -45,13 +53,14 @@ function Create() {
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><a href="/admin/index"><i className="icon dripicons-home"></i></a></li>
-                                <li className="breadcrumb-item"><a href="/admin/categories/index">categories</a></li>
-                                <li className="breadcrumb-item active" aria-current="page">create</li>
+                                <li className="breadcrumb-item"><a href="/admin/categories/index">Categories</a></li>
+                                <li className="breadcrumb-item active" aria-current="page">Create</li>
                             </ol>
                         </nav>
                     </div>
                 </div>
             </header>
+            
             <section className="page-content content-fluid">
                 <div className="row">
                     <div className="col-12">
@@ -84,13 +93,11 @@ function Create() {
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
             </section>
-
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </main>
     )
 }
