@@ -25,7 +25,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     category_name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true,
+      validate: {
+        notEmpty: {
+          msg: "category name must be filled"
+        }
+      }
     }
   }, {
     sequelize,

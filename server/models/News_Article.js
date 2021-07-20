@@ -29,27 +29,57 @@ module.exports = (sequelize, DataTypes) => {
     },
     article_title: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "article title must be filled"
+        }
+      }
     },
     article_summary: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "article summary must be filled"
+        }
+      }
     },
     article_content: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "article content must be filled"
+        }
+      }
     },
     image1_url: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "image1 not inserted"
+        }
+      }
     },
     image2_url: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      validate: {
+        notEmpty: {
+          msg: "image2 not inserted"
+        }
+      }
     },
     status: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "article status must be filled"
+        }
+      }
     },
   }, {
     sequelize,

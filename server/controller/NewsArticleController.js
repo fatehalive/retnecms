@@ -20,7 +20,8 @@ const getNewsArticle = (req, res, next) => {
     filter: {
       article_title,
       username,
-      category_name
+      category_name,
+      status
     }
   } = req.body;
 
@@ -41,6 +42,7 @@ const getNewsArticle = (req, res, next) => {
 
   let userConditions = {};
 
+  if (status) where['status'] = { [Op.iLike]: `%${status}%` }
   if (username) userConditions['username'] = {
     [Op.iLike]: `%${username}%`
   };
