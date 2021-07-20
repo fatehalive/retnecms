@@ -316,11 +316,27 @@ const getByNewsArticleCategory = async (req, res, next) => {
 const deleteNewsArticle = async (req, res, next) => {
   try {
 
+    const articleData = await News_Article.findOne({
+      where: {
+        uuid: req.params.id
+      }
+    })
+
+    if (!articleData) throw new AppError(401, "Article Not Found")
+
     const NewsArticleData = await News_Article.destroy({
       where: {
         uuid: req.params.id
       }
     });
+
+    let imageFixLocation1 = articleData.image1_url
+    let imageRelativeLocation1 = imageFixLocation1.replace('http://localhost:5000/public/image/', '')
+    fs.unlinkSync(__basedir + '/server/public/image/' + imageRelativeLocation1)
+
+    let imageFixLocation2 = articleData.image2_url
+    let imageRelativeLocation2 = imageFixLocation2.replace('http://localhost:5000/public/image/', '')
+    fs.unlinkSync(__basedir + '/server/public/image/' + imageRelativeLocation2)
 
     if (!NewsArticleData) {
       throw new AppError(404, message.ID_News_Article_NOT_FOUND);
