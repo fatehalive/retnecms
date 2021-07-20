@@ -26,22 +26,22 @@ function Single() {
     const history = useHistory();
 
     // Function to Interact API
-    const axiosGet = React.useCallback(async() => {
+    const axiosGet = React.useCallback(async () => {
         axios.get('http://localhost:5000/role')
-        .then(response => {
-            const { message, data } = response.data;
-            if (message === 'Successfully') {
-                console.table(data.rows);
-                setRoles(response.data.data.rows);
-            } else {
-                notifyError(`API okay, Check Response`);
-                console.warn(message);
-            }
-        })
-        .catch(error => {
-            notifyError(`Check Your Network`);
-            console.error(error);
-        });
+            .then(response => {
+                const { message, data } = response.data;
+                if (message === 'Successfully') {
+                    console.table(data.rows);
+                    setRoles(response.data.data.rows);
+                } else {
+                    notifyError(`API okay, Check Response`);
+                    console.warn(message);
+                }
+            })
+            .catch(error => {
+                notifyError(`Check Your Network`);
+                console.error(error);
+            });
     }, []);
 
     const axiosGetId = React.useCallback(async () => {
@@ -62,7 +62,7 @@ function Single() {
             });
     }, [userId]);
 
-    const axiosDelete = React.useCallback(async(id) => {
+    const axiosDelete = React.useCallback(async (id) => {
         try {
             const response = await axios.delete('http://localhost:5000/user/' + id);
             const { message } = response.data;

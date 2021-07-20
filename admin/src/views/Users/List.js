@@ -18,7 +18,7 @@ function List() {
     // Router methods
     const history = useHistory();
 
-    // Function to Interact API
+    // Functions to Interact with API
     const axiosGet = React.useCallback(async() => {
         axios.get('http://localhost:5000/user')
         .then(response => {
@@ -127,7 +127,7 @@ function List() {
                                                             </td>
                                                         </tr>
                                                     )
-                                                }) : <Spinner className="text-center" animation="border" variant="primary" />}
+                                                }) : <tr><td className="text-center" colSpan="4" style={{backgroundColor: "white"}}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>}
                                             </tbody>
                                         </table>
                                     </div>

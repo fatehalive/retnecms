@@ -133,7 +133,7 @@ function List() {
                                                             </td>
                                                         </tr>
                                                     )
-                                                }) : <Spinner className="text-center" animation="border" variant="primary" />}
+                                                }) : <tr><td className="text-center" colSpan="4" style={{backgroundColor: "white"}}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>}
                                             </tbody>
                                         </table>
                                     </div>

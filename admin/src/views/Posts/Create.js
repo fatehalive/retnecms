@@ -21,14 +21,23 @@ function Create() {
     // React-router methods
     const history = useHistory();
 
-    // Hook: useEffect to get roles data from api then attach it to state
-    React.useEffect(() => {
-        axios.get('http://localhost:5000/user')
+    // Functions to Interact with API
+    const axiosGet = React.useCallback(async (endpoint, name) => {
+        axios.get(endpoint)
             .then(response => {
                 const { message, data } = response.data;
-                if (message === 'Get User Successfully') {
+                if (message === `Get ${name} Successfully`) {
                     console.table(data.rows);
-                    setUsers(response.data.data.rows);
+                    switch (name) {
+                        case 'User':
+                            setUsers(response.data.data.rows);
+                            break;
+                        case 'Category':
+                            setCategories(response.data.data.rows);
+                            break;
+                        default:
+                            break;
+                    };
                 } else {
                     notifyError(`API okay, Check Response`);
                     console.warn(response);
@@ -38,31 +47,9 @@ function Create() {
                 notifyError(`Check Your Network`);
                 console.error(error);
             })
-        axios.get('http://localhost:5000/category')
-            .then(response => {
-                const { message, data } = response.data;
-                if (message === 'Successfully') {
-                    console.table(data.rows);
-                    setCategories(response.data.data.rows);
-                } else {
-                    alert(`API okay, Check Response`);
-                    console.warn(response);
-                }
-            })
-            .catch(error => {
-                notifyError(`Check Your Network`);
-                console.error(error);
-            })
     }, []);
 
-    // Event Handlers
-    const handleChange = (e, name) => {
-        const value = e.target.value
-        setPosts({ ...posts, [name]: value })
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    const axiosPost = React.useCallback(async () => {
         try {
             const response = await axios.post('http://localhost:5000/news-article', posts)
             const { message } = response.data;
@@ -77,7 +64,24 @@ function Create() {
             notifyError('Check Your Network');
             console.error(error);
         }
-    }
+    }, [posts, history]);
+
+    // Hook: useEffect to get roles data from api then attach it to state
+    React.useEffect(() => {
+        axiosGet('http://localhost:5000/user', 'User')
+        axiosGet('http://localhost:5000/category', 'Category')
+    }, [axiosGet]);
+
+    // Event Handlers
+    const handleChange = (e, name) => {
+        const value = e.target.value
+        setPosts({ ...posts, [name]: value })
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        axiosPost();
+    };
 
     const notifySuccess = (x) => toast.success(x, {
         position: "top-right",

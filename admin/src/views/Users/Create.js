@@ -19,7 +19,7 @@ function Create() {
     // React-router methods
     const history = useHistory();
 
-    // Function to Interact API
+    // Functions to Interact with API
     const axiosGet = React.useCallback(async() => {
         axios.get('http://localhost:5000/role')
             .then(response => {

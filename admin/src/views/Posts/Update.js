@@ -22,8 +22,35 @@ function Update() {
     const { postId } = useParams();
     const history = useHistory();
 
-    // Hook: useEffect to get data then store to state
-    React.useEffect(() => {
+    // Functions to Interact with API
+    const axiosGet = React.useCallback(async (endpoint, name) => {
+        axios.get(endpoint)
+            .then(response => {
+                const { message, data } = response.data;
+                if (message === `Get ${name} Successfully`) {
+                    console.table(data.rows);
+                    switch (name) {
+                        case 'User':
+                            setUsers(response.data.data.rows);
+                            break;
+                        case 'Category':
+                            setCategories(response.data.data.rows);
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    notifyError(`API okay, Check Response`);
+                    console.warn(message);
+                }
+            })
+            .catch(error => {
+                notifyError(`Check Your Network`);
+                console.error(error);
+            })
+    }, []);
+
+    const axiosGetId = React.useCallback(async () => {
         axios.get(`http://localhost:5000/news-article/${postId}`)
             .then(response => {
                 const { message, data } = response.data;
@@ -39,46 +66,9 @@ function Update() {
                 notifyError(`Check Your Network`);
                 console.error(error);
             });
-        axios.get('http://localhost:5000/user')
-            .then(response => {
-                const { message, data } = response.data;
-                if (message === 'Get User Successfully') {
-                    console.table(data.rows);
-                    setUsers(response.data.data.rows);
-                } else {
-                    notifyError(`API okay, Check Response`);
-                    console.warn(response);
-                }
-            })
-            .catch(error => {
-                notifyError(`Check Your Network`);
-                console.error(error);
-            })
-        axios.get('http://localhost:5000/category')
-            .then(response => {
-                const { message, data } = response.data;
-                if (message === 'Successfully') {
-                    console.table(data.rows);
-                    setCategories(response.data.data.rows);
-                } else {
-                    alert(`API okay, Check Response`);
-                    console.warn(response);
-                }
-            })
-            .catch(error => {
-                notifyError(`Check Your Network`);
-                console.error(error);
-            })
     }, [postId]);
 
-    // Event Handlers
-    const handleChange = (e, name) => {
-        const value = e.target.value;
-        setPost({ ...post, [name]: value })
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    const axiosPut = React.useCallback(async () => {
         try {
             const response = await axios.put(`http://localhost:5000/news-article/${postId}`, post);
             const { message } = response.data;
@@ -93,27 +83,28 @@ function Update() {
             notifyError('Check Your Network');
             console.error(error);
         }
+    }, [post, postId, history]);
+
+    // Hook: useEffect to get data then store to state
+    React.useEffect(() => {
+        axiosGetId();
+        axiosGet('http://localhost:5000/user', 'User');
+        axiosGet('http://localhost:5000/category', 'Category');
+    }, [axiosGet, axiosGetId]);
+
+    // Event Handlers
+    const handleChange = (e, name) => {
+        const value = e.target.value;
+        setPost({ ...post, [name]: value })
     };
 
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        axiosPut();
+    };
 
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     return (
         <main className="content content-fluid">

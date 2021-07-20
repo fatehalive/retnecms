@@ -28,8 +28,35 @@ function Single() {
     const { postId } = useParams();
     const history = useHistory();
 
-    // Hook: useEffect to get data then store to state
-    React.useEffect(() => {
+    // Funtions to Interact with API
+    const axiosGet = React.useCallback(async (endpoint, name) => {
+        axios.get(endpoint)
+            .then(response => {
+                const { message, data } = response.data;
+                if (message === `Get ${name} Successfully`) {
+                    console.table(data.rows);
+                    switch (name) {
+                        case 'User':
+                            setUsers(response.data.data.rows);
+                            break;
+                        case 'Category' :
+                            setCategories(response.data.data.rows);
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    notifyError(`API okay, Check Response`);
+                    console.warn(message);
+                }
+            })
+            .catch(error => {
+                notifyError(`Check Your Network`);
+                console.error(error);
+            })
+    }, []);
+
+    const axiosGetId = React.useCallback(async () => {
         axios.get(`http://localhost:5000/news-article/${postId}`)
             .then(response => {
                 const { message, data } = response.data;
@@ -45,40 +72,9 @@ function Single() {
                 notifyError(`Check Your Network`);
                 console.error(error);
             });
-        axios.get('http://localhost:5000/category')
-            .then(response => {
-                const { message, data } = response.data;
-                if (message === 'Successfully') {
-                    console.table(data.rows);
-                    setCategories(response.data.data.rows);
-                } else {
-                    notifyError(`API okay, Check Response`);
-                    console.warn(message);
-                }
-            })
-            .catch(error => {
-                notifyError(`Check Your Network`);
-                console.error(error);
-            });
-        axios.get('http://localhost:5000/user')
-            .then(response => {
-                const { message, data } = response.data;
-                if (message === 'Get User Successfully') {
-                    console.table(data.rows);
-                    setUsers(response.data.data.rows);
-                } else {
-                    notifyError(`API okay, Check Response`);
-                    console.warn(message);
-                }
-            })
-            .catch(error => {
-                notifyError(`Check Your Network`);
-                console.error(error);
-            })
     }, [postId]);
 
-    // Event Handlers
-    const handleDelete = async (id) => {
+    const axiosDelete = React.useCallback(async (id) => {
         try {
             const response = await axios.delete('http://localhost:5000/news-article/' + id);
             const { message } = response.data;
@@ -88,6 +84,18 @@ function Single() {
             notifyError('Check Your Network');
             console.error(error);
         }
+    }, [history]);
+
+    // Hook: useEffect to get data then store to state
+    React.useEffect(() => {
+        axiosGet('http://localhost:5000/user', 'User');
+        axiosGet('http://localhost:5000/category', 'Category');
+        axiosGetId();
+    }, [axiosGetId, axiosGet, postId]);
+
+    // Event Handlers
+    const handleDelete = (id) => {
+        axiosDelete(id);
         setDisplayConfirmationModal(false);
     };
 
@@ -101,25 +109,8 @@ function Single() {
         setDisplayConfirmationModal(false);
     };
 
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
-
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     function getCategoryName(x) {
         if (post.category_uuid === x.uuid) {
