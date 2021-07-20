@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const Category = require('../models').Category
 const User = require('../models').User
+const fs = require('fs')
 
 const {
   Op
@@ -183,7 +184,28 @@ const updateNewsArticle = async (req, res, next) => {
       throw new AppError(404, message.ID_News_Article_NOT_FOUND);
     }
 
-    const { article_title, article_summary, article_content, image1_url, image2_url, status } = req.body;
+    const { article_title, article_summary, article_content, status } = req.body;
+    let image1 = null
+    if (req.files.image1) {
+      let imageFixLocation1 = News_ArticleData.image1_url
+      let imageRelativeLocation1 = imageFixLocation1.replace('http://localhost:5000/public/image/', '')
+      fs.unlinkSync(__basedir + '/server/public/image/' + imageRelativeLocation1)
+      image1 = {
+        uuid: req.files.image1[0].filename.slice(0, 36),
+        type: req.files.image1[0].originalname.split('.').pop(),
+      };
+    }
+    let image2 = null
+    if (req.files.image1) {
+      let imageFixLocation2 = News_ArticleData.image2_url
+      let imageRelativeLocation2 = imageFixLocation2.replace('http://localhost:5000/public/image/', '')
+      fs.unlinkSync(__basedir + '/server/public/image/' + imageRelativeLocation2)
+      image2 = {
+        uuid: req.files.image2[0].filename.slice(0, 36),
+        type: req.files.image2[0].originalname.split('.').pop(),
+      };
+    }
+
 
     let updateData = {};
     if (article_title !== "") {
@@ -198,19 +220,21 @@ const updateNewsArticle = async (req, res, next) => {
       updateData['article_content'] = article_content;
     }
 
-    if (image1_url !== "") {
-      updateData['image1_url'] = image1_url;
+    if (image1 !== "") {
+      updateData['image1_url'] = `http://localhost:5000/public/image/${image1.uuid}.${image1.type}`;
     }
 
-    if (image2_url !== "") {
-      updateData['image2_url'] = image2_url;
+    if (image2 !== "") {
+      updateData['image2_url'] = `http://localhost:5000/public/image/${image2.uuid}.${image2.type}`;
     }
 
     if (status !== "") {
       updateData['status'] = status;
     }
 
-
+    console.log('====================================');
+    console.log(updateData);
+    console.log('====================================');
 
     const data = await News_ArticleData.update(updateData);
 
@@ -292,11 +316,27 @@ const getByNewsArticleCategory = async (req, res, next) => {
 const deleteNewsArticle = async (req, res, next) => {
   try {
 
+    const articleData = await News_Article.findOne({
+      where: {
+        uuid: req.params.id
+      }
+    })
+
+    if (!articleData) throw new AppError(401, "Article Not Found")
+
     const NewsArticleData = await News_Article.destroy({
       where: {
         uuid: req.params.id
       }
     });
+
+    let imageFixLocation1 = articleData.image1_url
+    let imageRelativeLocation1 = imageFixLocation1.replace('http://localhost:5000/public/image/', '')
+    fs.unlinkSync(__basedir + '/server/public/image/' + imageRelativeLocation1)
+
+    let imageFixLocation2 = articleData.image2_url
+    let imageRelativeLocation2 = imageFixLocation2.replace('http://localhost:5000/public/image/', '')
+    fs.unlinkSync(__basedir + '/server/public/image/' + imageRelativeLocation2)
 
     if (!NewsArticleData) {
       throw new AppError(404, message.ID_News_Article_NOT_FOUND);
