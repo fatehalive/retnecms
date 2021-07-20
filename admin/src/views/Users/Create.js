@@ -1,9 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Create() {
-    // Hooks: states
+    // Hooks: States
     const [user, setUser] = React.useState({
         username: '',
         email: '',
@@ -18,8 +19,8 @@ function Create() {
     // React-router methods
     const history = useHistory();
 
-    // Hook: useEffect to get roles data from api then attach it to state
-    React.useEffect(() => {
+    // Functions to Interact with API
+    const axiosGet = React.useCallback(async() => {
         axios.get('http://localhost:5000/role')
             .then(response => {
                 const { message, data } = response.data;
@@ -32,12 +33,34 @@ function Create() {
                 }
             })
             .catch(error => {
-                alert(`Check Your Server!`);
+                notifyError(`Check Your Server!`);
                 console.error(error);
             })
     }, []);
 
-    // Event handlers
+    const axiosPost = React.useCallback(async() => {
+        try {
+            const response = await axios.post('http://localhost:5000/user', user)
+            const { message } = response.data;
+            if (message === 'User Successfully Created') {
+                notifySuccess(message);
+                window.setTimeout(() => history.push('/admin/users/index'), 1500);
+            } else {
+                notifyError(`API okay, Check Response`);
+                console.warn(response);
+            }
+        } catch (error) {
+            notifyError('Check Your Server!');
+            console.error(error);
+        }
+    }, [user, history]);
+
+    // Hook: useEffect to get roles data from api then attach it to state
+    React.useEffect(() => {
+        axiosGet();
+    }, [axiosGet]);
+
+    // Event Handlers
     const handleChange = (e, name) => {
         const value = e.target.value
         setUser({ ...user, [name]: value })
@@ -45,34 +68,23 @@ function Create() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
-        try {
-            const response = await axios.post('http://localhost:5000/user', user)
-            const { message } = response.data;
-            if (message === 'User Successfully Created') {
-                alert(message);
-                history.push('/admin/users/index');
-            } else {
-                alert(`Server is okay, check your DB`);
-                console.log(message);
-            }
-        } catch (error) {
-            alert('Check Your Server!');
-            console.log(error);
-        }
+        axiosPost();
     };
+
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     return (
         <main className="content content-fluid">
             <header className="page-header">
                 <div className="d-flex align-items-center">
                     <div className="mr-auto">
-                        <h1 className="separator">Create Page</h1>
+                        <h1 className="separator">Users</h1>
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><a href="/admin/index"><i className="icon dripicons-home"></i></a></li>
-                                <li className="breadcrumb-item"><a href="/admin/users/index">users</a></li>
-                                <li className="breadcrumb-item active" aria-current="page">create</li>
+                                <li className="breadcrumb-item"><a href="/admin/users/index">Users</a></li>
+                                <li className="breadcrumb-item active" aria-current="page">Create</li>
                             </ol>
                         </nav>
                     </div>
@@ -139,9 +151,8 @@ function Create() {
                         </div>
                     </div>
                 </div>
-
             </section>
-
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </main>
     )
 }

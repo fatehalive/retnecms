@@ -1,47 +1,55 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Create() {
-    // Hooks: states
-    const [roles, setRoles] = React.useState({
+    // Hook: States
+    const [role, setRole] = React.useState({
         role: ''
     });
 
     // React-router methods
     const history = useHistory();
 
-    // Event handlers
+    // Function to Interact API
+    const axiosPost = React.useCallback(async() => {
+        try {
+            const response = await axios.post('http://localhost:5000/role', role)
+            const { message } = response.data;
+            if (message === 'Successfully Created') {
+                notifySuccess(message);
+                window.setTimeout(() => history.push('/admin/roles/index'), 1500);
+            } else {
+                notifyError(`API okay, Check Response`);
+                console.warn(response);
+            }
+        } catch (error) {
+            notifyError('Check Your Server!');
+            console.error(error);
+        }
+    }, [role, history]);
+
+    // Event Handlers
     const handleChange = (e, name) => {
         const value = e.target.value
-        setRoles({ ...roles, [name]: value })
+        setRole({ ...role, [name]: value })
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-
-        try {
-            const response = await axios.post('http://localhost:5000/role', roles)
-            const { message } = response.data;
-            if (message === 'Successfully Created') {
-                alert(message);
-                history.push('/admin/roles/index');
-            } else {
-                alert(`Server is okay, check your DB`);
-                console.log(message);
-            }
-        } catch (error) {
-            alert('Check Your Server!');
-            console.log(error);
-        }
+        e.preventDefault();
+        axiosPost();
     };
+
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     return (
         <main className="content content-fluid">
             <header className="page-header">
                 <div className="d-flex align-items-center">
                     <div className="mr-auto">
-                        <h1 className="separator">Roles</h1>
+                        <h1 className="separator">Role</h1>
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><a href="/admin/index"><i className="icon dripicons-home"></i></a></li>
@@ -64,7 +72,7 @@ function Create() {
                                         <div className="form-group row">
                                             <label className="control-label text-right col-md-3">Role Name</label>
                                             <div className="col-md-5">
-                                                <input type="text" className="form-control" value={roles.name} onChange={(e) => handleChange(e, 'role')} placeholder="ex: Editor"/>
+                                                <input type="text" className="form-control" value={role.name} onChange={(e) => handleChange(e, 'role')} placeholder="ex: Editor"/>
                                             </div>
                                         </div>
                                     </div>
@@ -84,15 +92,13 @@ function Create() {
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
             </section>
-
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </main>
     )
-}
+};
 
 export default Create;

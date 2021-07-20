@@ -1,9 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 import { useHistory, useParams, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+
+// Modal
+import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
 
 function Single() {
-    // Hook: state
+    // Hook: States
     const [user, setUser] = React.useState({
         username: '',
         email: '',
@@ -12,30 +16,17 @@ function Single() {
         updatedAt: '',
         role_uuid: ''
     });
-
     const [roles, setRoles] = React.useState([]);
+    const [displayConfirmationModal, setDisplayConfirmationModal] = React.useState(false);
+    const [deleteMessage, setDeleteMessage] = React.useState(null);
+    const [deleteId, setDeleteId] = React.useState(null);
 
     // Router methods
     const { userId } = useParams();
     const history = useHistory();
 
-    // Hook: useEffect to get data then store to state
-    React.useEffect(() => {
-        axios.get(`http://localhost:5000/user/${userId}`)
-            .then(response => {
-                const { message, data } = response.data;
-                if (message === 'Get Id User Successfully') {
-                    console.table(data);
-                    setUser(response.data.data);
-                } else {
-                    alert(`Something wrong`);
-                    console.warn(response);
-                }
-            })
-            .catch(error => {
-                alert(`Check Your API Server`);
-                console.error(error);
-            });
+    // Function to Interact API
+    const axiosGet = React.useCallback(async () => {
         axios.get('http://localhost:5000/role')
             .then(response => {
                 const { message, data } = response.data;
@@ -43,31 +34,72 @@ function Single() {
                     console.table(data.rows);
                     setRoles(response.data.data.rows);
                 } else {
-                    alert(`Your Server is okay, check your DB`);
+                    notifyError(`API okay, Check Response`);
                     console.warn(message);
                 }
             })
             .catch(error => {
-                alert(`Check Your Server!`);
+                notifyError(`Check Your Network`);
+                console.error(error);
+            });
+    }, []);
+
+    const axiosGetId = React.useCallback(async () => {
+        axios.get(`http://localhost:5000/user/${userId}`)
+            .then(response => {
+                const { message, data } = response.data;
+                if (message === 'Get Id User Successfully') {
+                    console.table(data);
+                    setUser(response.data.data);
+                } else {
+                    notifyError(`API okay, Check Response`);
+                    console.warn(response);
+                }
+            })
+            .catch(error => {
+                notifyError(`Check Your Network`);
                 console.error(error);
             });
     }, [userId]);
 
-    // Event
-    const handleDelete = async (id) => {
-        if (window.confirm('Are you sure?\nThis action will delete user')) {
-            try {
-                const response = await axios.delete('http://localhost:5000/user/' + id);
-                const { message } = response.data;
-                alert(message);
-                history.push('/admin/users/index');
-            } catch (error) {
-                alert('Network Error');
-            }
+    const axiosDelete = React.useCallback(async (id) => {
+        try {
+            const response = await axios.delete('http://localhost:5000/user/' + id);
+            const { message } = response.data;
+            notifySuccess(message);
+            window.setTimeout(() => history.push('/admin/users/index'), 1500);
+        } catch (error) {
+            notifyError(`Check Your Network`);
+            console.warn(error);
         }
+    }, [history]);
+
+    // Hook: useEffect to get data then store to state
+    React.useEffect(() => {
+        axiosGet();
+        axiosGetId();
+    }, [axiosGet, axiosGetId]);
+
+    // Event Handlers
+    const handleDelete = (id) => {
+        axiosDelete(id);
+        setDisplayConfirmationModal(false);
     };
 
-    // Custom variables
+    const showDeleteModal = (id) => {
+        setDeleteId(id)
+        setDeleteMessage(`Are you sure you want to delete ${id}?`);
+        setDisplayConfirmationModal(true);
+    };
+
+    const hideConfirmationModal = () => {
+        setDisplayConfirmationModal(false);
+    };
+
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
+
+    // Custom
     let cd = new Date(user.createdAt);
     let ud = new Date(user.updatedAt);
     function getRoleName(x) {
@@ -81,7 +113,7 @@ function Single() {
             <header className="page-header">
                 <div className="d-flex align-items-center">
                     <div className="mr-auto">
-                        <h1 className="separator">Show Details</h1>
+                        <h1 className="separator">User</h1>
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><Link to="/admin/index"><i className="icon dripicons-home"></i></Link></li>
@@ -97,7 +129,7 @@ function Single() {
                 <div className="row">
                     <div className="col-12">
                         <div className="card">
-                            <h5 className="card-header">View {user.username} Details</h5>
+                            <h5 className="card-header">User Details</h5>
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-sm-12">
@@ -136,7 +168,7 @@ function Single() {
                                         <div className="col-md-12">
                                             <div className="row">
                                                 <div className="offset-sm-3">
-                                                    <button onClick={() => handleDelete(user.uuid)} className="btn btn-danger btn-rounded">Delete</button>
+                                                    <button onClick={() => showDeleteModal(user.uuid)} className="btn btn-danger btn-rounded">Delete</button>
                                                     <button onClick={() => history.push('/admin/users/index')} className="btn btn-secondary clear-form btn-rounded btn-outline">Back</button>
                                                 </div>
                                             </div>
@@ -148,6 +180,8 @@ function Single() {
                     </div>
                 </div>
             </section>
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+            <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={handleDelete} hideModal={hideConfirmationModal} id={deleteId} message={deleteMessage} />
         </main>
     )
 };
