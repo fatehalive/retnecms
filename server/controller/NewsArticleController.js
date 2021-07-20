@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const Category = require('../models').Category
 const User = require('../models').User
+const fs = require('fs')
 
 const {
   Op
@@ -188,7 +189,7 @@ const updateNewsArticle = async (req, res, next) => {
     if (req.files.image1) {
       let imageFixLocation1 = News_ArticleData.image1_url
       let imageRelativeLocation1 = imageFixLocation1.replace('http://localhost:5000/public/image/', '')
-      fs.unlinkSync(__basedir + '/server/public/profile-image/' + imageRelativeLocation1)
+      fs.unlinkSync(__basedir + '/server/public/image/' + imageRelativeLocation1)
       image1 = {
         uuid: req.files.image1[0].filename.slice(0, 36),
         type: req.files.image1[0].originalname.split('.').pop(),
@@ -198,7 +199,7 @@ const updateNewsArticle = async (req, res, next) => {
     if (req.files.image1) {
       let imageFixLocation2 = News_ArticleData.image2_url
       let imageRelativeLocation2 = imageFixLocation2.replace('http://localhost:5000/public/image/', '')
-      fs.unlinkSync(__basedir + '/server/public/profile-image/' + imageRelativeLocation2)
+      fs.unlinkSync(__basedir + '/server/public/image/' + imageRelativeLocation2)
       image2 = {
         uuid: req.files.image2[0].filename.slice(0, 36),
         type: req.files.image2[0].originalname.split('.').pop(),
@@ -231,7 +232,9 @@ const updateNewsArticle = async (req, res, next) => {
       updateData['status'] = status;
     }
 
-
+    console.log('====================================');
+    console.log(updateData);
+    console.log('====================================');
 
     const data = await News_ArticleData.update(updateData);
 
