@@ -53,7 +53,7 @@ exports.getCategoryAll = (req, res, next) => {
   Category.findAndCountAll({ order: [["category_name", "ASC"]] }).then(response => {
     res.status(200).json({
       data: response,
-      message: message.SUCCESSFULLY
+      message: `Get Category ${message.SUCCESSFULLY}`
     })
   }).catch(error => {
     next(error)
