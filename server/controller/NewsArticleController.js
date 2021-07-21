@@ -146,9 +146,6 @@ const createNewsArticle = async (req, res, next) => {
     uuidValue = uuidv4()
 
 
-    if (!req.files) {
-      throw new AppError(404, message.FILE_NOT_FOUND);
-    }
     let image1 = {
       uuid: req.files.image1[0].filename.slice(0, 36),
       type: req.files.image1[0].originalname.split('.').pop(),
@@ -157,6 +154,27 @@ const createNewsArticle = async (req, res, next) => {
       uuid: req.files.image2[0].filename.slice(0, 36),
       type: req.files.image2[0].originalname.split('.').pop(),
     };
+
+
+    if (!req.files.image1[0]) {
+      if (image1) {
+        fs.unlinkSync(__basedir + '/server/public/image/' + `${image1.uuid}.${image1.type}`)
+      }
+      if (image2) {
+        fs.unlinkSync(__basedir + '/server/public/image/' + `${image2.uuid}.${image2.type}`)
+      }
+      throw new AppError(404, message.FILE_NOT_FOUND);
+    }
+    if (!req.files.image2[0]) {
+      if (image1) {
+        fs.unlinkSync(__basedir + '/server/public/image/' + `${image1.uuid}.${image1.type}`)
+      }
+      if (image2) {
+        fs.unlinkSync(__basedir + '/server/public/image/' + `${image2.uuid}.${image2.type}`)
+      }
+      throw new AppError(404, message.FILE_NOT_FOUND);
+    }
+
     const newNews_Article = await News_Article.create({
       uuid: uuidValue,
       article_title: req.body.article_title,
