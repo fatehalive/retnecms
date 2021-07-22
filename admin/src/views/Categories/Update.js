@@ -1,9 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 import { useHistory, useParams, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Update() {
-    // Hook: state
+    // Hook: States
     const [category, setCategory] = React.useState({
         category_name: ''
     });
@@ -12,48 +13,60 @@ function Update() {
     const { categoryId } = useParams();
     const history = useHistory();
 
-    // Hook: useEffect to get data then store to state
-    React.useEffect(() => {
+    // Function to Interact API
+    const axiosGetId = React.useCallback(async() => {
         axios.get(`http://localhost:5000/category/${categoryId}`)
-            .then(response => {
-                const { message, data } = response.data;
-                if (message === 'Get Id Category Successfully') {
-                    console.log(data);
-                    setCategory(response.data.data);
-                } else {
-                    alert(`Your Server is okay, check your DB`);
-                    console.log(message);
-                }
-            })
-            .catch(error => {
-                alert(`Check Your Server!`);
-                console.log(error);
-            });
+        .then(response => {
+            const { message, data } = response.data;
+            if (message === 'Get Id Category Successfully') {
+                console.table(data);
+                setCategory(response.data.data);
+            } else {
+                notifyError(`API okay, Check Response`);
+                console.warn(response);
+            }
+        })
+        .catch(error => {
+            notifyError(`Check Your Network`);
+            console.error(error);
+        });
     }, [categoryId]);
 
-    // Events
+    const axiosPut = React.useCallback(async() => {
+        try {
+            const response = await axios.put(`http://localhost:5000/category/${categoryId}`, category);
+            const { message } = response.data;
+            if (message === 'Category Successfully Updated') {
+                notifySuccess(message)
+                window.setTimeout(() => history.push('/admin/categories/index'), 1500);
+            } else {
+                notifyError(`API okay, Check Response`)
+                console.error(response);
+            }
+        } catch (error) {
+            notifyError(`Check Your Network`);
+            console.error(error);
+        }
+    }, [category, categoryId, history]);
+
+    // Hook: useEffect to get data then store to state
+    React.useEffect(() => {
+        axiosGetId();
+    }, [axiosGetId]);
+
+    // Event Handlers
     const handleChange = (e, name) => {
         const value = e.target.value;
-        setCategory({...category, [name]: value})
+        setCategory({ ...category, [name]: value })
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
-        try {
-            const response = await axios.put(`http://localhost:5000/categories/${categoryId}`, category);
-            const { data, message } = response.data;
-            if (message === 'Category Successfully Updated') {
-                alert(message)
-                history.push('/admin/roles/index')
-            } else {
-                alert(message)
-                console.log(data)
-            }
-        } catch (error) {
-            alert('Network Error')
-        }
+        axiosPut()
     };
+
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     return (
         <main className="content container-fluid">
@@ -64,8 +77,8 @@ function Update() {
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><Link to="/admin/index"><i className="icon dripicons-home"></i></Link></li>
-                                <li className="breadcrumb-item"><Link to="/admin/categories/index">categories</Link></li>
-                                <li className="breadcrumb-item active" aria-current="page">edit</li>
+                                <li className="breadcrumb-item"><Link to="/admin/categories/index">Categories</Link></li>
+                                <li className="breadcrumb-item active" aria-current="page">Edit</li>
                             </ol>
                         </nav>
                     </div>
@@ -83,7 +96,7 @@ function Update() {
                                         <div className="form-group row">
                                             <label className="control-label text-right col-md-3">Category Name</label>
                                             <div className="col-md-5">
-                                                <input type="text" className="form-control" value={category.category_name} onChange={(e) => handleChange(e, 'category_name')}/>
+                                                <input type="text" className="form-control" value={category.category_name} onChange={(e) => handleChange(e, 'category_name')} />
                                             </div>
                                         </div>
                                     </div>
@@ -107,6 +120,7 @@ function Update() {
                     </div>
                 </div>
             </section>
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </main>
     )
 }

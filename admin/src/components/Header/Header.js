@@ -1,15 +1,15 @@
-function AdminNavbar() {
+function Header() {
     return (
         <nav className="top-toolbar navbar navbar-desktop flex-nowrap">
 
             <ul className="navbar-nav nav-left">
                 <li className="nav-item">
-                    <a href="javascript:void(0)" data-toggle-state="content-menu-close">
+                    <a href data-toggle-state="content-menu-close">
                         <i className="icon dripicons-align-left"></i>
                     </a>
                 </li>
             </ul>
-
+        
             <ul className="site-logo">
                 <li>
                     <a href="/admin">
@@ -56,4 +56,4 @@ function AdminNavbar() {
     )
 }
 
-export default AdminNavbar;
+export default Header;

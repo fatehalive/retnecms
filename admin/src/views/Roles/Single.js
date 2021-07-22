@@ -1,22 +1,28 @@
 import React from 'react';
 import axios from 'axios';
 import { useHistory, useParams, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+
+// Modal
+import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
 
 function Single() {
-    // Hook: state
+    // Hook: States
     const [role, setRole] = React.useState({
-        uuid: 0,
         role: '',
         createdAt: '',
         updatedAt: ''
     });
+    const [displayConfirmationModal, setDisplayConfirmationModal] = React.useState(false);
+    const [deleteMessage, setDeleteMessage] = React.useState(null);
+    const [deleteId, setDeleteId] = React.useState(null);
 
     // Router methods
     const { roleId } = useParams();
     const history = useHistory();
 
-    // Hook: useEffect to get data then store to state
-    React.useEffect(() => {
+    // Function to Interact API
+    const axiosGetId = React.useCallback(async() => {
         axios.get(`http://localhost:5000/role/${roleId}`)
             .then(response => {
                 const { message, data } = response.data;
@@ -24,29 +30,51 @@ function Single() {
                     console.table(data);
                     setRole(response.data.data);
                 } else {
-                    alert(`Your Server is okay, check your DB`);
+                    notifyError(`API okay, Check Response`);
                     console.warn(response);
                 }
             })
             .catch(error => {
-                alert(`Check Your Server!`);
+                notifyError(`Check Your Network`);
                 console.error(error);
             });
-    }, [roleId]);
+    },[roleId]);
 
-    // Event
-    const handleDelete = async (id) => {
-        if (window.confirm('Yakin mau dihapus?')) {
-            try {
-                const response = await axios.delete('http://localhost:5000/role/' + id);
-                const { message } = response.data;
-                alert(message);
-                history.push('/admin/roles/index');
-            } catch (error) {
-                alert('Network Error');
-            }
+    const axiosDelete = React.useCallback(async(id) => {
+        try {
+            const response = await axios.delete('http://localhost:5000/role/' + id);
+            const { message } = response.data;
+            notifySuccess(message);
+            window.setTimeout(() => history.push('/admin/roles/index'), 1500);
+        } catch (error) {
+            notifyError(`Check Your Network`);
+            console.warn(error);
         }
+    }, [history]);
+
+    // Hook: useEffect to get data then store to state
+    React.useEffect(() => {
+        axiosGetId();
+    }, [axiosGetId]);
+
+    // Event Handlers
+    const handleDelete = (id) => {
+        axiosDelete(id);
+        setDisplayConfirmationModal(false);
     };
+
+    const showDeleteModal = (id) => {
+        setDeleteId(id)
+        setDeleteMessage(`Are you sure you want to delete ${id}?`);
+        setDisplayConfirmationModal(true);
+    };
+
+    const hideConfirmationModal = () => {
+        setDisplayConfirmationModal(false);
+    };
+
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     // Custom variables
     let cd = new Date(role.createdAt);
@@ -106,7 +134,7 @@ function Single() {
                                         <div className="col-md-12">
                                             <div className="row">
                                                 <div className="offset-sm-3">
-                                                    <button onClick={() => handleDelete(role.uuid)} className="btn btn-danger btn-rounded">Delete</button>
+                                                    <button onClick={() => showDeleteModal(role.uuid)} className="btn btn-danger btn-rounded">Delete</button>
                                                     <button onClick={() => history.push('/admin/roles/index')} className="btn btn-secondary clear-form btn-rounded btn-outline">Back</button>
                                                 </div>
                                             </div>
@@ -118,6 +146,8 @@ function Single() {
                     </div>
                 </div>
             </section>
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+            <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={handleDelete} hideModal={hideConfirmationModal} id={deleteId} message={deleteMessage} />
         </main>
     )
 };

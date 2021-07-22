@@ -1,88 +1,90 @@
 import React from 'react';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import { Spinner } from 'react-bootstrap';
 
-// // Data test
-// const categories = [
-//     {
-//         category_name: "Uncategorized",
-//         createdAt: 20210701
-//     },
-//     {
-//         category_name: "Health&Fitness",
-//         createdAt: 20210702
-//     },
-//     {
-//         category_name: "Economics&Finance",
-//         createdAt: 20210703
-//     }
-// ];
+// Modal
+import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
 
 function List() {
-    // Hook: state
-    const [categories, setCategories] = React.useState([]);
+    // Hook: States
+    const [categories, setCategories] = React.useState();
+    const [displayConfirmationModal, setDisplayConfirmationModal] = React.useState(false);
+    const [deleteMessage, setDeleteMessage] = React.useState(null);
+    const [deleteId, setDeleteId] = React.useState(null);
+    const [loading, setLoading] = React.useState(false);
 
     // Router methods
     const history = useHistory();
 
-    // Hook: useEffect to get all role user then store it to state
-    React.useEffect(() => {
+    // Function to Interact API
+    const axiosGet = React.useCallback(async () => {
         axios.get('http://localhost:5000/category')
             .then(response => {
                 const { message, data } = response.data;
-                if (message === 'Successfully') {
+                if (message === 'Get Category Successfully') {
                     console.table(data.rows);
                     setCategories(response.data.data.rows);
                 } else {
-                    alert(`Your Server is okay, check your DB`);
+                    notifyError(`API okay, Check Response`);
                     console.warn(response);
                 }
             })
             .catch(error => {
-                alert(`Check Your Server!`);
+                notifyError(`Check Your Network`);
                 console.error(error);
             })
     }, []);
 
-    // Event
-    const handleDelete = async (id) => {
-        if (window.confirm('Are you sure?\nThis action will delete data')) {
-            try {
-                const response = await axios.delete('http://localhost:5000/category/' + id);
-                const { message } = response.data;
-                alert(message);
-                axios.get('http://localhost:5000/category')
-                    .then(response => {
-                        const { message, data } = response.data;
-                        if (message === 'Successfully') {
-                            console.table(data.rows);
-                            setCategories(response.data.data.rows);
-                        } else {
-                            alert(`Your Server is okay, check your DB`);
-                            console.warn(response);
-                        }
-                    })
-                    .catch(error => {
-                        alert(`Check Your Server!`);
-                        console.warn(error);
-                    })
-            } catch (error) {
-                alert('Network Error');
-            }
+    const axiosDelete = React.useCallback(async (id) => {
+        try {
+            const response = await axios.delete('http://localhost:5000/category/' + id);
+            const { message } = response.data;
+            notifySuccess(message);
+            axiosGet();
+        } catch (error) {
+            notifyError(`Check Your Network`);
+            console.error(error);
         }
+    }, [axiosGet]);
+
+    // Hook: useEffect to get all role user then store it to state
+    React.useEffect(() => {
+        axiosGet()
+        setLoading(true);
+    }, [axiosGet]);
+
+    // Event Handlers
+    const handleDelete = (id) => {
+        axiosDelete(id)
+        setDisplayConfirmationModal(false);
     };
+
+    const showDeleteModal = (id) => {
+        setDeleteId(id)
+        setDeleteMessage(`Are you sure you want to delete ${id}?`);
+        setDisplayConfirmationModal(true);
+    };
+
+    const hideConfirmationModal = () => {
+        setDisplayConfirmationModal(false);
+    };
+
+    const notifySuccess = (x) => toast.success(x);
+    const notifyError = (y) => toast.error(y);
 
     return (
         <main className="content container-fluid">
             <header className="page-header">
                 <div className="d-flex align-items-center">
                     <div className="mr-auto">
-                        <h1 className="separator">Category</h1>
+                        <h1 className="separator">Categories</h1>
                         <nav className="breadcrumb-wrapper" aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><Link to="/admin/index"><i className="icon dripicons-home"></i></Link></li>
-                                <li className="breadcrumb-item"><Link to="/admin/categories/index">categories</Link></li>
-                                <li className="breadcrumb-item active" aria-current="page">list</li>
+                                <li className="breadcrumb-item"><Link to="/admin/categories/index">Categories</Link></li>
+                                <li className="breadcrumb-item active" aria-current="page">List</li>
                             </ol>
                         </nav>
                     </div>
@@ -93,7 +95,7 @@ function List() {
                 <div className="row">
                     <div className="col-12">
                         <div className="card">
-                            <h5 className="card-header">Categories List</h5>
+                            <h5 className="card-header">Category List</h5>
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-sm-12">
@@ -112,17 +114,20 @@ function List() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {categories && categories.map((category, index) => {
+                                                {(loading && categories) ? categories.map((category, index) => {
                                                     let d = category.createdAt;
                                                     return (
                                                         <tr key={index}>
                                                             <td>{index + 1}</td>
                                                             <td><strong><Link to={`/admin/categories/single/${category.uuid}`}>{category.category_name}</Link></strong></td>
                                                             <td>{d.slice(0, 10)}</td>
-                                                            <td><button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/categories/update/${category.uuid}`)}><i className="icons dripicons-pencil text-light"></i>Edit</button><button className="btn btn-danger btn-rounded btn-sm" onClick={() => handleDelete(category.uuid)}><i className="icons dripicons-trash text-light"></i>Delete</button></td>
+                                                            <td>
+                                                                <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/categories/update/${category.uuid}`)}><i className="icons dripicons-pencil text-light"></i>Edit</button>
+                                                                <button className="btn btn-danger btn-rounded btn-sm" onClick={() => showDeleteModal(category.uuid)}><i className="icons dripicons-trash text-light"></i>Delete</button>
+                                                            </td>
                                                         </tr>
                                                     )
-                                                })}
+                                                }) : <tr><td className="text-center" colSpan="4" style={{backgroundColor: "white"}}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>}
                                             </tbody>
                                         </table>
                                     </div>
@@ -132,6 +137,8 @@ function List() {
                     </div>
                 </div>
             </section>
+            <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+            <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={handleDelete} hideModal={hideConfirmationModal} id={deleteId} message={deleteMessage} />
         </main>
     )
 }
