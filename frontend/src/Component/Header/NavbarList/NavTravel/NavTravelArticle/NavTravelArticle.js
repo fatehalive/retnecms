@@ -13,10 +13,10 @@ const NavTravelArticle = (props)=>{
                         <Link to="#">{Title}</Link>
                     </h2>
                     <ul className="post-tags">
-                        <li><i class="fa fa-clock-o"></i>{Date}</li>
+                        <li><i className="fa fa-clock-o"></i>{Date}</li>
                        <li>
                            <Link to="#">
-                               <i class="fa fa-comments-o"></i>
+                               <i className="fa fa-comments-o"></i>
                                <span>{Comment}</span>
                             </Link>
                        </li>

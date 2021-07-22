@@ -11,10 +11,11 @@ const NavTravel = ()=>{
                 <div className="inner-megadropdown travel-dropdown">
                     <div className="owl-wrapper">
                         <h1>Latest Posts</h1>
-                        <div class="owl-carousel" data-num="4">
-                        {Data.map((Data)=>{
+                        <div className="owl-carousel" data-num="4">
+                        {Data.map((Data,index)=>{
                         return <div>
                                 <NavTravelArticle
+                                    key={index}
                                     ImgSrc={Data.img}
                                     Title={Data.title}
                                     Date={Data.date}

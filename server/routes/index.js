@@ -22,22 +22,22 @@ module.exports = function (app, express) {
   // Use Import other Router
   ROUTER.use(
     '/category',
-    [verifyJwtController.verifyToken, acl.authorize],
+    // [verifyJwtController.verifyToken, acl.authorize],
     categoryRoutes
   );
   ROUTER.use(
     '/news-article',
-    [verifyJwtController.verifyToken, acl.authorize],
+    // [verifyJwtController.verifyToken, acl.authorize],
     newsArticleRoutes
   );
   ROUTER.use(
     '/role',
-    [verifyJwtController.verifyToken, acl.authorize],
+    // [verifyJwtController.verifyToken, acl.authorize],
     roleRoutes
   );
   ROUTER.use(
     '/user',
-    [verifyJwtController.verifyToken, acl.authorize],
+    // [verifyJwtController.verifyToken, acl.authorize],
     userRoutes
   );
 

@@ -6,21 +6,22 @@ const BrandAndToggle = ()=>{
   
     // <!-- Brand and toggle get grouped for better mobile display -->
     return <div>
-          {ImageData.map((data)=>{
-             return <div className="container">
+          {ImageData.map((data, index)=>{
+              
+             return <div className="container" key={index}>
               <div className="navbar-header">
                   <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                      <span class="sr-only">Toggle navigation</span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
+                      <span className="sr-only">Toggle navigation</span>
+                      <span className="icon-bar"></span>
+                      <span className="icon-bar"></span>
+                      <span className="icon-bar"></span>
                   </button>
                 <Link className="navbar-brand" to="/">
                   <img src={data.logo} alt=""/>
                 </Link>
               </div>
       
-              <div classNameName="advertisement">
+              <div className="advertisement">
                     <div className="desktop-advert">
                       <span>Advertisement</span>
                       <img src={data.addSense728} alt=""/>

@@ -116,6 +116,7 @@ const getNewsArticleById = (req, res, next) => {
   });
 };
 
+// GET NEW ARTICLE
 const getNewsArticleAll = (req, res, next) => {
   return News_Article.findAndCountAll({
     include: [
@@ -140,6 +141,7 @@ const getNewsArticleAll = (req, res, next) => {
   });
 };
 
+// CREATE NEW ARTICLE
 const createNewsArticle = async (req, res, next) => {
   try {
 
@@ -177,6 +179,7 @@ const createNewsArticle = async (req, res, next) => {
   }
 };
 
+// UPDATE NEW ARTICLE
 const updateNewsArticle = async (req, res, next) => {
   try {
     const News_ArticleData = await News_Article.findByPk(req.params.id);

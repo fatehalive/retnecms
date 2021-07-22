@@ -6,8 +6,9 @@ const TabContent = ()=>{
     return <div className="tab-content">
             <div className="tab-pane active" id="option1">
                 <ul className="list-posts">
-                     {Data1.map((data)=>{
+                     {Data1.map((data,index)=>{
                         return <Option1
+                                key={index}
                                 imgSrc= {data.img}
                                 date= {data.date}
                                 title= {data.title}
@@ -20,8 +21,9 @@ const TabContent = ()=>{
 
             <div className="tab-pane" id="option2">
                 <ul className="list-posts">
-                {Data2.map((data)=>{
+                {Data2.map((data,index)=>{
                         return <Option2
+                                key={index}
                                 imgSrc= {data.img}
                                 date= {data.date}
                                 title= {data.title}

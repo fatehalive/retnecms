@@ -16,10 +16,11 @@ const NavTech =()=>{
                             <li><Link to="#">Internet</Link></li>
                             <li><Link to="#">Mobile</Link></li>
                         </ul>
-                        <div class="owl-carousel" data-num="4">
-                            {Data.map((data)=>{
+                        <div className="owl-carousel" data-num="4">
+                            {Data.map((data,index)=>{
                                 return <div>
                                 <CarouselTech
+                                    key={index}
                                     ImgSrc={data.img}
                                     Title={data.title}
                                     Date={data.date}

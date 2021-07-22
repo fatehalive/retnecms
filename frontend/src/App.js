@@ -1,5 +1,7 @@
 import * as React from 'react'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+
+// component
 import SinglePost from './pages/SinglePost/SinglePost8'
 import HomePage from './pages/Homepages/Homepage6'
 import Header from './Component/Header/MainHeader'

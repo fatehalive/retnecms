@@ -4,8 +4,8 @@ import PostWidget from "./PostWidget/PostWidget"
 import TextWidget from "./TextWidget/TextWidget"
 
 const FooterWidget = ()=>{
-    return <div class="footer-widgets-part">
-           <div class="row">
+    return <div className="footer-widgets-part">
+           <div className="row">
                 <TextWidget/>
                 <PostWidget/>
                 <CategoriesWidget/>

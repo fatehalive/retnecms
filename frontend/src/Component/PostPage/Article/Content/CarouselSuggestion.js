@@ -8,8 +8,8 @@ const Suggestion = () =>{
         <h1><span>You may also like</span></h1>
       </div>
       <div className="owl-carousel" data-num="3">
-        {Data1.map(data=>{
-          return <div className="item news-post image-post3"> 
+        {Data1.map((data,index)=>{
+          return <div className="item news-post image-post3" key={index}> 
             <img src={data.img} alt="" />
             <div className="hover-box">
               <h2><Link to="#">{data.title}</Link></h2>

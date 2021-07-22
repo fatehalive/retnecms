@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom'
 
 
-const GridSection = (props)=>{
+const GridSectionFashion = (props)=>{
 const {category, imgHm,
         title, date, 
     user,comment,
@@ -14,15 +14,15 @@ const {category, imgHm,
 
 					<div className="news-post image-post2">
 						<div className="post-gallery">
-							<img src={imgHm} alt=""/>
+							<img width={'570px'} height={'360px'} src={imgHm} alt=""/>
 							<div className="hover-box">
 								<div className="inner-hover">
 									<h2><Link to="/article">{title}</Link></h2>
 									<ul className="post-tags">
 										<li><i className="fa fa-clock-o"></i>{date}</li>
 										<li><i className="fa fa-user"></i>by <Link to="#">{user}</Link></li>
-										<li><Link to="#"><i className="fa fa-comments-o"></i><span>{comment}</span></Link></li>
-										<li><i className="fa fa-eye"></i>{view}</li>
+										<li><Link to="#"><i className="fa fa-comments-o"></i><span>23</span></Link></li>
+										<li><i className="fa fa-eye"></i>99</li>
 									</ul>
 								</div>
 							</div>
@@ -34,14 +34,14 @@ const {category, imgHm,
 
 							<div className="item news-post standard-post">
 								<div className="post-gallery">
-									<img src={imgSt} alt=""/>
+									<img width={'270px'} height={'200px'} src={imgSt} alt=""/>
 								</div>
 								<div className="post-content">
 									<h2><Link to="/article">{title} </Link></h2>
 									<ul className="post-tags">
 										<li><i className="fa fa-clock-o"></i>{date}</li>
 										<li><i className="fa fa-user"></i>by <Link to="#">{user}</Link></li>
-										<li><Link to="#"><i className="fa fa-comments-o"></i><span>{comment}</span></Link></li>
+										<li><Link to="#"><i className="fa fa-comments-o"></i><span>00</span></Link></li>
 									</ul>
 								</div>
 							</div>
@@ -50,7 +50,7 @@ const {category, imgHm,
 
 							<div className="item news-post standard-post">
 								<div className="post-gallery">
-									<img src={imgSt} alt=""/>
+									<img width={'270px'} height={'200px'} src={imgSt} alt=""/>
 								</div>
 								<div className="post-content">
 									<h2><Link to="/article">{title}</Link></h2>
@@ -72,4 +72,4 @@ const {category, imgHm,
 
 }
 
-export default GridSection;
+export default GridSectionFashion;

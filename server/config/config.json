@@ -1,11 +1,11 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "didi",
+    "username": "irahama",
+    "password": "root",
     "database": "api-news",
     "host": "localhost",
     "dialect": "postgres",
-    "port": 5400
+    "port": 5432
   },
   "test": {
     "username": "root",

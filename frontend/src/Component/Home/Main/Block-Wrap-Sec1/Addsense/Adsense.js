@@ -10,9 +10,9 @@ const Data =[
 ]
 
 const Addsense =()=>{
-        return  <div class="advertisement">
-            {Data.map((data)=>{
-               return <div className="desktop-advert">
+        return  <div className="advertisement">
+            {Data.map((data,index)=>{
+               return <div className="desktop-advert" key={index}>
                    <span>{data.span}</span>
                    <img src={Data.img} alt=""/>
                </div>

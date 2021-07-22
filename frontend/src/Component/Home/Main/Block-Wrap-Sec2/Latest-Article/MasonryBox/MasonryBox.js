@@ -11,22 +11,22 @@ const MasonryBox = ()=>{
                 
                      <div className="latest-articles iso-call">
                             
-                     <div div class="news-post standard-post3 default-size">
-                                    <div class="post-gallery">
+                     <div div className="news-post standard-post3 default-size">
+                                    <div className="post-gallery">
                                         <img src={img1} alt=""/>
                                     </div>
-                                    <div class="post-title">
-                                        <a class="category-post tech" href="tech.html">tech</a>
+                                    <div className="post-title">
+                                        <a className="category-post tech" href="tech.html">tech</a>
                                         <h2><Link to="single-post.html">Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam. </Link></h2>
-                                        <ul class="post-tags">
-                                            <li><i class="fa fa-clock-o"></i>27 may 2013</li>
-                                            <li><i class="fa fa-user"></i>by <Link to="#">John Doe</Link></li>
-                                            <li><Link to="#"><i class="fa fa-comments-o"></i><span>23</span></Link></li>
+                                        <ul className="post-tags">
+                                            <li><i className="fa fa-clock-o"></i>27 may 2013</li>
+                                            <li><i className="fa fa-user"></i>by <Link to="#">John Doe</Link></li>
+                                            <li><Link to="#"><i className="fa fa-comments-o"></i><span>23</span></Link></li>
                                         </ul>
                                     </div>
                         </div>
-                        {Data.map((data)=>{
-                            return <div className="news-post standard-post3">
+                        {Data.map((data,index)=>{
+                            return <div className="news-post standard-post3" key={index}>
                                         <div className="post-gallery">
                                             <img src={data.img} alt=""/>
                                         </div>

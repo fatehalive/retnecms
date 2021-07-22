@@ -6,7 +6,7 @@ import MainTags from "./WidgetTags/MainTags"
 const MainSideBar = ()=>{
     return <div className="col-sm-4 sidebar-sticky">
         {/* <!-- sidebar --> */}
-		<div class="sidebar theiaStickySidebar">
+		<div className="sidebar theiaStickySidebar">
             <MainWidgetPopular/>
             <MainSubscribe/>
             <MainTags/>

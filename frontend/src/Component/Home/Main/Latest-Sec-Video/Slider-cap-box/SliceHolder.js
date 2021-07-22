@@ -8,11 +8,11 @@ let Data = [
 const SliceHolder =()=>{
     return  <div className="slider-holder">
 				<ul className="slider-call">
-                    {Data.map((data)=>{
-                        return<li>
+                    {Data.map((data, index)=>{
+                        return<li key={index}>
                             <div className="news-post iframe-post">
 									{/* <!-- Vimeo --> */}
-									<iframe className="videoembed" src={data.link} frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+									<iframe title='videoembed' className="videoembed" src={data.link} frameBorder="0" webkitallowfullscreen="" mozallowfullscreen="" allowFullScreen=""></iframe>
 									{/* <!-- End Vimeo --> */}
 								</div>
                         </li>
