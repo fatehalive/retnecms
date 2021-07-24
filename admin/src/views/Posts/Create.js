@@ -3,17 +3,20 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
+import Dropzone from '../../components/Form/Inputs/Dropzone';
+
 function Create() {
+    // Instansiasi objek form data
+    const formData = new FormData();
+
     // Hooks: States
     const [posts, setPosts] = React.useState({
-        article_title: '',
-        article_summary: '',
-        article_content: '',
-        image1_url: '',
-        image2_url: '',
-        status: '',
-        user_uuid: '',
-        category_uuid: ''
+        'article_title': '',
+        'article_summary': '',
+        'article_content': '',
+        'status': '',
+        'user_uuid': '',
+        'category_uuid': ''
     });
     const [users, setUsers] = React.useState([]);
     const [categories, setCategories] = React.useState();
@@ -22,13 +25,13 @@ function Create() {
     const history = useHistory();
 
     // Functions to Interact with API
-    const axiosGet = React.useCallback(async (endpoint, name) => {
-        axios.get(endpoint)
+    const axiosGet = React.useCallback(async (api_url, api_name) => {
+        axios.get(api_url)
             .then(response => {
-                const { message, data } = response.data;
-                if (message === `Get ${name} Successfully`) {
+                const { data } = response.data;
+                if (response.data) {
                     console.table(data.rows);
-                    switch (name) {
+                    switch (api_name) {
                         case 'User':
                             setUsers(response.data.data.rows);
                             break;
@@ -49,11 +52,11 @@ function Create() {
             })
     }, []);
 
-    const axiosPost = React.useCallback(async () => {
+    const axiosPost = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/news-article', posts)
+            const response = await axios.post('http://localhost:5000/news-article', formData)
             const { message } = response.data;
-            if (message === 'News Article Successfully Created') {
+            if (response.data) {
                 notifySuccess(message);
                 window.setTimeout(() => history.push('/admin/posts/index'), 1500);
             } else {
@@ -64,12 +67,12 @@ function Create() {
             notifyError('Check Your Network');
             console.error(error);
         }
-    }, [posts, history]);
+    };
 
-    // Hook: useEffect to get roles data from api then attach it to state
+    // Hook: useEffect to get data from api then attach it to state
     React.useEffect(() => {
         axiosGet('http://localhost:5000/user', 'User')
-        axiosGet('http://localhost:5000/category', 'Category')
+        axiosGet('http://localhost:5000/category', 'Category');
     }, [axiosGet]);
 
     // Event Handlers
@@ -78,30 +81,35 @@ function Create() {
         setPosts({ ...posts, [name]: value })
     };
 
+    const handleDrop = (param) => {
+        const files = Array.from(param);
+        if (!formData.has('image1')) {
+            files.forEach((file) => {
+                formData.append('image1', file)
+                console.log(formData.get('image1'))
+            });
+        } else {
+            files.forEach((file) => {
+                formData.append('image2', file)
+                console.log(formData.get('image2'))
+            });
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        let postsData = Object.assign({}, posts);
+        Object.entries(postsData).forEach((item) => {
+            formData.append(item[0], item[1])
+        })
+        for (var value of formData.entries()) {
+            console.log(value)
+        }
         axiosPost();
     };
 
-    const notifySuccess = (x) => toast.success(x, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
-
-    const notifyError = (y) => toast.error(y, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-    });
+    const notifySuccess = (msg) => toast.success(msg);
+    const notifyError = (msg) => toast.error(msg);
 
     return (
         <main className="content content-fluid">
@@ -181,6 +189,18 @@ function Create() {
                                                         )
                                                     })}
                                                 </select>
+                                            </div>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="control-label text-right col-md-3">Featured Image</label>
+                                            <div className="col-md-7">
+                                                <Dropzone onDrop={handleDrop} />
+                                            </div>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="control-label text-right col-md-3">Secondary Image</label>
+                                            <div className="col-md-7">
+                                                <Dropzone onDrop={handleDrop} />
                                             </div>
                                         </div>
                                     </div>

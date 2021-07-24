@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { Spinner } from 'react-bootstrap';
+import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
@@ -19,7 +19,7 @@ function List() {
     const history = useHistory();
 
     // Function to Interact API
-    const axiosGet = React.useCallback(async() => {
+    const axiosGet = React.useCallback(async () => {
         try {
             axios.get('http://localhost:5000/role')
                 .then(response => {
@@ -43,7 +43,7 @@ function List() {
         }
     }, []);
 
-    const axiosDelete = React.useCallback(async(id) => {
+    const axiosDelete = React.useCallback(async (id) => {
         try {
             const response = await axios.delete('http://localhost:5000/role/' + id);
             const { message } = response.data;
@@ -116,7 +116,7 @@ function List() {
                                                     <th style={{ width: "2.5%" }}>No.</th>
                                                     <th style={{ width: "57.5%" }}>Role</th>
                                                     <th>Created Date</th>
-                                                    <th>Action</th>
+                                                    <th style={{ width: "10%", textAlign: "center" }}>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -127,13 +127,17 @@ function List() {
                                                             <td>{index + 1}</td>
                                                             <td><b><Link to={`/admin/roles/single/${role.uuid}`}>{role.role}</Link></b></td>
                                                             <td>{d.slice(0, 10)}</td>
-                                                            <td>
-                                                                <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/roles/update/${role.uuid}`)}><i className="icons dripicons-pencil text-light"></i>Edit</button>
-                                                                <button className="btn btn-danger btn-rounded btn-sm" onClick={() => showDeleteModal(role.uuid)}><i className="icons dripicons-trash text-light"></i>Delete</button>
+                                                            <td style={{ textAlign: "center" }}>
+                                                                <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Edit</Tooltip>)} placement="top">
+                                                                    <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/roles/update/${role.uuid}`)}><i className="icons dripicons-pencil text-light"></i></button>
+                                                                </OverlayTrigger>
+                                                                <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Delete</Tooltip>)} placement="top">
+                                                                    <button className="btn btn-danger btn-rounded btn-sm" onClick={() => showDeleteModal(role.uuid)}><i className="icons dripicons-trash text-light"></i></button>
+                                                                </OverlayTrigger>
                                                             </td>
                                                         </tr>
                                                     )
-                                                }) : <tr><td className="text-center" colSpan="4" style={{backgroundColor: "white"}}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>}
+                                                }) : <tr><td className="text-center" colSpan="4" style={{ backgroundColor: "white" }}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>}
                                             </tbody>
                                         </table>
                                     </div>
