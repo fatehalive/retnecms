@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useHistory, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { Spinner } from 'react-bootstrap';
+import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
@@ -114,9 +114,9 @@ function List() {
                                                         <th style={{ width: "2.5%" }}>No.</th>
                                                         <th>Title</th>
                                                         <th>Meta Description</th>
-                                                        <th style={{ width: "5%" }}>Status</th>
-                                                        <th style={{ width: "5%" }}>Date</th>
-                                                        <th style={{ width: "13%" }}>Actions</th>
+                                                        <th style={{ width: "5%", textAlign: "center" }}>Status</th>
+                                                        <th style={{ width: "5%", textAlign: "center" }}>Date</th>
+                                                        <th style={{ width: "10%", textAlign: "center" }}>Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -126,15 +126,19 @@ function List() {
                                                                 <td>{index + 1}</td>
                                                                 <td><b><Link to={`/admin/posts/single/${post.uuid}`}>{post.article_title}</Link></b></td>
                                                                 <td>{post.article_summary}</td>
-                                                                {(post.status === 'publish') ? <td><span className="badge badge-success">{post.status}</span></td> : <td><span className="badge badge-secondary">{post.status}</span></td>}
-                                                                <td>{post.createdAt.slice(0, 10)}</td>
-                                                                <td>
-                                                                    <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/posts/update/${post.uuid}`)}><i className="icons dripicons-pencil text-light"></i></button>
-                                                                    <button className="btn btn-danger btn-rounded btn-sm" onClick={() => showDeleteModal(post.uuid)}><i className="icons dripicons-trash text-light"></i></button>
+                                                                {(post.status === 'publish') ? <td style={{ textAlign: "center" }}><span className="badge badge-success">{post.status}</span></td> : <td style={{ textAlign: "center" }}><span className="badge badge-secondary">{post.status}</span></td>}
+                                                                <td style={{ textAlign: "center" }}>{post.createdAt.slice(0, 10)}</td>
+                                                                <td style={{ textAlign: "center" }}>
+                                                                    <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Edit</Tooltip>)} placement="top">
+                                                                        <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/posts/update/${post.uuid}`)}><i className="icons dripicons-pencil text-light"></i></button>
+                                                                    </OverlayTrigger>
+                                                                    <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Delete</Tooltip>)} placement="top">
+                                                                        <button className="btn btn-danger btn-rounded btn-sm" onClick={() => showDeleteModal(post.uuid)}><i className="icons dripicons-trash text-light"></i></button>
+                                                                    </OverlayTrigger>
                                                                 </td>
                                                             </tr>
                                                         )
-                                                    }): <tr><td className="text-center" colSpan="4" style={{backgroundColor: "white"}}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>}
+                                                    }) : <tr><td className="text-center" colSpan="4" style={{ backgroundColor: "white" }}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>}
                                                 </tbody>
                                             </table>
                                         </div>

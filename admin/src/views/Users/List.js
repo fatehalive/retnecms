@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { Spinner } from 'react-bootstrap';
+import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
@@ -19,25 +19,25 @@ function List() {
     const history = useHistory();
 
     // Functions to Interact with API
-    const axiosGet = React.useCallback(async() => {
+    const axiosGet = React.useCallback(async () => {
         axios.get('http://localhost:5000/user')
-        .then(response => {
-            const { message, data } = response.data;
-            if (message === 'Get User Successfully') {
-                console.table(data.rows);
-                setUsers(response.data.data.rows);
-            } else {
-                notifyError(`API okay, Check Response`);
-                console.warn(response);
-            }
-        })
-        .catch(error => {
-            notifyError(`Check Your Network`);
-            console.error(error);
-        })
+            .then(response => {
+                const { message, data } = response.data;
+                if (message === 'Get User Successfully') {
+                    console.table(data.rows);
+                    setUsers(response.data.data.rows);
+                } else {
+                    notifyError(`API okay, Check Response`);
+                    console.warn(response);
+                }
+            })
+            .catch(error => {
+                notifyError(`Check Your Network`);
+                console.error(error);
+            })
     }, []);
 
-    const axiosDelete = React.useCallback(async(id) => {
+    const axiosDelete = React.useCallback(async (id) => {
         try {
             const response = await axios.delete(`http://localhost:5000/user/${id}`);
             const { message } = response.data;
@@ -110,7 +110,7 @@ function List() {
                                                     <th style={{ width: "2.5%" }}>No.</th>
                                                     <th style={{ width: "57.5%" }}>Name</th>
                                                     <th>Created Date</th>
-                                                    <th>Action</th>
+                                                    <th style={{ width: "10%", textAlign: "center" }}>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -121,13 +121,17 @@ function List() {
                                                             <td>{index + 1}</td>
                                                             <td><strong><Link to={`/admin/users/single/${user.uuid}`}>{user.username}</Link></strong></td>
                                                             <td>{d.slice(0, 10)}</td>
-                                                            <td>
-                                                            <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/users/update/${user.uuid}`)}><i className="icons dripicons-pencil text-light"></i>Edit</button>
-                                                            <button className="btn btn-danger btn-rounded btn-sm" onClick={() => showDeleteModal(user.uuid)}><i className="icons dripicons-trash text-light"></i>Delete</button>
+                                                            <td style={{ textAlign: "center" }}>
+                                                                <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Edit</Tooltip>)} placement="top">
+                                                                    <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/users/update/${user.uuid}`)}><i className="icons dripicons-pencil text-light"></i></button>
+                                                                </OverlayTrigger>
+                                                                <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Delete</Tooltip>)} placement="top">
+                                                                    <button className="btn btn-danger btn-rounded btn-sm" onClick={() => showDeleteModal(user.uuid)}><i className="icons dripicons-trash text-light"></i></button>
+                                                                </OverlayTrigger>
                                                             </td>
                                                         </tr>
                                                     )
-                                                }) : <tr><td className="text-center" colSpan="4" style={{backgroundColor: "white"}}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>}
+                                                }) : <tr><td className="text-center" colSpan="4" style={{ backgroundColor: "white" }}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>}
                                             </tbody>
                                         </table>
                                     </div>
