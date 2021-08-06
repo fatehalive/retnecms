@@ -43,7 +43,7 @@ import PostsUpdate from '../../views/Posts/Update';
 
 import '../../assets/ReactToastify.css';
 
-function AdminMain() {
+function Main() {
     return (
         // <React.Suspense fallback={<div>Loading...</div>}>
         <div className="content-wrapper">
@@ -100,6 +100,7 @@ function AdminMain() {
                 <Route path="/admin/categories/update/:categoryId">
                     <CategoriesUpdate />
                 </Route>
+                <Redirect path='/admin' to='/admin/index'></Redirect>
                 {/* <Route path="/admin/index" component={Index}></Route>
                     <Route path="/admin/posts/index" component={PostsList}></Route>
                     <Route path="/admin/posts/single/:postId" component={PostsSingle}></Route>
@@ -117,11 +118,10 @@ function AdminMain() {
                     <Route path="/admin/categories/single/:categoryId" component={CategoriesSingle}></Route>
                     <Route path="/admin/categories/create" component={CategoriesCreate}></Route>
                     <Route path="/admin/categories/update/:categoryId" component={CategoriesUpdate}></Route> */}
-                <Redirect from="/" to="/admin/index" />
             </Switch>
         </div>
         // </React.Suspense>
     )
 }
 
-export default AdminMain;
+export default Main;

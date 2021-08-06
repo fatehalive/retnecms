@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
-import Dropzone from '../../components/Form/Inputs/Dropzone';
+import Dropzone from '../../components/Inputs/Dropzone';
 
 function Create() {
     // Instansiasi objek form data

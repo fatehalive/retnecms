@@ -116,7 +116,7 @@ function List() {
                                                         <th>Meta Description</th>
                                                         <th style={{ width: "5%", textAlign: "center" }}>Status</th>
                                                         <th style={{ width: "5%", textAlign: "center" }}>Date</th>
-                                                        <th style={{ width: "10%", textAlign: "center" }}>Actions</th>
+                                                        <th style={{ width: "13%", textAlign: "center" }}>Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

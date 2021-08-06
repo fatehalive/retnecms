@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
-import '../../../assets/Dropzone.css';
+import '../../assets/Dropzone.css';
 
 function Dropzone(props) {
     const [selectedFileMsg, setSelectedFileMsg] = React.useState('No File Selected');

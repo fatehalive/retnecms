@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const AppError = require("../utils/appError");
 const User = require('../models').User;
 const Role = require('../models').Role;
-const User_Profile = require('../models').User_profile;
+const User_Profile = require('../models').User_Profile;
 module.exports = {
   WhoIs(req, res, next) {
     try {
@@ -16,7 +16,6 @@ module.exports = {
       if (!token) {
         throw new AppError(403, 'No token provided');
       }
-
       jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
           throw new AppError(401, err);
@@ -27,12 +26,12 @@ module.exports = {
             {
               model: Role,
               as: 'role',
-              attributes: ['name']
+              attributes: ['role']
             },
             {
               model: User_Profile,
               as: 'user_profile',
-              attributes: ['name']
+              attributes: ['name', 'profile_image_url']
             },
           ]
         })

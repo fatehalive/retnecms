@@ -116,7 +116,7 @@ function List() {
                                                     <th style={{ width: "2.5%" }}>No.</th>
                                                     <th style={{ width: "57.5%" }}>Role</th>
                                                     <th>Created Date</th>
-                                                    <th style={{ width: "10%", textAlign: "center" }}>Actions</th>
+                                                    <th style={{ width: "13%", textAlign: "center" }}>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

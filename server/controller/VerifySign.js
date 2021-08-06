@@ -75,10 +75,10 @@ const verifyToken = (req, res, next) => {
     if (!tokenHeader && !tokenParams) {
       throw new AppError(500, 'Required token access');
     }
-    // let token
-    if (tokenHeader)
-      token = tokenHeader.split(' ')[1];
-    else token = tokenParams
+    
+    if (tokenHeader) token = tokenHeader.split(' ')[1];
+    else token = tokenParams;
+    console.log(tokenParams)
     if (!token) {
       throw new AppError(403, 'No token provided');
     }
