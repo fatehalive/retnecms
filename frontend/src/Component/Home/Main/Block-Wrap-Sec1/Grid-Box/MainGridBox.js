@@ -1,38 +1,49 @@
 import axios from 'axios';
 // import {useHistory} from 'react-router-dom';
 import React, {useState, useEffect} from 'react';
+import {connect, useSelector, useDispatch} from 'react-redux';
 
 // COMPONENT
 import GridSection from './GridSectionFood';
 import GridSectionFashion from './GridSectionFashion';
+import { fetchFashionArticlesSaga, getArticleFilter } from '../../../../../redux/action/actionUser';
 
-const MainGridBox = ()=>{
-
+const MainGridBox = (props)=>{
+        // const {articlesFashion, getArticlesFilter} = props
         // STATE:
         const [articles, setArticle] = useState([]);
         const [articles2, setArticle2] = useState([]);
 
-        // console.log('article', articles)
+        const dispatch = useDispatch();
+        const getFashionArticle = useSelector(state => state.articlesFashion)
+
+        // console.log('Fashion', articles)
         // console.log('article2', articles2)
+        // console.log('Fashion in redux Saga=>', articlesFashion);
+        // console.log('Fashion in redux Saga=>', getFashionArticle);
+
 
         useEffect (()=>{
-            dataArticle1();
-            dataArticle2();
+            // dispatch(getArticleFilter())
+            dataArticle1()
+            dataArticle2()
           
-        },[])
-
+        },[dispatch])
+    
         const dataArticle1 = ()=>{
             axios.post('http://localhost:5000/news-article/find',{pageSize: 1,
-            pageNumber:1,
+            pageNumber:2,
             filter: {
                 article_title:null,
                 username:null,
                 category_name:'Fashion',
                 status: null
-              }})
+            }})
             .then(response=>{
                 const {items} = response.data.data;
-                // console.log(items)
+                // console.log(response.data)
+                // console.log(response.data.data)
+                // console.log('item=>', items)
                 if(response.data.data) {
                     // console.table(items);
                     setArticle(items);
@@ -55,7 +66,7 @@ const MainGridBox = ()=>{
                 username:null,
                 category_name:'Food & Health',
                 status: null
-              }})
+            }})
             .then(response=>{
                 const {items} = response.data.data;
                 // console.log(items)
@@ -94,12 +105,12 @@ const MainGridBox = ()=>{
                         </div>
                     })}
 
-                         {articles2.map((article,index)=>{
+                        {articles2.map((article,index)=>{
                         let date= article.createdAt
                         // const {category_name, username} = article 
                         return <div>
                             <GridSectionFashion
-                            key= {index, article.category_name, article.username}
+                            key= {articles.uuid}
                             category = {article.category.category_name}
                             imgHm = {article.image1_url}
                             title= {article.article_title}
@@ -115,4 +126,17 @@ const MainGridBox = ()=>{
             </div>
 }
 
-export default MainGridBox
+// const mapStateToProps = state =>{
+//     return {
+//         articlesFashion : state.articlesFashion
+//     }
+// }
+
+// const mapDispatchToProps = dispatch =>{
+//     return {
+//         getArticlesFilter: ()=> dispatch(getArticleFilter())
+//     }
+// }
+
+// export default connect (mapStateToProps, mapDispatchToProps)(MainGridBox);
+export default MainGridBox;

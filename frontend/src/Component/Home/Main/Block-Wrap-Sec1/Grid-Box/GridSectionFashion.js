@@ -1,6 +1,5 @@
 import {Link} from 'react-router-dom'
 
-
 const GridSectionFashion = (props)=>{
 const {category, imgHm,
         title, date, 

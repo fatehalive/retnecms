@@ -9,8 +9,9 @@ import HomePage from './pages/Homepages/Homepage6'
 function App() {
   return (
     <div>
-          {/* HEADER */}
-          <Header/>
+      <Router>
+           {/* HEADER */}
+           <Header/>
           {/* MAIN */}
             <Switch>
               <Route exact path="/" component={HomePage} />
@@ -18,6 +19,9 @@ function App() {
             </Switch>
           {/* FOOTER */}
           <Footer/>
+
+      </Router>
+         
     </div>
   );
 }

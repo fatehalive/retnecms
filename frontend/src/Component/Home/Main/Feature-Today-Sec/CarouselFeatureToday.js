@@ -13,9 +13,9 @@ const CarouselFeatureToday =(props)=>{
         <div className="post-content">
             <h2><Link to="/article">{title}</Link></h2>
 			<ul className="post-tags">
-				<li><i className="fa fa-clock-o"></i>{date}</li>
+				<li><i className="fa fa-clock-o"></i>{'27 may 2013'}</li>
 				<li><i className="fa fa-user"></i>by <Link to="#">{user}</Link></li>
-				<li><Link to="#"><i className="fa fa-comments-o"></i><span>99</span></Link></li>
+				<li><Link to="#"><i className="fa fa-comments-o"></i><span>{99}</span></Link></li>
 			</ul>
         </div>
     </div>
