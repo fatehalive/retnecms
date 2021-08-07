@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
+import { fetchCategories } from './_redux/categoriesAction';
+import { useDispatch } from 'react-redux'
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
@@ -54,6 +56,11 @@ function List() {
         axiosGet()
         setLoading(true);
     }, [axiosGet]);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchCategories());
+    }, [dispatch]);
+
 
     // Event Handlers
     const handleDelete = (id) => {
