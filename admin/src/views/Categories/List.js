@@ -1,21 +1,36 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import { fetchCategories } from './_redux/categoriesAction';
-import { useDispatch } from 'react-redux'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { useCategoriesUIContext } from '../../components/Context/CategoriesContext'
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory, { PaginationProvider, PaginationListStandalone } from 'react-bootstrap-table2-paginator';
+import Pagination from 'react-bootstrap/Pagination'
+import { PaginationTotalStandalone } from "react-bootstrap-table2-paginator";
+
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
 
 function List() {
+
+    const categoriesUIContext = useCategoriesUIContext();
+    const categoriesUIProps = useMemo(() => {
+        return {
+            queryParams: categoriesUIContext.queryParams,
+            setQueryParams: categoriesUIContext.setQueryParams,
+        };
+    }, [categoriesUIContext]);
     // Hook: States
     const [categories, setCategories] = React.useState();
     const [displayConfirmationModal, setDisplayConfirmationModal] = React.useState(false);
     const [deleteMessage, setDeleteMessage] = React.useState(null);
     const [deleteId, setDeleteId] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
+    const [trigger, setTrigger] = useState(false)
 
     // Router methods
     const history = useHistory();
@@ -41,10 +56,11 @@ function List() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            const response = await axios.delete('http://localhost:5000/category/' + id);
-            const { message } = response.data;
-            notifySuccess(message);
-            axiosGet();
+            axios.delete('http://localhost:5000/category/' + id).then(response => {
+                const { message } = response.data;
+                notifySuccess(message);
+                dispatch(fetchCategories(categoriesUIProps.queryParams));
+            })
         } catch (error) {
             notifyError(`Check Your Network`);
             console.error(error);
@@ -56,11 +72,22 @@ function List() {
         axiosGet()
         setLoading(true);
     }, [axiosGet]);
+
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(fetchCategories());
-    }, [dispatch]);
+        dispatch(fetchCategories(categoriesUIProps.queryParams));
+    }, [dispatch, categoriesUIProps.queryParamsm, trigger]);
 
+    const { currentState } = useSelector(
+        (state) => ({ currentState: state.categories }),
+        shallowEqual
+    )
+
+    const { listLoading,
+        actionsLoading,
+        totalCount,
+        lastError,
+        error, entities } = currentState
 
     // Event Handlers
     const handleDelete = (id) => {
@@ -80,6 +107,67 @@ function List() {
 
     const notifySuccess = (x) => toast.success(x);
     const notifyError = (y) => toast.error(y);
+
+    const actionFormatter = (cell, row, rowIndex, formatExtraData) => {
+
+        return (
+            <>
+                <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Edit</Tooltip>)} placement="top">
+                    <button className="btn btn-info btn-rounded btn-sm mr-2" onClick={() => history.push(`/admin/categories/update/${row.uuid}`)}><i className="icons dripicons-pencil text-light"></i></button>
+                </OverlayTrigger>
+                <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Delete</Tooltip>)} placement="top">
+                    <button className="btn btn-danger btn-rounded btn-sm" onClick={() => showDeleteModal(row.uuid)}><i className="icons dripicons-trash text-light"></i></button>
+                </OverlayTrigger>
+            </>
+        )
+
+    }
+    const columns = [
+        {
+            dataField: 'category_name',
+            text: 'Category Name'
+        },
+        {
+            dataField: 'action',
+            text: 'Actions',
+            formatter: actionFormatter,
+            headerClasses: 'text-right',
+            classes: 'text-right',
+            // style: 'text-right'
+        }
+    ];
+
+
+    const paginationOptions = {
+        page: categoriesUIProps.queryParams.pageNumber,
+        sizePerPageList: [
+            {
+                text: '10', value: 10
+            },
+            {
+                text: '25', value: 25
+            },
+            {
+                text: 'All', value: totalCount
+            }
+        ],
+        showTotal: true,
+        totalSize: totalCount
+    };
+
+    function getHandlerTableChange(setQueryParams) {
+        return (type, { page, sizePerPage, sortField, sortOrder, data }) => {
+            const pageNumber = page || 1;
+            setQueryParams((prev) =>
+                type === 'sort'
+                    ? { ...prev, sortOrder, sortField }
+                    : type === 'pagination'
+                        ? { ...prev, pageNumber, pageSize: sizePerPage }
+                        : prev,
+            );
+        };
+    }
+
 
     return (
         <main className="content container-fluid">
@@ -105,13 +193,38 @@ function List() {
                             <h5 className="card-header">Category List</h5>
                             <div className="card-body">
                                 <div className="row">
-                                    <div className="col-sm-12">
+                                    <div className="col-sm-12 mb-3">
                                         <Link to="/admin/categories/create" className="btn btn-primary btn-floating btn-rounded"><i className="icons dripicons-document-edit text-light"></i>Add Category</Link>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-sm-12">
-                                        <table id="bs4-table" className="table table-striped table-bordered" style={{ width: "100%" }}>
+                                        {(!listLoading && entities) ?
+                                            <PaginationProvider pagination={paginationFactory(paginationOptions)}>
+                                                {({ paginationProps, paginationTableProps }) => {
+                                                    return (
+                                                        <BootstrapTable
+                                                            wrapperClasses="table-responsive"
+                                                            classes="table table-head-custom table-vertical-center overflow-hidden"
+                                                            bootstrap4
+                                                            bordered={false}
+                                                            remote
+                                                            keyField="uuid"
+                                                            data={entities === null ? [] : entities}
+                                                            columns={columns}
+                                                            onTableChange={
+                                                                getHandlerTableChange(
+                                                                    categoriesUIProps.setQueryParams,
+                                                                )
+                                                            }
+                                                            {...paginationTableProps}
+                                                        >
+                                                        </BootstrapTable>
+                                                    );
+                                                }}
+                                            </PaginationProvider>
+                                            : <tr><td className="text-center" colSpan="4" style={{ backgroundColor: "white" }}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>}
+                                        {/* <table id="bs4-table" className="table table-striped table-bordered" style={{ width: "100%" }}>
                                             <thead>
                                                 <tr>
                                                     <th style={{ width: "2.5%" }}>No.</th>
@@ -121,7 +234,7 @@ function List() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {(loading && categories) ? categories.map((category, index) => {
+                                                {(!listLoading && entities) ? entities.map((category, index) => {
                                                     let d = category.createdAt;
                                                     return (
                                                         <tr key={index}>
@@ -140,7 +253,10 @@ function List() {
                                                     )
                                                 }) : <tr><td className="text-center" colSpan="4" style={{ backgroundColor: "white" }}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>}
                                             </tbody>
-                                        </table>
+                                        </table> */}
+                                        {/* <div>
+                                            <Pagination>{items}</Pagination>
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>

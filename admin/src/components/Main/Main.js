@@ -41,7 +41,11 @@ import PostsUpdate from '../../views/Posts/Update';
 // const PostsSingle = React.lazy(() => import('../../views/Posts/Single'));
 // const PostsUpdate = React.lazy(() => import('../../views/Posts/Update'));
 
+
+import { CategoriesUIProvider } from '../Context/CategoriesContext'
+
 import '../../assets/ReactToastify.css';
+
 
 function Main() {
     return (
@@ -89,7 +93,9 @@ function Main() {
                     <RolesUpdate />
                 </Route>
                 <Route path="/admin/categories/index">
-                    <CategoriesList />
+                    <CategoriesUIProvider>
+                        <CategoriesList />
+                    </CategoriesUIProvider>
                 </Route>
                 <Route path="/admin/categories/single/:categoryId">
                     <CategoriesSingle />
