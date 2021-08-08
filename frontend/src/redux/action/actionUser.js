@@ -11,7 +11,7 @@ import axios from 'axios';
 
 export const fetchFashionArticles = (data)=>{
     return {
-        type: type.REQ_FASHION_ARTICLE,
+        type: type.GET_FASHION_ARTICLE,
         payload: data
     }
 }
@@ -66,7 +66,7 @@ export const  getFeatureArticles = (data)=>{
 
 
 
-export const getArticleFilter = ()=> async(dispatch)=>{
+export const sentFeatureArticles = ()=> async(dispatch)=>{
     try{
         const {data} = await axios.get('http://localhost:5000/news-article')
         dispatch(getFeatureArticles(data.data.rows))
@@ -76,4 +76,11 @@ export const getArticleFilter = ()=> async(dispatch)=>{
         console.error(error)
         }
     }
-    
+
+export const sentArticleFilter =()=> async(dispatch)=>{
+    try {
+        
+    } catch (error) {
+        console.error(error)
+    }
+}

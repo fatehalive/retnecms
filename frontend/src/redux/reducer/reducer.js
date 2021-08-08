@@ -8,7 +8,7 @@ const initialState = {
 
 export const articlesFiltReducer = (state= initialState, action)=>{
     switch (action.type) {
-        case type.REQ_FASHION_ARTICLE:
+        case type.GET_FASHION_ARTICLE:
             // const {data} = action
             return {
                 ...state,

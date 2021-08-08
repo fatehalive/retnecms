@@ -6,7 +6,7 @@ import {connect, useSelector, useDispatch} from 'react-redux';
 
 // COMPONENT
 import CarouselFeatureToday from './CarouselFeatureToday'
-import { getArticleFilter } from '../../../../redux/action/actionUser';
+import { sentFeatureArticles } from '../../../../redux/action/actionUser';
 
 
 
@@ -23,7 +23,7 @@ const MainFeatureToday = ()=>{
     console.log('data=>', mainFeature);
     useEffect(() => {
         // dataFitur()
-        dispatch(getArticleFilter())
+        dispatch(sentFeatureArticles())
     }, [dispatch])
 
     // FUNCTION 
@@ -56,7 +56,7 @@ const MainFeatureToday = ()=>{
                           
                         <div className="features-today-box owl-wrapper">
 					    <div className="owl-carousel" data-num="4">
-                            {mainFeature.length > 0 && mainFeature.map((article,index)=>{
+                            {mainFeature.map((article,index)=>{
                                 // let date= article.createdAt
                                 // console.log(article.image1_url)
                                 return <div>

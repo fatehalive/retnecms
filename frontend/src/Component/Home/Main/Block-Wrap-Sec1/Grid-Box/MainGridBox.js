@@ -92,7 +92,7 @@ const MainGridBox = (props)=>{
                         // const {category_name, username} = article 
                         return <div>
                             <GridSection 
-                            key= {articles.uuid}
+                            key= {article.uuid}
                             category = {article.category.category_name}
                             imgHm = {article.image1_url}
                             title= {article.article_title}
@@ -110,7 +110,7 @@ const MainGridBox = (props)=>{
                         // const {category_name, username} = article 
                         return <div>
                             <GridSectionFashion
-                            key= {articles.uuid}
+                            key= {article.uuid}
                             category = {article.category.category_name}
                             imgHm = {article.image1_url}
                             title= {article.article_title}
