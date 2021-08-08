@@ -1,13 +1,6 @@
 import axios from 'axios';
 // items => filtered/sorted result
-export function findCategories() {
-  let params = {
-    pageNumber: 1,
-    pageSize: 10,
-    filter: {
-      category_name: ''
-    }
-  }
+export function findCategories(params) {
   return axios.post('http://localhost:5000/category/find', params)
 }
 
