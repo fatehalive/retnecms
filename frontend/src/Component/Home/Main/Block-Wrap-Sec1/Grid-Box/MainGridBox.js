@@ -5,7 +5,7 @@ import { useSelector, useDispatch} from 'react-redux';
 // COMPONENT
 import GridSection from './GridSectionFood';
 import GridSectionFashion from './GridSectionFashion';
-import { sentFashionFilter, sentFoodFilter } from '../../../../../redux/action/actionUser';
+import { sentFashionFilter, sentFoodFilter } from './redux/actions';
 
 const MainGridBox = ()=>{
     

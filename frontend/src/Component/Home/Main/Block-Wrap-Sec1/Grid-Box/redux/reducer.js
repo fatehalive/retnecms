@@ -1,4 +1,4 @@
-import * as type from '../typeActions/type'
+import * as type from './types'
 
 const initialState = {
     fashionArticle:[],
@@ -22,18 +22,4 @@ export const articlesFiltReducer = (state= initialState, action)=>{
         default:
             return state;
     }
-}
-
-export const featureTodayReducer =(
-    state= {mainFeature:[],error:'error'}, 
-    action)=>{
-        switch (action.type) {
-            case type.GET_FEATURE_ARTICLE:
-                return {
-                    ...state,
-                    mainFeature: action.payload
-                }
-            default:
-                return state;
-        }
 }
