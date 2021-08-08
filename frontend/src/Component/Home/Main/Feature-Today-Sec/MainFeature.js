@@ -18,33 +18,12 @@ const MainFeatureToday = ()=>{
     const dispatch = useDispatch()
     const getMainFeature = useSelector(state=> state.featureToday);
     
-
     const {articleFilter, error, mainFeature} = getMainFeature;
-    // const [mainFeatures, setMainFeature] = useState(mainFeature);
 
     console.log('data=>', mainFeature);
     useEffect(() => {
-        // dataFitur()
         dispatch(sentFeatureArticles())
     }, [dispatch])
-
-    // FUNCTION 
-    // const dataFitur = () =>{
-    //     axios.get('http://localhost:5000/news-article')
-    //     .then(response => {
-    //         const {data} = response.data;
-    //         // console.log(data)
-    //         if(response.data) {
-    //             setFiturArticle(data.rows)
-    //         } else {
-    //             alert('Check your server')
-    //             console.error(response)
-    //         }
-    //     }) 
-    //     .catch(error =>{
-    //         console.error(error)
-    //     })
-    // }
 
 
     return <section className="features-today second-style">
@@ -89,7 +68,7 @@ const MainFeatureToday = ()=>{
                                         title={article.title}
                                     />
                                 </div> 
-                                })}                      */}
+                                })}*/}
                         </div>   
                     </div>
                 </div>

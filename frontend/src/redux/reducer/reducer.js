@@ -1,8 +1,8 @@
 import * as type from '../typeActions/type'
 
 const initialState = {
-    // articleFilter: [],
-    mainFeature:[],
+    fashionArticle:[],
+    foodArticle:[],
     error:'error'
 }
 
@@ -12,14 +12,21 @@ export const articlesFiltReducer = (state= initialState, action)=>{
             // const {data} = action
             return {
                 ...state,
-                articleFilter: action.payload
+                fashionArticle: action.payload
+            }
+        case type.GET_FOOD_ARTICLE:
+            return{
+                ...state,
+                foodArticle: action.payload
             }
         default:
             return state;
     }
 }
 
-export const featureTodayReducer =(state= initialState, action)=>{
+export const featureTodayReducer =(
+    state= {mainFeature:[],error:'error'}, 
+    action)=>{
         switch (action.type) {
             case type.GET_FEATURE_ARTICLE:
                 return {

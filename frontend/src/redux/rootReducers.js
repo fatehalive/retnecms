@@ -2,7 +2,7 @@ import {combineReducers} from 'redux';
 import {articlesFiltReducer, featureTodayReducer} from './reducer/reducer'
 
 const rootReducer = combineReducers({
-    articlesFashion: articlesFiltReducer,
+    articlesFilter: articlesFiltReducer,
     featureToday: featureTodayReducer
 });
 
