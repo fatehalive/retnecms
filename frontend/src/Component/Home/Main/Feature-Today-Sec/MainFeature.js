@@ -18,7 +18,9 @@ const MainFeatureToday = ()=>{
     const dispatch = useDispatch()
     const getMainFeature = useSelector(state=> state.featureToday);
     
+
     const {articleFilter, error, mainFeature} = getMainFeature;
+    // const [mainFeatures, setMainFeature] = useState(mainFeature);
 
     console.log('data=>', mainFeature);
     useEffect(() => {
@@ -71,6 +73,7 @@ const MainFeatureToday = ()=>{
                                     />
                                 </div>
                             })}
+
 
                              {/* {Data.map((article,index)=>{
                                 // let date = article.createdAt

@@ -65,10 +65,11 @@ export const  getFeatureArticles = (data)=>{
 // }
 
 
-
+// DISPATCH DATA KE ACTION:
 export const sentFeatureArticles = ()=> async(dispatch)=>{
     try{
         const {data} = await axios.get('http://localhost:5000/news-article')
+
         dispatch(getFeatureArticles(data.data.rows))
         
         }

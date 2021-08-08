@@ -1,7 +1,7 @@
 import * as type from '../typeActions/type'
 
 const initialState = {
-    articleFilter: [],
+    // articleFilter: [],
     mainFeature:[],
     error:'error'
 }
