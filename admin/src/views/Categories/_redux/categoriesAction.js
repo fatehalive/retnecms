@@ -17,29 +17,29 @@ export const fetchCategories = (queryParams) => dispatch => {
         toast.error(error.response.data.message);
         // dispatch(auth.logout())
       }
-      error.clientMessage = 'Can\'t find products';
+      error.clientMessage = 'Can\'t find catecogries';
       dispatch(actions.catchError({ error, callType: callTypes.list }));
     });
 };
 
-// export const fetchCategory = (id) => dispatch => {
-//   if (!id) {
-//     return dispatch(actions.categoryFetched({ categoriesForEdit: undefined }));
-//   }
+export const fetchCategory = (id) => dispatch => {
 
-//   dispatch(actions.startCall({ callType: callTypes.action }));
-//   return requestFromServer
-//     .getCategoriesById(id)
-//     .then(response => {
-//       // alias data to categories;
-//       const { data: categories } = response.data;
-//       dispatch(actions.categoriesFetched({ categoriesForEdit: categories }));
-//     }).catch(error => {
-//       error.clientMessage = 'Can\'t find categories';
-//       dispatch(actions.catchError({ error, callType: callTypes.action }));
-//       // console.log("Can't find categories");
-//     });
-// };
+  if (!id) {
+    return dispatch(actions.categoryFetched({ categoriesForEdit: undefined }));
+  }
+
+  dispatch(actions.startCall({ callType: callTypes.list }));
+  return requestFromServer
+    .getCategoriesById(id)
+    .then(response => {
+      // alias data to categories;
+      const { data: data } = response.data;
+      dispatch(actions.categoryFetched({ categoryForEdit: data }));
+    }).catch(error => {
+      error.clientMessage = 'Can\'t find category';
+      dispatch(actions.catchError({ error, callType: callTypes.list }));
+    });
+};
 
 // export const createCategories = (categoriesForCreation) => dispatch => {
 //   dispatch(actions.startCall({ callType: callTypes.action }));
@@ -59,20 +59,20 @@ export const fetchCategories = (queryParams) => dispatch => {
 //     });
 // };
 
-// export const updateCategories = (categories) => dispatch => {
-//   dispatch(actions.startCall({ callType: callTypes.action }));
-//   return requestFromServer
-//     .updateCategories(categories)
-//     .then(response => {
-//       dispatch(actions.categoriesReload);
-//       return response.data;
-//     })
-//     .catch(error => {
-//       if (error.response.status === 401) {
-//         toast.error(error.response.data.message, toastOption);
-//         dispatch(auth.logout())
-//       }
-//       error.clientMessage = 'Can\'t create categories';
-//       dispatch(actions.catchError({ error, callType: callTypes.action }));
-//     });
-// };
+export const updateCategory = (categoryId, category) => dispatch => {
+  dispatch(actions.startCall({ callType: callTypes.action }));
+  return requestFromServer
+    .updateCategory(categoryId, category)
+    .then(response => {
+      dispatch(actions.categoriesReload);
+      return response.data;
+    })
+    .catch(error => {
+      if (error.response.status === 401) {
+        toast.error(error.response.data.message);
+        // dispatch(auth.logout())
+      }
+      error.clientMessage = 'Can\'t update category';
+      dispatch(actions.catchError({ error, callType: callTypes.action }));
+    });
+};

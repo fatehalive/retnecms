@@ -10,7 +10,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory, { PaginationProvider, PaginationListStandalone } from 'react-bootstrap-table2-paginator';
 import Pagination from 'react-bootstrap/Pagination'
 import { PaginationTotalStandalone } from "react-bootstrap-table2-paginator";
-
+import CategoriesFilter from './CategoriesFilter/CategoriesFilter';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
@@ -76,7 +76,7 @@ function List() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(fetchCategories(categoriesUIProps.queryParams));
-    }, [dispatch, categoriesUIProps.queryParamsm, trigger]);
+    }, [dispatch, categoriesUIProps.queryParams, trigger]);
 
     const { currentState } = useSelector(
         (state) => ({ currentState: state.categories }),
@@ -122,10 +122,21 @@ function List() {
         )
 
     }
+
+    const singleFormatter = (cell, row, rowIndex, formatExtraData) => {
+        return (
+            <strong>
+                <Link
+                    to={`/admin/categories/single/${row.uuid}`}>{row.category_name}
+                </Link>
+            </strong>
+        )
+    }
     const columns = [
         {
             dataField: 'category_name',
-            text: 'Category Name'
+            text: 'Category Name',
+            formatter: singleFormatter
         },
         {
             dataField: 'action',
@@ -155,19 +166,23 @@ function List() {
         totalSize: totalCount
     };
 
-    function getHandlerTableChange(setQueryParams) {
+    function handleTableAction(setQueryParams) {
         return (type, { page, sizePerPage, sortField, sortOrder, data }) => {
             const pageNumber = page || 1;
-            setQueryParams((prev) =>
-                type === 'sort'
-                    ? { ...prev, sortOrder, sortField }
-                    : type === 'pagination'
-                        ? { ...prev, pageNumber, pageSize: sizePerPage }
-                        : prev,
+            setQueryParams(
+                (prev) => {
+                    if (type === 'sort') {
+                        return { ...prev, sortOrder, sortField }
+                    } else if (type === 'pagination') {
+                        return { ...prev, pageNumber, pageSize: sizePerPage }
+                    } else {
+                        return prev
+                    }
+                }
+
             );
         };
     }
-
 
     return (
         <main className="content container-fluid">
@@ -186,44 +201,57 @@ function List() {
                 </div>
             </header>
 
+
             <section className="page-content container-fluid">
                 <div className="row">
                     <div className="col-12">
+
                         <div className="card">
                             <h5 className="card-header">Category List</h5>
                             <div className="card-body">
+                                <CategoriesFilter />
+
                                 <div className="row">
-                                    <div className="col-sm-12 mb-3">
+                                    <div className="col-sm-12 mb-3 text-right">
                                         <Link to="/admin/categories/create" className="btn btn-primary btn-floating btn-rounded"><i className="icons dripicons-document-edit text-light"></i>Add Category</Link>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-sm-12">
-                                        {(!listLoading && entities) ?
-                                            <PaginationProvider pagination={paginationFactory(paginationOptions)}>
-                                                {({ paginationProps, paginationTableProps }) => {
-                                                    return (
-                                                        <BootstrapTable
-                                                            wrapperClasses="table-responsive"
-                                                            classes="table table-head-custom table-vertical-center overflow-hidden"
-                                                            bootstrap4
-                                                            bordered={false}
-                                                            remote
-                                                            keyField="uuid"
-                                                            data={entities === null ? [] : entities}
-                                                            columns={columns}
-                                                            onTableChange={
-                                                                getHandlerTableChange(
-                                                                    categoriesUIProps.setQueryParams,
-                                                                )
-                                                            }
-                                                            {...paginationTableProps}
-                                                        >
-                                                        </BootstrapTable>
-                                                    );
-                                                }}
-                                            </PaginationProvider>
-                                            : <tr><td className="text-center" colSpan="4" style={{ backgroundColor: "white" }}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>}
+                                        {/* {(!listLoading) ? */}
+                                        <PaginationProvider pagination={paginationFactory(paginationOptions)}>
+                                            {({ paginationProps, paginationTableProps }) => {
+
+                                                return (
+                                                    <div>
+                                                        {(!listLoading) ?
+                                                            <BootstrapTable
+                                                                wrapperClasses="table-responsive"
+                                                                classes="table table-head-custom table-vertical-center overflow-hidden"
+                                                                bootstrap4
+                                                                bordered={false}
+                                                                remote
+                                                                keyField="uuid"
+                                                                data={!entities ? [] : entities}
+                                                                columns={columns}
+                                                                onTableChange={
+                                                                    handleTableAction(
+                                                                        categoriesUIProps.setQueryParams,
+                                                                    )
+                                                                }
+                                                                {...paginationTableProps}
+                                                            >
+                                                            </BootstrapTable> :
+                                                            <div className="text-center" colSpan="4" style={{ backgroundColor: "white" }}>
+                                                                <Spinner className="text-center" animation="border" variant="primary" />
+                                                            </div>
+
+                                                        }
+                                                    </div>
+                                                );
+                                            }}
+                                        </PaginationProvider>
+                                        {/* : <tr><td className="text-center" colSpan="4" style={{ backgroundColor: "white" }}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>} */}
                                         {/* <table id="bs4-table" className="table table-striped table-bordered" style={{ width: "100%" }}>
                                             <thead>
                                                 <tr>

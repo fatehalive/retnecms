@@ -5,7 +5,7 @@ const initialCategoriesState = {
   actionsLoading: false,
   totalCount: 0,
   entities: null,
-  categoriesForEdit: undefined,
+  categoryForEdit: undefined,
   lastError: null,
 };
 
@@ -19,7 +19,7 @@ export const categoriesSlice = createSlice({
   initialState: initialCategoriesState,
   reducers: {
     catchError: (state, action) => {
-      state.error = `${action.type}: ${action.payload.error}`;
+      state.error = action.payload.error.clientMessage;
       if (action.payload.callType === callTypes.list) {
         state.listLoading = false;
       } else {
@@ -39,7 +39,8 @@ export const categoriesSlice = createSlice({
     categoryFetched: (state, action) => {
       state.actionsLoading = false;
       state.error = null;
-      state.categoriesForEdit = action.payload.categoriesForEdit;
+      state.categoryForEdit = action.payload.categoryForEdit;
+      state.listLoading = false
     },
     // findCategoriess
     categoriesFetched: (state, action) => {

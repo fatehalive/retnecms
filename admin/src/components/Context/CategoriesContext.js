@@ -33,9 +33,17 @@ export function CategoriesUIProvider({ children }) {
     });
   }, []);
 
+  const initialFilter = {
+    pageNumber: 1,
+    pageSize: 10,
+    filter: {
+      category_name: ''
+    }
+  }
   const value = {
     queryParams,
     setQueryParams,
+    initialFilter
   };
 
   return (
