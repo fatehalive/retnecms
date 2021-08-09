@@ -6,7 +6,7 @@ function AuthRoutes({ component: Component, ...rest }) {
         <Route {...rest} render={(props) => (
             !(localStorage.getItem("token") && localStorage.getItem("user"))
             ? <Component {...props} />
-            : <Redirect to='/admin/index' />
+            : <Redirect to='/admin' />
         )} />
     )
 };

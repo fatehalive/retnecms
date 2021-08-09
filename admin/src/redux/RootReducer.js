@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-// import users from './users';
+
 import { categoriesSlice } from '../views/Categories/_redux/categoriesSlice';
+import { profileReducer } from '../components/Header/_redux/profileReducer';
+
 const RootReducer = combineReducers({
-  // users: users,
+  profile: profileReducer,
   categories: categoriesSlice.reducer
 });
 

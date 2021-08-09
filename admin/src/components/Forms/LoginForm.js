@@ -18,9 +18,6 @@ function LoginForm(props) {
 						<label className="sr-only">Password</label>
 						<input type="password" onChange={(e) => props.onChange(e, 'password')} className="form-control" placeholder="Password" />
 					</div>
-					<div className="checkbox m-b-10 m-t-20">
-						<a href="#" className="float-right">Forgot Password?</a>
-					</div>
 					<button className="btn btn-primary btn-rounded btn-floating btn-lg btn-block" onClick={(e)=>props.onSubmit(e)}>Sign In</button>
 				</div>
 

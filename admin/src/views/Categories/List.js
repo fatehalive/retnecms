@@ -209,11 +209,20 @@ function List() {
                         <div className="card">
                             <h5 className="card-header">Category List</h5>
                             <div className="card-body">
-                                <CategoriesFilter />
 
                                 <div className="row">
-                                    <div className="col-sm-12 mb-3 text-right">
+                                    <div className="col-sm-12 mb-3 text-left">
                                         <Link to="/admin/categories/create" className="btn btn-primary btn-floating btn-rounded"><i className="icons dripicons-document-edit text-light"></i>Add Category</Link>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-sm-12 col-md-6">
+
+                                    </div>
+                                    <div className="col-sm-12 col-md-6">
+                                        <div className="dataTables_filter">
+                                            <CategoriesFilter />
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="row">

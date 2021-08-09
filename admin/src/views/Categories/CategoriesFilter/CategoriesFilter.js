@@ -1,15 +1,12 @@
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import { useCategoriesUIContext } from '../../../components/Context/CategoriesContext'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-
-
 const CategoriesFilter = () => {
 
-
   const categoriesUIContext = useCategoriesUIContext();
-  const categoriesUIProps = useMemo(() => {
+  const categoriesUIProps = React.useMemo(() => {
     return {
       queryParams: categoriesUIContext.queryParams,
       setQueryParams: categoriesUIContext.setQueryParams,
