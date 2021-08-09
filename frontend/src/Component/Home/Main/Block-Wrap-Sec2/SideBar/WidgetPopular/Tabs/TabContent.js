@@ -19,7 +19,7 @@ const TabContent = ()=>{
                 </ul>
             </div>
 
-            <div className="tab-pane" id="option2">
+            {/* <div className="tab-pane" id="option2">
                 <ul className="list-posts">
                 {Data2.map((data,index)=>{
                         return <Option2
@@ -31,7 +31,7 @@ const TabContent = ()=>{
                       
                      })}
                 </ul>
-            </div>
+            </div> */}
 
     </div>
 }

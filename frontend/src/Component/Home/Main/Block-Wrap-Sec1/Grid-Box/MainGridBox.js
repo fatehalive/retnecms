@@ -22,7 +22,7 @@ const MainGridBox = ()=>{
         },[dispatch])
     
 
-    return <div className="grid-box">
+    return <div className="grid-box">   
                 <div className="row">   
                     {fashionArticle.map((article,index)=>{
                         let date= article.createdAt
@@ -30,6 +30,7 @@ const MainGridBox = ()=>{
                         return <div>
                             <GridSection 
                             key= {article.uuid}
+                            
                             category = {article.category.category_name}
                             imgHm = {article.image1_url}
                             title= {article.article_title}
@@ -37,7 +38,7 @@ const MainGridBox = ()=>{
                             user={article.user.username}
                             // comment = {article.comment}
                             // view= {article.view}
-                            imgSt={article.image2_url}
+                            imgSt={article.image1_url}
                             />
                         </div>
                     })}
@@ -55,7 +56,7 @@ const MainGridBox = ()=>{
                             user={article.user.username}
                             // comment = {article.comment}
                             // view= {article.view}
-                            imgSt={article.image2_url}
+                            imgSt={article.image1_url}
                             />
                         </div>
                     })}

@@ -4,7 +4,8 @@ const GridSectionFashion = (props)=>{
 const {category, imgHm,
         title, date, 
     user,comment,
-     view,imgSt} = props
+     view,imgSt
+, articleId} = props
 
     return  <div className="col-md-6">
 					<div className="title-section">
@@ -16,7 +17,7 @@ const {category, imgHm,
 							<img width={'570px'} height={'360px'} src={imgHm} alt=""/>
 							<div className="hover-box">
 								<div className="inner-hover">
-									<h2><Link to="/article">{title}</Link></h2>
+									<h2><Link to={`/${articleId}`}>{title}</Link></h2>
 									<ul className="post-tags">
 										<li><i className="fa fa-clock-o"></i>{date}</li>
 										<li><i className="fa fa-user"></i>by <Link to="#">{user}</Link></li>
@@ -36,7 +37,7 @@ const {category, imgHm,
 									<img width={'270px'} height={'200px'} src={imgSt} alt=""/>
 								</div>
 								<div className="post-content">
-									<h2><Link to="/article">{title} </Link></h2>
+									<h2><Link to={`/${articleId}`}>{title} </Link></h2>
 									<ul className="post-tags">
 										<li><i className="fa fa-clock-o"></i>{date}</li>
 										<li><i className="fa fa-user"></i>by <Link to="#">{user}</Link></li>
@@ -52,7 +53,7 @@ const {category, imgHm,
 									<img width={'270px'} height={'200px'} src={imgSt} alt=""/>
 								</div>
 								<div className="post-content">
-									<h2><Link to="/article">{title}</Link></h2>
+									<h2><Link to={`/${articleId}`}>{title}</Link></h2>
 									<ul className="post-tags">
 										<li>
 											<i className="fa fa-clock-o"></i>{date}

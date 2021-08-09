@@ -4,7 +4,7 @@ import NavHome from './NavHome/NavHome';
 // import NavSport  from './NavSport/NavSport';
 import NavTech from './NavTech/NavTech';
 import NavTravel from './NavTravel/NavTravel';
-import NavVideo from './NavVideo/NavVideo';
+// import NavVideo from './NavVideo/NavVideo';
 import NavListWorld from './NavWorld/NavListWorld'
 
 
@@ -20,7 +20,7 @@ const MainNavList = ()=>{
                         <NavListWorld/>
                         <NavTravel/>
                         <NavTech/>
-                        <NavVideo/>
+                        {/* <NavVideo/> */}
                         {/* <NavSport/>
                         <NavFood/> */}
                     </ul>
