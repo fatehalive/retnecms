@@ -10,7 +10,7 @@ class SinglePost extends Component{
     return(
       <div>
 
-        <TickerNews />
+        {/* <TickerNews /> */}
         <Article />
 
       </div>

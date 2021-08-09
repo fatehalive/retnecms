@@ -12,6 +12,6 @@ const middleWares = [logger,sagaMiddleWare,thunk];
 
 // export const store = createStore(rootReducer,composeWithDevTools(applyMiddleware(...middleWares)));
 
-export const store = createStore(rootReducer,composeWithDevTools(applyMiddleware(logger,thunk)))
+export const store = createStore(rootReducer,composeWithDevTools(applyMiddleware(thunk, logger)))
 
 // sagaMiddleWare.run(rootSaga);
