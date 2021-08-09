@@ -13,7 +13,9 @@ let params = {
   pageNumber: 1,
   pageSize: 10,
   filter: {
-    category_name: ''
+    category_name: '',
+    startDate: '',
+    endDate: ''
   }
 }
 
