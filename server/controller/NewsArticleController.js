@@ -22,7 +22,9 @@ const getNewsArticle = (req, res, next) => {
       article_title,
       username,
       category_name,
-      status
+      status,
+      startDate,
+      endDate
     }
   } = req.body;
 
@@ -30,12 +32,14 @@ const getNewsArticle = (req, res, next) => {
     [Op.iLike]: `%${article_title}%`
   };
 
-  const {
-    limit,
-    offset
-  } = Pagination.getPagination(pageNumber, pageSize);
+  if (startDate && endDate) {
+    where['article_title'] = {
+      [Op.between]: [startDate, endDate]
+    };
+  }
 
   let categoryConditions = {};
+
 
   if (category_name) categoryConditions['category_name'] = {
     [Op.iLike]: `%${category_name}%`
@@ -47,6 +51,11 @@ const getNewsArticle = (req, res, next) => {
   if (username) userConditions['username'] = {
     [Op.iLike]: `%${username}%`
   };
+
+  const {
+    limit,
+    offset
+  } = Pagination.getPagination(pageNumber, pageSize);
 
   console.log(where);
   console.log(userConditions);

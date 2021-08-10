@@ -21,9 +21,17 @@ const getUser = (req, res, next) => {
     filter: {
       username,
       role_uuid,
-      email
+      email,
+      startDate,
+      endDate
     }
   } = req.body;
+
+  if (startDate && endDate) {
+    where['article_title'] = {
+      [Op.between]: [startDate, endDate]
+    };
+  }
 
   if (username) where['username'] = {
     [Op.iLike]: `%${username}%`
