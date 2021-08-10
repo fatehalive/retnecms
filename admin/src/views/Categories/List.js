@@ -139,13 +139,23 @@ function List() {
             formatter: singleFormatter
         },
         {
+            dateField: 'createdAt',
+            text: "Created At",
+            headerClasses: 'text-right',
+            classes: 'text-right',
+            formatter: (cell, row, rowIndex) => {
+                return (new Date(row.createdAt).toLocaleDateString('id-ID'))
+            }
+        },
+        {
             dataField: 'action',
             text: 'Actions',
             formatter: actionFormatter,
             headerClasses: 'text-right',
             classes: 'text-right',
             // style: 'text-right'
-        }
+        },
+
     ];
 
 
@@ -219,7 +229,7 @@ function List() {
                                     <div className="col-sm-12 col-md-6">
 
                                     </div>
-                                    <div className="col-sm-12 col-md-6">
+                                    <div className="col-sm-12">
                                         <div className="dataTables_filter">
                                             <CategoriesFilter />
                                         </div>

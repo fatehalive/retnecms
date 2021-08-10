@@ -12,17 +12,23 @@ exports.getRoleFiltered = (req, res, next) => {
     pageNumber,
     pageSize,
     filter: {
-      role
+      role,
+      startDate,
+      endDate
     }
   } = req.body;
 
-  let condition = {
-    [Op.and]: [{
-      role: {
-        [Op.iLike]: `%${role}%`
-      }
-    }]
-  };
+  let condition = {};
+
+  if (role) {
+    condition.role = {
+      [Op.iLike]: `%${role}%`
+    }
+  }
+
+  if (startDate && endDate) {
+    condition.createdAt = { [Op.between]: [startDate, endDate] }
+  }
 
   const {
     limit,
