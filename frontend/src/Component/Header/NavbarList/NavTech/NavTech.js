@@ -24,7 +24,7 @@ const NavTech =()=>{
                                     ImgSrc={data.img}
                                     Title={data.title}
                                     Date={data.date}
-                                    Comment={data.comment}
+                                    // Comment={data.comment}
                                 />      
                                 </div>
                                 
