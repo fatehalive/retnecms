@@ -1,6 +1,6 @@
 /*jshint jquery:true */
 
-$(document).ready(function($) {
+$(document).ready(function ($) {
 	"use strict";
 
 	/* global google: false */
@@ -11,90 +11,90 @@ $(document).ready(function($) {
 	/*-------------------------------------------------*/
 
 	var winDow = $(window);
-		// Needed variables
-		var $container=$('.iso-call');
-		var $filter=$('.filter');
+	// Needed variables
+	var $container = $('.iso-call');
+	var $filter = $('.filter');
 
-		try{
-			$container.imagesLoaded( function(){
-				// init
-				winDow.trigger('resize');
-				$container.isotope({
-					filter:'*',
-					layoutMode:'masonry',
-					itemSelector: '.iso-call > div',
-					masonry: {
-					    columnWidth: '.default-size'
-					},
-					animationOptions:{
-						duration:750,
-						easing:'linear'
-					}
-				});
+	// try{
+	// 	$container.imagesLoaded( function(){
+	// 		// init
+	// 		winDow.trigger('resize');
+	// 		$container.isotope({
+	// 			filter:'*',
+	// 			layoutMode:'masonry',
+	// 			itemSelector: '.iso-call > div',
+	// 			masonry: {
+	// 			    columnWidth: '.default-size'
+	// 			},
+	// 			animationOptions:{
+	// 				duration:750,
+	// 				easing:'linear'
+	// 			}
+	// 		});
+	// 	});
+	// } catch(err) {
+	// }
+
+	// winDow.on('resize', function(){
+	// 	var selector = $filter.find('a.active').attr('data-filter');
+
+	// 	try {
+	// 		$container.isotope({ 
+	// 			filter	: selector,
+	// 			animationOptions: {
+	// 				duration: 750,
+	// 				easing	: 'linear',
+	// 				queue	: false,
+	// 			}
+	// 		});
+	// 	} catch(err) {
+	// 	}
+	// 	return false;
+	// });
+
+	// Isotope Filter 
+	$filter.find('a').on('click', function () {
+		var selector = $(this).attr('data-filter');
+
+		try {
+			$container.isotope({
+				filter: selector,
+				animationOptions: {
+					duration: 750,
+					easing: 'linear',
+					queue: false,
+				}
 			});
-		} catch(err) {
+		} catch (err) {
+
 		}
-
-		winDow.on('resize', function(){
-			var selector = $filter.find('a.active').attr('data-filter');
-
-			try {
-				$container.isotope({ 
-					filter	: selector,
-					animationOptions: {
-						duration: 750,
-						easing	: 'linear',
-						queue	: false,
-					}
-				});
-			} catch(err) {
-			}
-			return false;
-		});
-		
-		// Isotope Filter 
-		$filter.find('a').on('click', function(){
-			var selector = $(this).attr('data-filter');
-
-			try {
-				$container.isotope({ 
-					filter	: selector,
-					animationOptions: {
-						duration: 750,
-						easing	: 'linear',
-						queue	: false,
-					}
-				});
-			} catch(err) {
-
-			}
-			return false;
-		});
+		return false;
+	});
 
 
-	var filterItemA	= $('.filter li a');
+	var filterItemA = $('.filter li a');
 
-		filterItemA.on('click', function(){
-			var $this = $(this);
-			if ( !$this.hasClass('active')) {
-				filterItemA.removeClass('active');
-				$this.addClass('active');
-			}
-		});
+	filterItemA.on('click', function () {
+		var $this = $(this);
+		if (!$this.hasClass('active')) {
+			filterItemA.removeClass('active');
+			$this.addClass('active');
+		}
+	});
 
 	$('#container').addClass('active');
 	$('.iso-call').css('opacity', 0);
-	$('.iso-call').imagesLoaded( function(){
+	$('.iso-call').imagesLoaded(function () {
 		$('.iso-call').css('opacity', 1);
 	});
-	
+
 	/*-------------------------------------------------*/
 	/* = ticker news
 	/*-------------------------------------------------*/
-	
-	$('a.toogle-box').on('click', function(event){
+
+	$('a.toogle-box').on('click', function (event) {
 		event.preventDefault();
-		if(!$(this).hasClass('active')) {
+		if (!$(this).hasClass('active')) {
 			$(this).addClass('active');
 			$('div.versions-box-choose').addClass('closed');
 		} else {
@@ -107,7 +107,7 @@ $(document).ready(function($) {
 	/* = ticker news
 	/*-------------------------------------------------*/
 
-	try{		
+	try {
 		$('#js-news').ticker({
 			speed: 0.20,			// The speed of the reveal
 			controls: true,			// Whether or not to show the jQuery News Ticker controls
@@ -118,7 +118,7 @@ $(document).ready(function($) {
 			fadeInSpeed: 600,		// Speed of fade in animation
 			fadeOutSpeed: 300		// Speed of fade out animation
 		});
-	} catch(err) {
+	} catch (err) {
 	}
 
 	/*-------------------------------------------------*/
@@ -130,17 +130,17 @@ $(document).ready(function($) {
 		if (owlWrap.length > 0) {
 
 			if (jQuery().owlCarousel) {
-				owlWrap.each(function(){
+				owlWrap.each(function () {
 
-					var carousel= $(this).find('.owl-carousel'),
+					var carousel = $(this).find('.owl-carousel'),
 						dataNum = $(this).find('.owl-carousel').attr('data-num'),
 						dataNum2,
 						dataNum3;
 
-					if ( dataNum == 1 ) {
+					if (dataNum == 1) {
 						dataNum2 = 1;
 						dataNum3 = 1;
-					} else if ( dataNum == 2 ) {
+					} else if (dataNum == 2) {
 						dataNum2 = 2;
 						dataNum3 = dataNum - 1;
 					} else {
@@ -150,25 +150,25 @@ $(document).ready(function($) {
 
 					carousel.owlCarousel({
 						autoPlay: 10000,
-						navigation : true,
-						items : dataNum,
-						itemsDesktop : [1199,dataNum2],
-						itemsDesktopSmall : [979,dataNum3]
+						navigation: true,
+						items: dataNum,
+						itemsDesktop: [1199, dataNum2],
+						itemsDesktopSmall: [979, dataNum3]
 					});
 
 				});
 			}
 		}
 
-	} catch(err) {
+	} catch (err) {
 
 	}
-	
+
 	/*-------------------------------------------------*/
 	/* = bxslider 
 	/*-------------------------------------------------*/
 
-	try {	
+	try {
 		$('.bxslider').bxSlider({
 			mode: 'fade',
 			auto: true
@@ -188,7 +188,7 @@ $(document).ready(function($) {
 		});
 
 
-	} catch(err) {
+	} catch (err) {
 	}
 
 	/* ---------------------------------------------------------------------- */
@@ -204,7 +204,7 @@ $(document).ready(function($) {
 			}
 		});
 
-	} catch(err) {
+	} catch (err) {
 
 	}
 
@@ -213,34 +213,34 @@ $(document).ready(function($) {
 		$('.video-link').magnificPopup({
 			type: 'iframe'
 		});
-	} catch(err) {
+	} catch (err) {
 
 	}
 
 	try {
 		var magnLink = $('.log-in-popup');
 		magnLink.magnificPopup({
-			closeBtnInside:true
+			closeBtnInside: true
 		});
-	} catch(err) {
+	} catch (err) {
 
 	}
-	
+
 	/*-------------------------------------------------*/
 	/* =  comming soon & error height fix
 	/*-------------------------------------------------*/
-	
+
 	try {
 
-		$('#clock').countdown("2016/04/29", function(event) {
+		$('#clock').countdown("2016/04/29", function (event) {
 			var $this = $(this);
-			switch(event.type) {
+			switch (event.type) {
 				case "seconds":
 				case "minutes":
 				case "hours":
 				case "days":
 				case "daysLeft":
-					$this.find('span#'+event.type).html(event.value);
+					$this.find('span#' + event.type).html(event.value);
 					break;
 				case "finished":
 					$this.hide();
@@ -248,7 +248,7 @@ $(document).ready(function($) {
 			}
 		});
 
-	} catch(err) {
+	} catch (err) {
 
 	}
 
@@ -256,13 +256,13 @@ $(document).ready(function($) {
 	/* = skills animate
 	/*-------------------------------------------------*/
 
-	try{
+	try {
 
 		var skillBar = $('.review-box');
-		skillBar.appear(function() {
+		skillBar.appear(function () {
 
 			var animateElement = $(".meter > p");
-			animateElement.each(function() {
+			animateElement.each(function () {
 				$(this)
 					.data("origWidth", $(this).width())
 					.width(0)
@@ -272,26 +272,26 @@ $(document).ready(function($) {
 			});
 
 		});
-	} catch(err) {
+	} catch (err) {
 	}
-	
+
 	/* ---------------------------------------------------------------------- */
 	/*	register login forms
 	/* ---------------------------------------------------------------------- */
-	
-	$('.register-line a').on('click', function(event){
+
+	$('.register-line a').on('click', function (event) {
 		event.preventDefault();
 		$('form.login-form').slideUp(400);
 		$('form.register-form').slideDown(400);
 	});
-	
-	$('a.lost-password').on('click', function(event){
+
+	$('a.lost-password').on('click', function (event) {
 		event.preventDefault();
 		$('form.login-form').slideUp(400);
 		$('form.lost-password-form').slideDown(400);
 	});
-	
-	$('.login-line a').on('click', function(){
+
+	$('.login-line a').on('click', function () {
 		console.log("clicked");
 		$('form.lost-password-form').slideUp(400);
 		$('form.register-form').slideUp(400);
@@ -302,26 +302,26 @@ $(document).ready(function($) {
 	/*	Contact Map
 	/* ---------------------------------------------------------------------- */
 
-	var contact = {"lat":"-38.3945495", "lon":"144.9187974"}; //Change a map coordinate here!-38.3945495,144.9187974
+	var contact = { "lat": "-38.3945495", "lon": "144.9187974" }; //Change a map coordinate here!-38.3945495,144.9187974
 
 	try {
 		var mapContainer = $('#map');
 		mapContainer.gmap3({
 			action: 'addMarker',
-			marker:{
-				options:{
-					icon : new google.maps.MarkerImage('images/marker.png')
+			marker: {
+				options: {
+					icon: new google.maps.MarkerImage('images/marker.png')
 				}
 			},
 			latLng: [contact.lat, contact.lon],
-			map:{
+			map: {
 				center: [contact.lat, contact.lon],
 				zoom: 10
-				},
 			},
-			{action: 'setOptions', args:[{scrollwheel:false}]}
+		},
+			{ action: 'setOptions', args: [{ scrollwheel: false }] }
 		);
-	} catch(err) {
+	} catch (err) {
 
 	}
 
@@ -329,38 +329,38 @@ $(document).ready(function($) {
 	/*	Header animate after scroll
 	/* ---------------------------------------------------------------------- */
 
-	(function() {
+	(function () {
 
 		var docElem = document.documentElement,
 			didScroll = false,
 			changeHeaderOn = 300;
-			document.querySelector( 'header' );
+		document.querySelector('header');
 		function init() {
-			window.addEventListener( 'scroll', function() {
-				if( !didScroll ) {
+			window.addEventListener('scroll', function () {
+				if (!didScroll) {
 					didScroll = true;
-					setTimeout( scrollPage, 100 );
+					setTimeout(scrollPage, 100);
 				}
-			}, false );
+			}, false);
 		}
-		
+
 		function scrollPage() {
 			var sy = scrollY();
-			if ( sy >= changeHeaderOn ) {
-				$( 'header' ).addClass('active');
+			if (sy >= changeHeaderOn) {
+				$('header').addClass('active');
 			}
 			else {
-				$( 'header' ).removeClass('active');
+				$('header').removeClass('active');
 			}
 			didScroll = false;
 		}
-		
+
 		function scrollY() {
 			return window.pageYOffset || docElem.scrollTop;
 		}
-		
+
 		init();
-		
+
 	})();
 
 });

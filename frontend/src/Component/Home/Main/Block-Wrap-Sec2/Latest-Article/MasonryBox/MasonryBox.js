@@ -1,30 +1,31 @@
-import {useDispatch,useSelector} from 'react-redux'
-import React, { useEffect} from 'react';
-import {Link} from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom'
 import Data from './data'
 import img1 from '../../../../../Upload/news-posts/7.jpg'
 import { sentLatestArticles } from '../redux/action';
+import Moment from 'react-moment'
 
-const MasonryBox = ()=>{
-    const dispatch =useDispatch()
+const MasonryBox = () => {
+    const dispatch = useDispatch()
     // useEffect 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(sentLatestArticles())
-    },[dispatch])
+    }, [dispatch])
 
     const getLatestArticle = useSelector(state => state.latestArticles)
-    const {latestArticles, error} = getLatestArticle;
+    const { latestArticles, error } = getLatestArticle;
     console.log('data latest Article =>', latestArticles)
 
 
-    return  <div className="masonry-box">
-                    <div className="title-section">
-                        <h1><span>Latest Articles</span></h1>
-                    </div>
-                
-                     <div className="latest-articles iso-call">
-                            
-                    {/* <div className="news-post standard-post3 default-size">
+    return <div className="masonry-box">
+        <div className="title-section">
+            <h1><span>Latest Articles</span></h1>
+        </div>
+
+        <div className="latest-articles iso-call row">
+
+            {/* <div className="news-post standard-post3 default-size">
                                     <div className="post-gallery">
                                         <img src={img1} alt=""/>
                                     </div>
@@ -38,26 +39,27 @@ const MasonryBox = ()=>{
                                         </ul>
                                     </div>
                     </div> */}
-                        
-                        {latestArticles.map((data)=>{
-                            // let category =[data.category.category_name]
-                            return <div className="news-post standard-post3" key={data.uuid}>
-                                        <div className="post-gallery">
-                                            <img width={'370px'} height={'260px'} src={data.image1_url} alt="gambar"/>
-                                        </div>
-                                        <div className="post-title">
-                                            <Link to="#" className={`category-post tech`}>{data.category.category_name}</Link>
-                                            <h2><Link to="single-post.html">{data.article_title} </Link></h2>
-                                            <ul className="post-tags">
-                                                <li><i className="fa fa-clock-o"></i>{data.createdAt}</li>
-                                                <li><i className="fa fa-user"></i>by <Link to="#">{data.user.username}</Link></li>
-                                                <li><Link to="#"><i className="fa fa-comments-o"></i><span>{data.comment}</span></Link></li>
-                                            </ul>
-                                        </div>
-                                     </div>
-                        })}
 
-                            {/* {Data.map((data, index)=>{
+            {latestArticles && latestArticles.map((data) => {
+                // let category =[data.category.category_name]
+
+                return <div className="news-post standard-post3 col-md-6" key={data.uuid}>
+                    <div className="post-gallery">
+                        <img width={'370px'} height={'260px'} src={data.image1_url} alt="gambar" />
+                    </div>
+                    <div className="post-title">
+                        <Link to="#" className={`category-post ${data.category.category_name}`}>{data.category.category_name}</Link>
+                        <h2><Link to="single-post.html">{data.article_title} </Link></h2>
+                        <ul className="post-tags">
+                            <li><i className="fa fa-clock-o"></i><Moment format="DD-MM-YYYY">{data.createdAt}</Moment></li>
+                            <li><i className="fa fa-user"></i>by <Link to="#">{data.user.username}</Link></li>
+                            <li><Link to="#"><i className="fa fa-comments-o"></i><span>{data.comment}</span></Link></li>
+                        </ul>
+                    </div>
+                </div>
+            })}
+
+            {/* {Data.map((data, index)=>{
                             // let category =[data.category.category_name]
                             return <div className="news-post standard-post3 default-size" key={index}>
                                         <div className="post-gallery">
@@ -74,10 +76,21 @@ const MasonryBox = ()=>{
                                         </div>
                                      </div>
                         })} */}
-                           
-                    </div>
-            </div>
-         
+
+        </div>
+        <div className="pagination-box">
+            <ul className="pagination-list">
+                <li><Link className="active" to="#">1</Link></li>
+                <li><Link to="#">2</Link></li>
+                <li><Link to="#">3</Link></li>
+                <li><span>...</span></li>
+                <li><Link to="#">9</Link></li>
+                <li><Link to="#">Next</Link></li>
+            </ul>
+            <p>Page 1 of 9</p>
+        </div>
+    </div>
+
 }
 
 export default MasonryBox;
