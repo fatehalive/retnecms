@@ -15,7 +15,7 @@ export const getProfile = (data) => {
 const fetchProfile = () => async dispatch => {
     return axios.get(API_URL + '/login/whois')
         .then((response) => {
-            const { data } = response.data.data;
+            const { data } = response.data;
             dispatch(getProfile(data))
         })
         .catch(error => console.log(error));

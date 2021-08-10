@@ -1,5 +1,5 @@
 const initialProfileState = {
-    currentUser: ""
+    currentUser: {}
 };
 
 export const profileReducer = (state = initialProfileState, action) => {
@@ -7,7 +7,7 @@ export const profileReducer = (state = initialProfileState, action) => {
         case 'profile/getProfile':
             return {
                 ...state,
-                userProfile: action.payload
+                currentUser: action.payload
             }
         default:
             return state;

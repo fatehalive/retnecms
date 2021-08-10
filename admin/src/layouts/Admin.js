@@ -9,25 +9,29 @@ import Main from '../components/Main/Main';
 // action creator
 import fetchProfile from '../components/Header/_redux/profileAction'
 
+// context
+import { ProfileContext } from '../components/Context/ProfileContext';
+
 function Admin() {
     const dispatch = useDispatch();
-    const ProfileContext = React.createContext();
-    
+
     React.useEffect(() => {
         dispatch(fetchProfile())
     }, [dispatch])
 
     const profileState = useSelector(state => state.profile);
     const { currentUser } = profileState;
+
     return (
         <ProfileContext.Provider value={currentUser}>
             <Router>
                 <div id="App">
-                    <Header data={currentUser} />
+                    <Header />
                     <Main />
                 </div>
             </Router>
         </ProfileContext.Provider>
+
     )
 };
 
