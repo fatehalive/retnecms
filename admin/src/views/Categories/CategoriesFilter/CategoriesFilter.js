@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { useCategoriesUIContext } from '../../../components/Context/CategoriesContext'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { DateRangePicker, Input, InputGroup } from 'rsuite';
-import 'rsuite/dist/styles/rsuite-default.css';
+import { DatePicker, Space, Input } from 'antd';
+const { RangePicker } = DatePicker;
 
 const CategoriesFilter = () => {
 
@@ -15,10 +15,6 @@ const CategoriesFilter = () => {
       initialFilter: categoriesUIContext.initialFilter
     };
   }, [categoriesUIContext]);
-
-  const [startDate, setStartDate] = useState(null)
-  const [endDate, setEndDate] = useState(null)
-
 
   const searchAction = (values) => {
     let filter = {}
@@ -44,9 +40,17 @@ const CategoriesFilter = () => {
           <Form className="form form-label-bottom">
             <div className="form-group row">
               <div className="col-lg-6">
-                <Field
+                <Input
+                  size='large'
                   name="category_name"
-                  // className="form-control"
+                  placeholder="Search Category Name"
+                  onChange={(e) => {
+                    setFieldValue("category_name", e.target.value);
+                    handleSubmit()
+                  }} />
+                {/* <Field
+                  name="category_name"
+                  className="form-control"
                   component={Input}
                   // value={values.category_name}
                   placeholder="Search By Category Name"
@@ -55,10 +59,10 @@ const CategoriesFilter = () => {
                     setFieldValue("category_name", inputed);
                     handleSubmit()
                   }}
-                />
+                /> */}
               </div>
               <div className="col-lg-6">
-                <Field
+                {/* <Field
                   type='date'
                   className="col-lg-12 "
                   component={DateRangePicker}
@@ -67,6 +71,16 @@ const CategoriesFilter = () => {
                   onChange={(date) => {
                     setFieldValue('startDate', date['0'])
                     setFieldValue('endDate', date['1'])
+                    handleSubmit()
+                  }}
+                /> */}
+                <RangePicker
+                  size="large"
+                  locale="id-ID"
+                  // className="col-lg-12"
+                  onChange={(date, dateString) => {
+                    setFieldValue('startDate', dateString[0])
+                    setFieldValue('endDate', dateString[1])
                     handleSubmit()
                   }}
                 />

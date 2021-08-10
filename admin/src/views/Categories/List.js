@@ -7,9 +7,13 @@ import { fetchCategories } from './_redux/categoriesAction';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { useCategoriesUIContext } from '../../components/Context/CategoriesContext'
 import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory, { PaginationProvider, PaginationListStandalone } from 'react-bootstrap-table2-paginator';
+import paginationFactory, {
+    PaginationProvider,
+    PaginationListStandalone,
+    SizePerPageDropdownStandalone,
+    PaginationTotalStandalone
+} from 'react-bootstrap-table2-paginator';
 import Pagination from 'react-bootstrap/Pagination'
-import { PaginationTotalStandalone } from "react-bootstrap-table2-paginator";
 import CategoriesFilter from './CategoriesFilter/CategoriesFilter';
 
 // Modal
@@ -113,7 +117,7 @@ function List() {
         return (
             <>
                 <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Edit</Tooltip>)} placement="top">
-                    <button className="btn btn-info btn-rounded btn-sm mr-2" onClick={() => history.push(`/admin/categories/update/${row.uuid}`)}><i className="icons dripicons-pencil text-light"></i></button>
+                    <button className="btn btn-info btn-rounded btn-sm mr-md-2" onClick={() => history.push(`/admin/categories/update/${row.uuid}`)}><i className="icons dripicons-pencil text-light"></i></button>
                 </OverlayTrigger>
                 <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Delete</Tooltip>)} placement="top">
                     <button className="btn btn-danger btn-rounded btn-sm" onClick={() => showDeleteModal(row.uuid)}><i className="icons dripicons-trash text-light"></i></button>
@@ -160,6 +164,7 @@ function List() {
 
 
     const paginationOptions = {
+        custom: true,
         page: categoriesUIProps.queryParams.pageNumber,
         sizePerPageList: [
             {
@@ -244,23 +249,43 @@ function List() {
                                                 return (
                                                     <div>
                                                         {(!listLoading) ?
-                                                            <BootstrapTable
-                                                                wrapperClasses="table-responsive"
-                                                                classes="table table-head-custom table-vertical-center overflow-hidden"
-                                                                bootstrap4
-                                                                bordered={false}
-                                                                remote
-                                                                keyField="uuid"
-                                                                data={!entities ? [] : entities}
-                                                                columns={columns}
-                                                                onTableChange={
-                                                                    handleTableAction(
-                                                                        categoriesUIProps.setQueryParams,
-                                                                    )
-                                                                }
-                                                                {...paginationTableProps}
-                                                            >
-                                                            </BootstrapTable> :
+                                                            <div>
+                                                                <BootstrapTable
+                                                                    wrapperClasses="table-responsive"
+                                                                    classes="table table-head-custom table-vertical-center overflow-hidden"
+                                                                    bootstrap4
+                                                                    bordered={false}
+                                                                    remote
+                                                                    keyField="uuid"
+                                                                    data={!entities ? [] : entities}
+                                                                    columns={columns}
+                                                                    onTableChange={
+                                                                        handleTableAction(
+                                                                            categoriesUIProps.setQueryParams,
+                                                                        )
+                                                                    }
+                                                                    {...paginationTableProps}
+                                                                >
+                                                                </BootstrapTable>
+                                                                <div className="row">
+                                                                    <div className="col-md-6 col-lg-6">
+                                                                        <SizePerPageDropdownStandalone
+                                                                            {...paginationProps}
+                                                                        />
+                                                                        <PaginationTotalStandalone
+                                                                            {...paginationProps}
+
+                                                                        />
+                                                                    </div>
+                                                                    <div className="col-md-6 col-lg-6 mt-2 mt-md-0 mt-lg-0 mt-sm-2">
+                                                                        <PaginationListStandalone
+                                                                            {...paginationProps}
+                                                                        />
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            :
                                                             <div className="text-center" colSpan="4" style={{ backgroundColor: "white" }}>
                                                                 <Spinner className="text-center" animation="border" variant="primary" />
                                                             </div>
