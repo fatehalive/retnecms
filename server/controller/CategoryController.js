@@ -12,17 +12,22 @@ exports.getCategoryFiltered = (req, res, next) => {
     pageNumber,
     pageSize,
     filter: {
-      category_name
+      category_name,
+      startDate,
+      endDate
     }
   } = req.body;
 
-  let condition = {
-    [Op.and]: [{
-      category_name: {
-        [Op.iLike]: `%${category_name}%`
-      }
-    }]
-  };
+
+  let condition = {};
+
+  if (category_name) {
+    condition.category_name = { [Op.iLike]: `%${category_name}%` }
+  }
+
+  if (startDate && endDate) {
+    condition.createdAt = { [Op.between]: [startDate, endDate] }
+  }
 
   const {
     limit,
