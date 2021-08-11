@@ -24,10 +24,10 @@ const MainNavList = ()=>{
                         {/* <NavSport/> */}
                         {/* <NavFood/> */}
                     </ul>
-                    <form className="navbar-form navbar-right" role="search">
+                    {/* <form className="navbar-form navbar-right" role="search">
 					    <input type="text" id="search" name="search" placeholder="Search here"/>
 					    <button type="submit" id="search-submit"><i className="fa fa-search"></i></button>
-					</form>
+					</form> */}
                 </div>
             </div>
         </div>
