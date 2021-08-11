@@ -3,21 +3,24 @@ import React, { useEffect} from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 
 // COMPONENT
-import GridSection from './GridSectionFood';
+import GridSectionFood from './GridSectionFood';
 import GridSectionFashion from './GridSectionFashion';
-import { sentFashionFilter, sentFoodFilter } from './redux/actions';
+import { sentChildFashionFilter, sentFashionFilter, sentFoodFilter } from './redux/actions';
 
 const MainGridBox = ()=>{
     
         const dispatch = useDispatch();
-        const getFashionArticle = useSelector(state => state.articlesFilter)
+        const getArticles = useSelector(state => state.articlesFilter)
 
-        const {fashionArticle,foodArticle, error} = getFashionArticle;
+        const {
+            fashionArticle, foodArticle, error,
+        } = getArticles;
 
         // USEEFFECT
         useEffect (()=>{
             dispatch(sentFashionFilter())
             dispatch(sentFoodFilter())
+            // dispatch(sentChildFashionFilter())
           
         },[dispatch])
     
@@ -28,37 +31,42 @@ const MainGridBox = ()=>{
                         let date= article.createdAt
                         // const {category_name, username} = article 
                         return <div>
-                            <GridSection 
-                            key= {index}
-                            
-                            category = {article.category.category_name}
-                            imgHm = {article.image1_url}
-                            title= {article.article_title}
-                            date= {date}
-                            user={article.user.username}
-                            // comment = {article.comment}
-                            // view= {article.view}
-                            imgSt={article.image1_url}
-                            />
-                        </div>
+                        <GridSectionFashion
+                        key= {article.uuid}
+                        category = {article.category.category_name}
+                        imgHm = {article.image1_url}
+                        title= {article.article_title}
+                        date= {date}
+                        user={article.user.username}
+                        // comment = {article.comment}
+                        // view= {article.view}
+                        imgSt={article.image1_url}
+                        // articleId= {article.uuid}
+                        />
+                    </div>
                     })}
 
                         {foodArticle.map((article,index)=>{
                         let date= article.createdAt
                         // const {category_name, username} = article 
                         return <div>
-                            <GridSectionFashion
-                            key= {article.uuid}
-                            category = {article.category.category_name}
-                            imgHm = {article.image1_url}
-                            title= {article.article_title}
-                            date= {date}
-                            user={article.user.username}
-                            // comment = {article.comment}
-                            // view= {article.view}
-                            imgSt={article.image1_url}
-                            />
-                        </div>
+                        <GridSectionFood
+                        key= {index}
+                        
+                        category = {article.category.category_name}
+                        imgHm = {article.image1_url}
+                        title= {article.article_title}
+                        date= {date}
+                        user={article.user.username}
+                        // comment = {article.comment}
+                        // view= {article.view}
+                        imgSt={article.image1_url}
+                        // articleId= {article.uuid}
+
+                        />
+                        </div> 
+                        
+                        
                     })}
                 </div>
             </div>

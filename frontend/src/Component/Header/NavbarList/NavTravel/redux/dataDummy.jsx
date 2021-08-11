@@ -1,8 +1,8 @@
-import art1 from '../../Upload/news-posts/art1.jpg'
-import art2 from '../../Upload/news-posts/art2.jpg'
-import art3 from '../../Upload/news-posts/art3.jpg'
-import art6 from '../../Upload/news-posts/art6.jpg'
-import art9 from '../../Upload/news-posts/art9.jpg'
+import art1 from '../../../../Upload/news-posts/art1.jpg'
+import art2 from '../../../../Upload/news-posts/art2.jpg'
+import art3 from '../../../../Upload/news-posts/art3.jpg'
+import art6 from '../../../../Upload/news-posts/art6.jpg'
+import art9 from '../../../../Upload/news-posts/art9.jpg'
 
 const Data = [
     {

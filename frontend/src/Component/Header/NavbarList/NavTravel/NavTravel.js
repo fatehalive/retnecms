@@ -5,16 +5,17 @@ import {Link} from 'react-router-dom'
 import NavTravelArticle from './NavTravelArticle/NavTravelArticle'
 
 // DATA DUMMY YG SAMA
-import Data from '../Data'
+// import Data from '../Data'
 import { sentTravelArticles } from './redux/actions';
 
 const NavTravel = ()=>{
 
     const dispatch = useDispatch();
-    let Datas = [];
+    // let Datas = [];
     // const [dataTravel, setTravelData] = React.useState([]);
     
     // console.log('travel artikel=>', dataTravel)
+
     // USEEFFECT:
     useEffect(()=>{
         dispatch(sentTravelArticles())
@@ -23,10 +24,10 @@ const NavTravel = ()=>{
     const getNavTravel = useSelector(state => state.navTravelArticles)
     const {travelArticles,error} = getNavTravel;
 
-    if(travelArticles) {
-        Datas.push = travelArticles;
-    }
-    console.log('data dong =>', travelArticles);
+    // if(travelArticles) {
+    //     Datas.push = travelArticles;
+    // }
+    // console.log('data dong =>', travelArticles);
     // useEffect(()=>{
     //     setTravelData(travelArticles)
         
@@ -40,21 +41,18 @@ const NavTravel = ()=>{
                     <div className="owl-wrapper">
                         <h1>Latest Posts</h1>
                         <div className="owl-carousel" data-num="4">
-                            {/* 
-                            <
-                            
-                            */}
-                        {travelArticles.map((Data,index)=>{
+
+                        {travelArticles && travelArticles.map((Data,index)=>{
                         return <div>
                                 <NavTravelArticle
                                     key={Data.uuid}
-                                    // ImgSrc={Data.image1_url}
+                                    ImgSrc={Data.image1_url}
                                     Title={Data.article_title}
                                     Date={Data.createdAt}
                                     // Comment={Data.comment}
                                 /> 
-                            </div>
-                    })} 
+                                </div>
+                        })} 
 
                         {/* {Data.map((data,index)=>{
                                 return <div>

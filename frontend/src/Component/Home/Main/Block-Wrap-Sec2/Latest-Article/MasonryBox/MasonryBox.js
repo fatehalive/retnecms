@@ -1,10 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
-import Data from './data'
-import img1 from '../../../../../Upload/news-posts/7.jpg'
-import { sentLatestArticles } from '../redux/action';
+// import Data from './data'
+// import img1 from '../../../../../Upload/news-posts/7.jpg'
 import Moment from 'react-moment'
+import ReactPaginate from 'react-paginate';
+
+// ACTIONS
+import { sentLatestArticles } from '../redux/action';
 
 const MasonryBox = () => {
     const dispatch = useDispatch()
@@ -15,8 +18,35 @@ const MasonryBox = () => {
 
     const getLatestArticle = useSelector(state => state.latestArticles)
     const { latestArticles, error } = getLatestArticle;
-    console.log('data latest Article =>', latestArticles)
+    // console.log('data latest Article =>', latestArticles)
 
+    // LOGIC PAGINATION
+    const [pageNumber, setPageNumber] = useState(0)
+
+    const articlesPerPage = 6
+    const pagesVisited = pageNumber* articlesPerPage
+
+    const pageCount = Math.ceil(latestArticles.length/ articlesPerPage);
+
+    const changePage = ({selected})=>{
+        setPageNumber(selected)    }
+
+    const displayArticles = latestArticles.slice(pagesVisited, pagesVisited + articlesPerPage).map((data) =>{
+        return <div className="news-post standard-post3 col-md-6" key={data.uuid}>
+        <div className="post-gallery">
+            <img width={'370px'} height={'260px'} src={data.image1_url} alt="gambar" />
+        </div>
+        <div className="post-title">
+            <Link to="#" className={`category-post ${data.category.category_name}`}>{data.category.category_name}</Link>
+            <h2><Link to="single-post.html">{data.article_title} </Link></h2>
+            <ul className="post-tags">
+                <li><i className="fa fa-clock-o"></i><Moment format="DD-MM-YYYY">{data.createdAt}</Moment></li>
+                <li><i className="fa fa-user"></i>by <Link to="#">{data.user.username}</Link></li>
+                <li><Link to="#"><i className="fa fa-comments-o"></i><span>{data.comment}</span></Link></li>
+            </ul>
+        </div>
+    </div>
+    });
 
     return <div className="masonry-box">
         <div className="title-section">
@@ -24,6 +54,7 @@ const MasonryBox = () => {
         </div>
 
         <div className="latest-articles iso-call row">
+            {displayArticles}
 
             {/* <div className="news-post standard-post3 default-size">
                                     <div className="post-gallery">
@@ -40,7 +71,7 @@ const MasonryBox = () => {
                                     </div>
                     </div> */}
 
-            {latestArticles && latestArticles.map((data) => {
+            {/* {latestArticles && latestArticles.map((data) => {
                 // let category =[data.category.category_name]
 
                 return <div className="news-post standard-post3 col-md-6" key={data.uuid}>
@@ -57,7 +88,7 @@ const MasonryBox = () => {
                         </ul>
                     </div>
                 </div>
-            })}
+            })} */}
 
             {/* {Data.map((data, index)=>{
                             // let category =[data.category.category_name]
@@ -76,9 +107,19 @@ const MasonryBox = () => {
                                         </div>
                                      </div>
                         })} */}
-
+                <ReactPaginate
+                    previousLabel={'Previous'}
+                    nextLabel={'Next'}
+                    pageCount={pageCount}
+                    onPageChange = {changePage}
+                    containerClassName= {'paginationBtn'}
+                    previousLinkClassName={'previousBtn'}
+                    nextLinkClassName={'nextBtn'}
+                    disabledClassName={'paginationDisabled'}
+                    activeClassName={'paginationActive'}
+                />
         </div>
-        <div className="pagination-box">
+        {/* <div className="pagination-box">
             <ul className="pagination-list">
                 <li><Link className="active" to="#">1</Link></li>
                 <li><Link to="#">2</Link></li>
@@ -88,7 +129,7 @@ const MasonryBox = () => {
                 <li><Link to="#">Next</Link></li>
             </ul>
             <p>Page 1 of 9</p>
-        </div>
+        </div> */}
     </div>
 
 }

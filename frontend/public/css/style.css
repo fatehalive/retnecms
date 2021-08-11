@@ -1401,6 +1401,40 @@ section.feature-video .owl-theme .owl-controls .owl-buttons div.owl-next:hover:a
   color: #333333;
   font-size: 12px;
 }
+
+/* my paginations */
+.paginationBtn{
+  font-size: 12px;
+  width: 80%;
+  height: 40px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+
+}
+
+.paginationBtn a {
+  font-family: 'Lato', sans-serif;
+  border: 1px solid #f0f0f0;
+  border-radius: 3px;
+  padding: 5px;
+  margin: 8px;
+  color: #333333;
+  padding: 6px 11px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.paginationBtn a:hover {
+  color: #ffffff;
+  background-color:  #f44336;
+}
+
+.paginationActive a{
+  color: #ffffff;
+  background-color:  #f44336;
+}
+
 /*-------------------------------------------------*/
 /* =  home 2
 /*-------------------------------------------------*/
