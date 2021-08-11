@@ -2,9 +2,9 @@ const initialProfileState = {
     currentUser: {}
 };
 
-export const profileReducer = (state = initialProfileState, action) => {
+export const whoisReducer = (state = initialProfileState, action) => {
     switch (action.type) {
-        case 'profile/getProfile':
+        case 'GET_WHOIS':
             return {
                 ...state,
                 currentUser: action.payload

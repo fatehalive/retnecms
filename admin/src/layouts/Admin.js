@@ -7,30 +7,30 @@ import Header from '../components/Header/Header';
 import Main from '../components/Main/Main';
 
 // action creator
-import fetchProfile from '../components/Header/_redux/profileAction'
+import readWhois from '../components/Header/_redux/whoisAction';
 
 // context
-import { ProfileContext } from '../components/Context/ProfileContext';
+import { WhoisContext } from '../components/Context/WhoisContext';
 
 function Admin() {
     const dispatch = useDispatch();
 
     React.useEffect(() => {
-        dispatch(fetchProfile())
+        dispatch(readWhois())
     }, [dispatch])
 
-    const profileState = useSelector(state => state.profile);
-    const { currentUser } = profileState;
+    const whoisState = useSelector(state => state.whois);
+    const { currentUser } = whoisState;
 
     return (
-        <ProfileContext.Provider value={currentUser}>
+        <WhoisContext.Provider value={currentUser}>
             <Router>
                 <div id="App">
                     <Header />
                     <Main />
                 </div>
             </Router>
-        </ProfileContext.Provider>
+        </WhoisContext.Provider>
 
     )
 };
