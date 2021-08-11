@@ -10,21 +10,21 @@ import { sentFeatureArticles } from './redux/action';
 
 
 
-const MainFeatureToday = ({ mainFeature }) => {
+const MainFeatureToday = () => {
     // STATE
     // const [articles, setFiturArticle] = useState([]);
     // console.log('article =>', articles)
 
-    // const dispatch = useDispatch()
-    // const getMainFeature = useSelector(state => state.featureToday);
+    const dispatch = useDispatch()
+    const getMainFeature = useSelector(state => state.featureToday);
 
-    // const { error, mainFeature } = getMainFeature;
+    const { error, mainFeature } = getMainFeature;
 
-    // // console.log('data=>', mainFeature);
+    // console.log('data=>', mainFeature);
 
-    // useEffect(() => {
-    //     dispatch(sentFeatureArticles())
-    // }, [dispatch])
+    useEffect(() => {
+        dispatch(sentFeatureArticles())
+    }, [dispatch])
     console.log(mainFeature);
 
     return <section className="features-today second-style">
@@ -39,13 +39,13 @@ const MainFeatureToday = ({ mainFeature }) => {
             <div className="features-today-box owl-wrapper">
                 <div className="owl-carousel" data-num="4">
                     {mainFeature && mainFeature.map((article, index) => {
-                        // let date= article.createdAt
+                        let date= article.createdAt
                         // console.log(article.image1_url)
                         return <div>
                             <CarouselFeatureToday
                                 key={article.uuid}
                                 category={article.category.category_name}
-                                // date={date}
+                                date={date}
                                 imgSrc={article.image1_url}
                                 user={article.user.username}
                                 // comment={article.comment}

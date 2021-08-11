@@ -3,7 +3,9 @@ import * as type from './types'
 const initialState = {
     fashionArticle:[],
     foodArticle:[],
-    error:'error'
+    childFashionArticle:[],
+    childFoodArticle:[],
+    error:false
 }
 
 export const articlesFiltReducer = (state= initialState, action)=>{
@@ -18,6 +20,17 @@ export const articlesFiltReducer = (state= initialState, action)=>{
             return{
                 ...state,
                 foodArticle: action.payload
+            }
+            case type.GET_CHILD_FASHION_ARTICLE:
+            // const {data} = action
+            return {
+                ...state,
+                childFashionArticle: action.payload
+            }
+        case type.GET_CHILD_FOOD_ARTICLE:
+            return{
+                ...state,
+                childFoodArticle: action.payload
             }
         default:
             return state;

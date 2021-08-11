@@ -1,11 +1,11 @@
 // import {Link} from 'react-router-dom'
-import NavFood from './NavFood/NavFood';
+// import NavFood from './NavFood/NavFood';
 import NavHome from './NavHome/NavHome';
-import NavSport  from './NavSport/NavSport';
-import NavTech from './NavTech/NavTech';
-import NavTravel from './NavTravel/NavTravel';
+// import NavSport  from './NavSport/NavSport';
+// import NavTech from './NavTech/NavTech';
+// import NavTravel from './NavTravel/NavTravel';
 // import NavVideo from './NavVideo/NavVideo';
-import NavListWorld from './NavWorld/NavListWorld'
+// import NavListWorld from './NavWorld/NavListWorld'
 
 
 const MainNavList = ()=>{
@@ -17,17 +17,17 @@ const MainNavList = ()=>{
 			    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul className="nav navbar-nav navbar-left">
                         <NavHome/>
-                        <NavListWorld/>
-                        <NavTravel/>
-                        <NavTech/>
+                        {/* <NavListWorld/> */}
+                        {/* <NavTravel/> */}
+                        {/* <NavTech/> */}
                         {/* <NavVideo/> */}
-                        <NavSport/>
-                        <NavFood/>
+                        {/* <NavSport/> */}
+                        {/* <NavFood/> */}
                     </ul>
-                    <form className="navbar-form navbar-right" role="search">
+                    {/* <form className="navbar-form navbar-right" role="search">
 					    <input type="text" id="search" name="search" placeholder="Search here"/>
 					    <button type="submit" id="search-submit"><i className="fa fa-search"></i></button>
-					</form>
+					</form> */}
                 </div>
             </div>
         </div>

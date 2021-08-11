@@ -1,4 +1,4 @@
-import CategoriesWidget from "./CategoriesWidget/CategoriesWidget"
+// import CategoriesWidget from "./CategoriesWidget/CategoriesWidget"
 import FlickrWidget from "./FlickrWidget/FlickrWidget"
 import PostWidget from "./PostWidget/PostWidget"
 import TextWidget from "./TextWidget/TextWidget"
@@ -8,7 +8,7 @@ const FooterWidget = ()=>{
            <div className="row">
                 <TextWidget/>
                 <PostWidget/>
-                <CategoriesWidget/>
+                {/* <CategoriesWidget/> */}
                 <FlickrWidget/>
             </div> 
 </div>

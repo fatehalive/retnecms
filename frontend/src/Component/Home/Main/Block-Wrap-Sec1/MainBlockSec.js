@@ -1,4 +1,4 @@
-import Addsense from "./Addsense/Adsense"
+// import Addsense from "./Addsense/Adsense"
 import MainGridBox from "./Grid-Box/MainGridBox"
 
 const MainBlockWrapperSec = ()=>{
@@ -7,7 +7,7 @@ const MainBlockWrapperSec = ()=>{
                     {/* <!-- block content --> */}
 				    <div className="block-content non-sidebar">
                         {/* Google Adsense */}
-                        <Addsense/>
+                        {/* <Addsense/> */}
                         <MainGridBox/>  
                     </div>
                 </div>

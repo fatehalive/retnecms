@@ -11,22 +11,22 @@ import { useSelector, useDispatch } from 'react-redux';
 
 
 const HomePage = () => {
-  const dispatch = useDispatch()
-  const getMainFeature = useSelector(state => state.featureToday);
+  // const dispatch = useDispatch()
+  // const getMainFeature = useSelector(state => state.featureToday);
 
-  const { error, mainFeature } = getMainFeature;
+  // const { error, mainFeature } = getMainFeature;
 
   // console.log('data=>', mainFeature);
 
-  useEffect(() => {
-    dispatch(sentFeatureArticles())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(sentFeatureArticles())
+  // }, [dispatch])
 
   return (
     <div>
 
       {/* Feature Today */}
-      <MainFeatureToday mainFeature={mainFeature} />
+      <MainFeatureToday/>
       {/* BLOCK-WRAPPER-SECTION */}
       <MainBlockWrapperSec />
       {/* BLOCK-WRAPPER-2 */}
