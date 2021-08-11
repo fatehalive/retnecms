@@ -194,7 +194,7 @@ const createNewsArticle = async (req, res, next) => {
       image1_url: `http://localhost:5000/public/image/${image1.uuid}.${image1.type}`,
       image2_url: `http://localhost:5000/public/image/${image2.uuid}.${image2.type}`,
       status: req.body.status,
-      user_uuid: req.body.user_uuid,
+      user_uuid: req.decoded.user_id,
       category_uuid: req.body.category_uuid
     });
     res.json({
