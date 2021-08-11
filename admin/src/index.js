@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Redirect } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import axios from 'axios';
+// style for antd
+import 'antd/dist/antd.css';
 
 import Store from './redux/Store.js';
 

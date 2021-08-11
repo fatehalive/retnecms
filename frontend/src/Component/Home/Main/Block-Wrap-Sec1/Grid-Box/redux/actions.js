@@ -41,7 +41,7 @@ export const sentFashionFilter =()=> async(dispatch)=>{
 export const sentFoodFilter =()=> async(dispatch)=>{
     try {
         let params = {pageSize: 1,
-            pageNumber:2,
+            pageNumber:1,
             filter: {
                 article_title:null,
                 username:null,

@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom'
 
 
-const CarouselTech = (props)=>{
+const CarouselSport = (props)=>{
     const {ImgSrc, Title, Date, Comment} = props
 
 
@@ -28,4 +28,4 @@ const CarouselTech = (props)=>{
 
 }
 
-export default CarouselTech;
+export default CarouselSport;

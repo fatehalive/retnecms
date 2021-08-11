@@ -29,7 +29,7 @@ const MainGridBox = ()=>{
                         // const {category_name, username} = article 
                         return <div>
                             <GridSection 
-                            key= {article.uuid}
+                            key= {index}
                             
                             category = {article.category.category_name}
                             imgHm = {article.image1_url}

@@ -21,8 +21,8 @@ const {category, imgHm,
 									<ul className="post-tags">
 										<li><i className="fa fa-clock-o"></i>{date}</li>
 										<li><i className="fa fa-user"></i>by <Link to="#">{user}</Link></li>
-										<li><Link to="#"><i className="fa fa-comments-o"></i><span>23</span></Link></li>
-										<li><i className="fa fa-eye"></i>99</li>
+										{/* <li><Link to="#"><i className="fa fa-comments-o"></i><span>23</span></Link></li>
+										<li><i className="fa fa-eye"></i>99</li> */}
 									</ul>
 								</div>
 							</div>
@@ -41,7 +41,7 @@ const {category, imgHm,
 									<ul className="post-tags">
 										<li><i className="fa fa-clock-o"></i>{date}</li>
 										<li><i className="fa fa-user"></i>by <Link to="#">{user}</Link></li>
-										<li><Link to="#"><i className="fa fa-comments-o"></i><span>00</span></Link></li>
+										{/* <li><Link to="#"><i className="fa fa-comments-o"></i><span>00</span></Link></li> */}
 									</ul>
 								</div>
 							</div>
@@ -61,7 +61,7 @@ const {category, imgHm,
 										<li>
 											<i className="fa fa-user"></i>by <Link to="#">{user}</Link>
 										</li>
-										<li><Link to="#"><i className="fa fa-comments-o"></i><span>{comment}</span></Link></li>
+										{/* <li><Link to="#"><i className="fa fa-comments-o"></i><span>{comment}</span></Link></li> */}
 									</ul>
 								</div>
 							</div>

@@ -17,11 +17,11 @@ const ArticleListWorld = ()=>{
                             </h2>
                             <ul className="post-tags">
                                 <li><i className="fa fa-clock-o"></i>{Data.date}</li>
-                                <li>
+                                {/* <li>
                                     <Link to="#">
                                         <i className="fa fa-comments-o"></i><span>{Data.comment}</span>
                                     </Link>
-                                </li>
+                                </li> */}
                             </ul>
 					    </div>
 					</div>
