@@ -88,7 +88,7 @@ function Main() {
                 <Route path="/admin/categories/update/:categoryId">
                     <CategoriesUpdate />
                 </Route>
-                <Route path="/admin/profile">
+                <Route path="/admin/profile/:id">
                     <UserProfile />
                 </Route>
                 <Redirect path='/admin' to='/admin/index'></Redirect>
