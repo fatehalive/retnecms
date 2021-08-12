@@ -226,7 +226,7 @@ function List() {
                             <div className="card-body">
 
                                 <div className="row">
-                                    <div className="col-sm-12 mb-3 text-left">
+                                    <div className="col-sm-12 mb-3 text-right">
                                         <Link to="/admin/categories/create" className="btn btn-primary btn-floating btn-rounded"><i className="icons dripicons-document-edit text-light"></i>Add Category</Link>
                                     </div>
                                 </div>

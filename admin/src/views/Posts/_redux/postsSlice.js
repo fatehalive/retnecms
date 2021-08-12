@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialCategoriesState = {
+const initialPostsState = {
   listLoading: false,
   actionsLoading: false,
   totalCount: 0,
   entities: null,
-  categoriesForEdit: undefined,
+  postForEdit: undefined,
   lastError: null,
 };
 
@@ -14,12 +14,12 @@ export const callTypes = {
   action: 'action',
 };
 
-export const categoriesSlice = createSlice({
-  name: 'categories',
-  initialState: initialCategoriesState,
+export const postsSlice = createSlice({
+  name: 'posts',
+  initialState: initialPostsState,
   reducers: {
     catchError: (state, action) => {
-      state.error = `${action.type}: ${action.payload.error}`;
+      state.error = action.payload.error.clientMessage;
       if (action.payload.callType === callTypes.list) {
         state.listLoading = false;
       } else {
@@ -35,14 +35,15 @@ export const categoriesSlice = createSlice({
       }
     },
 
-    // getCategoriesById
-    categoriesFetched: (state, action) => {
+    // getPostById
+    postFetched: (state, action) => {
       state.actionsLoading = false;
       state.error = null;
-      state.categoriesForEdit = action.payload.categoriesForEdit;
+      state.postForEdit = action.payload.postForEdit;
+      state.listLoading = false
     },
-    // findCategoriess
-    categoriesFetched: (state, action) => {
+    // findPostss
+    postsFetched: (state, action) => {
       const { total_items, items } = action.payload;
       state.listLoading = false;
       state.error = null;
@@ -50,7 +51,7 @@ export const categoriesSlice = createSlice({
       state.totalCount = total_items;
     },
     // Set to default state actionLoading & error
-    categoriesReload: (state, action) => {
+    postsReload: (state, action) => {
       state.actionsLoading = false;
       state.listLoading = false;
       state.error = null;

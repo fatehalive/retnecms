@@ -25,6 +25,7 @@ import PostsUpdate from '../../views/Posts/Update';
 
 
 import { CategoriesUIProvider } from '../Context/CategoriesContext'
+import { PostsUIProvider } from '../Context/PostsContext';
 
 import '../../assets/ReactToastify.css';
 import UserProfile from '../../views/UserProfile/UserProfile';
@@ -39,7 +40,9 @@ function Main() {
                     <Index />
                 </Route>
                 <Route path="/admin/posts/index">
-                    <PostsList />
+                    <PostsUIProvider>
+                        <PostsList />
+                    </PostsUIProvider>
                 </Route>
                 <Route path="/admin/posts/single/:postId">
                     <PostsSingle />
