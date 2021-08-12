@@ -1,4 +1,3 @@
-import { current } from "@reduxjs/toolkit";
 import { useContext } from "react";
 import { useHistory } from "react-router";
 import authservice from "../../services/auth-service";

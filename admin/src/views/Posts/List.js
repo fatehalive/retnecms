@@ -6,7 +6,6 @@ import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
-import { fetchCategory } from '../Categories/_redux/categoriesAction';
 
 function List() {
     // Hook: States
