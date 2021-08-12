@@ -63,7 +63,7 @@ const MainGridBox = ()=>{
                         // comment = {article.comment}
                         // view= {article.view}
                         imgSt={article.image1_url}
-                        // articleId= {article.uuid}
+                        articleId= {article.uuid}
 
                         />
                         </div> 
