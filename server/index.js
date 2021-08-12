@@ -1,5 +1,5 @@
 require('dotenv').config();
-const cors = require("cors");
+// const cors = require("cors");
 const express = require('express');
 const db = require('./models');
 const app = express();
@@ -16,7 +16,6 @@ app.use(
 );
 // app.use(cookieParser());
 app.use(express.static(__dirname));
-require('./routes/index')(app, express);
 
 
 const port = process.env.PORT;
@@ -36,6 +35,8 @@ app.use((req, res, next) => {
   }
   next();
 });
+require('./routes/index')(app, express);
+
 
 // require('./app/routes/index')(app, express);
 
