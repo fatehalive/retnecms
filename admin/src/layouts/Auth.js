@@ -3,6 +3,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import LoginForm from '../components/Forms/LoginForm';
 import authservice from '../services/auth-service';
 
+import config from '../config';
+
 function Auth() {
     const [user, setUser] = React.useState({
         email: '',
@@ -20,7 +22,7 @@ function Auth() {
         authservice.login(user.email, user.password)
             .then((response) => {
                 notifySuccess(response.message)
-                window.setTimeout(() => { window.location.assign('http://localhost:4000') }, 1500);
+                window.setTimeout(() => { window.location.assign(config.DOMAIN_NAME) }, 1500);
             })
             .catch((error) => notifyError(error))
     };
