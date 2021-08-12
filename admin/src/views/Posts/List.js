@@ -114,7 +114,7 @@ function List() {
                                                         <th style={{ width: "2.5%" }}>No.</th>
                                                         <th>Title</th>
                                                         <th>Meta Description</th>
-                                                        <th style={{ width: "5%", textAlign: "center"}}>Category</th>
+                                                        <th style={{ width: "5%", textAlign: "center" }}>Category</th>
                                                         <th style={{ width: "5%", textAlign: "center" }}>Status</th>
                                                         <th style={{ width: "5%", textAlign: "center" }}>Date</th>
                                                         <th style={{ width: "15%", textAlign: "center" }}>Actions</th>
@@ -127,9 +127,9 @@ function List() {
                                                                 <td>{index + 1}</td>
                                                                 <td><b><Link to={`/admin/posts/single/${post.uuid}`}>{post.article_title}</Link></b></td>
                                                                 <td>{post.article_summary}</td>
-                                                                <td>{post.category.category_name}</td>
+                                                                <td>{post.category && post.category.category_name}</td>
                                                                 {(post.status === 'publish') ? <td style={{ textAlign: "center" }}><span className="badge badge-success">{post.status}</span></td> : <td style={{ textAlign: "center" }}><span className="badge badge-secondary">{post.status}</span></td>}
-                                                                <td style={{ textAlign: "center" }}>{`${post.createdAt.slice(8, 10)}/${post.createdAt.slice(5,7)}/${post.createdAt.slice(0,4)}`}</td>
+                                                                <td style={{ textAlign: "center" }}>{`${post.createdAt.slice(8, 10)}/${post.createdAt.slice(5, 7)}/${post.createdAt.slice(0, 4)}`}</td>
                                                                 <td style={{ textAlign: "center" }}>
                                                                     <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Edit</Tooltip>)} placement="top">
                                                                         <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/posts/update/${post.uuid}`)}><i className="icons dripicons-pencil text-light"></i></button>
