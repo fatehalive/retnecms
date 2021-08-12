@@ -12,15 +12,16 @@ export const  getFeatureArticles = (data)=>{
 // DISPATCH DATA KE ACTION:
 export const sentFeatureArticles = ()=> async(dispatch)=>{
     try{
-        let params= {pageSize:6,
-        pageNumber:1,
+        let params= {
+            pageSize:6,
+            pageNumber:1,
     filter:{
         article_title:null,
         username:null,
         category_name: '',
         status: null
     }}
-       return axios.post('http://localhost:5000/news-article/find', params)
+       return axios.post('http://localhost:5000/news-article', params)
         .then(response =>{
             const {items} = response.data.data
                 // console.log('items =>', items)
