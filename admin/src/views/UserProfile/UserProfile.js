@@ -98,7 +98,7 @@ const UserProfile = () => {
                                                             <label htmlFor="file" className="btn btn-primary btn-rounded m-b-0 m-l-5 m-r-5">Upload</label>
                                                             <input type="file" className="file-upload__input" name="file" id="file" onChange={handleChangeFile} />
                                                         </div>
-                                                        <button className="btn btn-secondary btn-rounded">Delete</button>
+                                                        {/* <button className="btn btn-secondary btn-rounded">Delete</button> */}
                                                         {isFileSelected ? <p className="mt-3">Selected File: <b>{selectedFile.name}</b> - <b>{selectedFile.size/1000}</b> kB</p> : <p className="mt-3">No File Selected</p>}
                                                     </div>
                                                     <div className="form-group">
@@ -142,7 +142,7 @@ const UserProfile = () => {
                                                 </form>
                                             </div>
 
-                                            <div className="tab-pane fade" id="v-pills-payment" role="tabpanel" aria-labelledby="v-pills-payment-tab">
+                                            {/* <div className="tab-pane fade" id="v-pills-payment" role="tabpanel" aria-labelledby="v-pills-payment-tab">
                                                 <h4 className="card-heading p-b-20">User Info</h4>
                                                 <form>
                                                     <div className="form-group ">
@@ -175,7 +175,7 @@ const UserProfile = () => {
                                                     </div>
                                                     <button type="submit" className="btn btn-primary btn-rounded">Update Profile</button>
                                                 </form>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
