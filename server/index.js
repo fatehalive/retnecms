@@ -1,5 +1,5 @@
 require('dotenv').config();
-// const cors = require("cors");
+const cors = require("cors");
 const express = require('express');
 const db = require('./models');
 const app = express();
@@ -7,7 +7,7 @@ const app = express();
 
 global.__basedir = __dirname + '/..';
 
-// app.use(cors())
+app.use(cors())
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -20,21 +20,21 @@ app.use(express.static(__dirname));
 
 const port = process.env.PORT;
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  );
-  if (req.method === 'OPTIONS') {
-    res.header(
-      'Access-Control-Allow-Methods',
-      'PUT, POST, PATCH, DELETE, GET'
-    );
-    return res.status(200).json({});
-  }
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+//   );
+//   if (req.method === 'OPTIONS') {
+//     res.header(
+//       'Access-Control-Allow-Methods',
+//       'PUT, POST, PATCH, DELETE, GET'
+//     );
+//     return res.status(200).json({});
+//   }
+//   next();
+// });
 require('./routes/index')(app, express);
 
 
