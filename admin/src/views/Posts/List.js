@@ -1,13 +1,36 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { useHistory, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { fetchPosts } from './_redux/postsAction';
 import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { usePostsUIContext } from '../../components/Context/PostsContext'
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory, {
+    PaginationProvider,
+    PaginationListStandalone,
+    SizePerPageDropdownStandalone,
+    PaginationTotalStandalone
+} from 'react-bootstrap-table2-paginator';
+import Pagination from 'react-bootstrap/Pagination'
+import PostsFilter from './PostsFilter/PostsFilter';
+// import PostsFilter from './PostsFilter/PostsFilter';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
 
 function List() {
+    // context
+    const postsUIContext = usePostsUIContext();
+    const postsUIProps = useMemo(() => {
+        return {
+            queryParams: postsUIContext.queryParams,
+            setQueryParams: postsUIContext.setQueryParams,
+        };
+    }, [postsUIContext]);
+
+
     // Hook: States
     const [posts, setPosts] = React.useState();
     const [displayConfirmationModal, setDisplayConfirmationModal] = React.useState(false);
@@ -55,6 +78,22 @@ function List() {
         setLoading(true);
     }, [axiosGet]);
 
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchPosts(postsUIProps.queryParams));
+    }, [dispatch, postsUIProps.queryParams]);
+
+    const { currentState } = useSelector(
+        (state) => ({ currentState: state.posts }),
+        shallowEqual
+    )
+
+    const { listLoading,
+        actionsLoading,
+        totalCount,
+        lastError,
+        error, entities } = currentState
+
     // Event Handlers
     const handleDelete = (id) => {
         axiosDelete(id);
@@ -74,6 +113,106 @@ function List() {
     const notifySuccess = (msg) => toast.success(msg);
     const notifyError = (msg) => toast.error(msg);
 
+
+    const columns = [
+        {
+            dataField: 'article_title',
+            text: 'Title',
+            formatter: (cell, row, rowIndex) => {
+                return <b><Link to={`/admin/posts/single/${row.uuid}`}>{row.article_title}</Link></b>
+            }
+        },
+        {
+            dataField: 'article_summary',
+            text: 'Article Summary',
+        },
+        {
+            dataField: 'article_content',
+            text: 'Article Content',
+        },
+        {
+            dataField: 'status',
+            text: 'Status',
+            formatter: (cell, row, rowIndex) => {
+                return (
+                    (row.status === 'publish') ?
+                        <span className="badge badge-success text-center">{row.status}</span>
+                        :
+                        <span className="badge badge-secondary text-center">{row.status}</span>
+                )
+            }
+        },
+        {
+            dataField: 'user.username',
+            text: 'Posted By',
+        },
+        {
+            dateField: 'createdAt',
+            text: "Created At",
+            headerClasses: 'text-right',
+            classes: 'text-right',
+            formatter: (cell, row, rowIndex) => {
+                return (new Date(row.createdAt).toLocaleDateString('id-ID'))
+            }
+        },
+        {
+            dataField: 'action',
+            text: 'Actions',
+            formatter: (cell, row, rowIndex) => {
+                return (
+                    <>
+                        <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Edit</Tooltip>)} placement="top">
+                            <button className="btn btn-info btn-rounded btn-sm mr-xl-2 mb-xl-0 mr-0 mb-1 " onClick={() => history.push(`/admin/posts/update/${row.uuid}`)}><i className="icons dripicons-pencil text-light"></i></button>
+                        </OverlayTrigger>
+                        <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Delete</Tooltip>)} placement="top">
+                            <button className="btn btn-danger btn-rounded btn-sm mr-xl-2 mb-xl-0 mr-0 mb-1" onClick={() => showDeleteModal(row.uuid)}><i className="icons dripicons-trash text-light"></i></button>
+                        </OverlayTrigger>
+                    </>
+                )
+            },
+            headerClasses: 'text-right',
+            classes: 'text-right',
+            // style: 'text-right'
+        },
+
+    ];
+
+
+    const paginationOptions = {
+        custom: true,
+        page: postsUIProps.queryParams.pageNumber,
+        sizePerPageList: [
+            {
+                text: '10', value: 10
+            },
+            {
+                text: '25', value: 25
+            },
+            {
+                text: 'All', value: totalCount
+            }
+        ],
+        showTotal: true,
+        totalSize: totalCount
+    };
+
+    function handleTableAction(setQueryParams) {
+        return (type, { page, sizePerPage, sortField, sortOrder, data }) => {
+            const pageNumber = page || 1;
+            setQueryParams(
+                (prev) => {
+                    if (type === 'sort') {
+                        return { ...prev, sortOrder, sortField }
+                    } else if (type === 'pagination') {
+                        return { ...prev, pageNumber, pageSize: sizePerPage }
+                    } else {
+                        return prev
+                    }
+                }
+
+            );
+        };
+    }
     return (
         <main className="content container-fluid">
             <header className="page-header">
@@ -102,13 +241,77 @@ function List() {
 
                                 <div className="dataTables_wrapper container-fluid dt-bootstrap4">
                                     <div className="row">
+                                        <div className="col-sm-12 text-right">
+                                            <Link to="/admin/posts/create" className="btn btn-primary btn-floating btn-rounded mb-3 text-right">
+                                                <i className="icons dripicons-document-edit text-light"></i>Write Post
+                                            </Link>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-sm-12 col-md-6">
+
+                                        </div>
                                         <div className="col-sm-12">
-                                            <Link to="/admin/posts/create" className="btn btn-primary btn-floating btn-rounded"><i className="icons dripicons-document-edit text-light"></i>Write Post</Link>
+                                            <div className="dataTables_filter">
+                                                <PostsFilter />
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="col-sm-12">
-                                            <table id="bs4-table" className="table table-striped table-bordered" style={{ width: "100%" }}>
+                                            <PaginationProvider pagination={paginationFactory(paginationOptions)}>
+                                                {({ paginationProps, paginationTableProps }) => {
+
+                                                    return (
+                                                        <div>
+                                                            {(!listLoading) ?
+                                                                <div>
+                                                                    <BootstrapTable
+                                                                        wrapperClasses="table-responsive"
+                                                                        classes="table table-head-custom table-vertical-center overflow-hidden table-striped"
+                                                                        bootstrap4
+                                                                        bordered={false}
+                                                                        remote
+                                                                        keyField="uuid"
+                                                                        data={!entities ? [] : entities}
+                                                                        columns={columns}
+                                                                        onTableChange={
+                                                                            handleTableAction(
+                                                                                postsUIProps.setQueryParams,
+                                                                            )
+                                                                        }
+                                                                        {...paginationTableProps}
+                                                                    >
+                                                                    </BootstrapTable>
+                                                                    <div className="row">
+                                                                        <div className="col-md-6 col-lg-6">
+                                                                            <SizePerPageDropdownStandalone
+                                                                                {...paginationProps}
+                                                                            />
+                                                                            <PaginationTotalStandalone
+                                                                                {...paginationProps}
+
+                                                                            />
+                                                                        </div>
+                                                                        <div className="col-md-6 col-lg-6 mt-2 mt-md-0 mt-lg-0 mt-sm-2">
+                                                                            <PaginationListStandalone
+                                                                                {...paginationProps}
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                                :
+                                                                <div className="text-center" colSpan="4" style={{ backgroundColor: "white" }}>
+                                                                    <Spinner className="text-center" animation="border" variant="primary" />
+                                                                </div>
+
+                                                            }
+                                                        </div>
+                                                    );
+                                                }}
+                                            </PaginationProvider>
+                                            {/* <table id="bs4-table" className="table table-striped table-bordered" style={{ width: "100%" }}>
                                                 <thead>
                                                     <tr>
                                                         <th style={{ width: "2.5%" }}>No.</th>
@@ -142,7 +345,7 @@ function List() {
                                                         )
                                                     }) : <tr><td className="text-center" colSpan="4" style={{ backgroundColor: "white" }}><Spinner className="text-center" animation="border" variant="primary" /></td></tr>}
                                                 </tbody>
-                                            </table>
+                                            </table> */}
                                         </div>
                                     </div>
                                 </div>

@@ -41,24 +41,6 @@ export const fetchCategory = (id) => dispatch => {
     });
 };
 
-// export const createCategories = (categoriesForCreation) => dispatch => {
-//   dispatch(actions.startCall({ callType: callTypes.action }));
-//   return requestFromServer
-//     .createCategories(categoriesForCreation)
-//     .then(response => {
-//       dispatch(actions.categoriesReload);
-//     })
-//     .catch(error => {
-//       if (error.response.status === 401) {
-//         toast.error(error.response.data.message, toastOption);
-//         dispatch(auth.logout())
-//       }
-//       error.clientMessage = 'Can\'t create categories';
-//       dispatch(actions.catchError({ error, callType: callTypes.action }));
-//       // console.log("Can't create categories");
-//     });
-// };
-
 export const updateCategory = (categoryId, category) => dispatch => {
   dispatch(actions.startCall({ callType: callTypes.action }));
   return requestFromServer
