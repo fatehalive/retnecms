@@ -1,6 +1,8 @@
 // import {useHistory} from 'react-router-dom';
 import React, { useEffect} from 'react';
 import { useSelector, useDispatch} from 'react-redux';
+import {Moment} from 'react-moment';
+
 
 // COMPONENT
 import GridSectionFood from './GridSectionFood';
@@ -27,7 +29,7 @@ const MainGridBox = ()=>{
 
     return <div className="grid-box">   
                 <div className="row">   
-                    {fashionArticle.map((article,index)=>{
+                    {fashionArticle && fashionArticle.map((article,index)=>{
                         let date= article.createdAt
                         // const {category_name, username} = article 
                         return <div>
@@ -41,7 +43,7 @@ const MainGridBox = ()=>{
                         // comment = {article.comment}
                         // view= {article.view}
                         imgSt={article.image1_url}
-                        // articleId= {article.uuid}
+                        articleId= {article.uuid}
                         />
                     </div>
                     })}
@@ -61,7 +63,7 @@ const MainGridBox = ()=>{
                         // comment = {article.comment}
                         // view= {article.view}
                         imgSt={article.image1_url}
-                        // articleId= {article.uuid}
+                        articleId= {article.uuid}
 
                         />
                         </div> 

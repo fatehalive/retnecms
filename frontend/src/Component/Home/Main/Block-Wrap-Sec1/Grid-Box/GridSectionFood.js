@@ -35,7 +35,7 @@ const {category, imgHm,
 							<img width={'570px'} height={'360px'} src={imgHm} alt=""/>
 							<div className="hover-box">
 								<div className="inner-hover">
-									<h2><Link to="/article">{title}</Link></h2>
+									<h2><Link to={`/${articleId}`}>{title}</Link></h2>
 									<ul className="post-tags">
 										<li><i className="fa fa-clock-o"></i>{date}</li>
 										<li><i className="fa fa-user"></i>by <Link to="#">{user}</Link></li>
@@ -56,7 +56,7 @@ const {category, imgHm,
 									<img width={'270px'} height={'200px'} src={article.image1_url} alt="gambar"/>
 								</div>
 								<div className="post-content">
-									<h2><Link to={`/${articleId}`}>{article.article_title} </Link></h2>
+									<h2><Link to={`/${article.uuid}`}>{article.article_title} </Link></h2>
 									<ul className="post-tags">
 										<li><i className="fa fa-clock-o"></i>{article.createdAt}</li>
 										<li><i className="fa fa-user"></i>by <Link to="#">{article.user.username}</Link></li>

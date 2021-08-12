@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import config from '../../config';
 
 function SideBar() {
     return (
@@ -14,7 +15,7 @@ function SideBar() {
                         </li>
 
                         <li>
-                            <NavLink to="/admin/preview" target="_blank"><i className="icon dripicons-preview"></i><span className="mr-3">Preview Site</span><i className="ml-5 la la-external-link"></i></NavLink>
+                            <NavLink to={config.FE_DOMAIN} target="_blank"><i className="icon dripicons-preview"></i><span className="mr-3">Preview Site</span><i className="ml-5 la la-external-link"></i></NavLink>
                         </li>
 
                         <li className="nav-dropdown">

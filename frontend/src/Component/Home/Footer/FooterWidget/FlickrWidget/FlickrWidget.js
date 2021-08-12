@@ -30,7 +30,7 @@ const FlickrWidget = ()=>{
 					<ul className="flickr-list">
                         {flickrPhotosData && flickrPhotosData.map((data,index)=>{
                             return <li key={data.uuid}>
-                                <Link to="#"><img src={data.image1_url} alt="gambar"/></Link>
+                                <Link to={`/${data.uuid}`}><img src={data.image1_url} alt="gambar"/></Link>
                             </li>
                         })}
                     </ul>
