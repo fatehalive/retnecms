@@ -7,7 +7,7 @@ const app = express();
 
 global.__basedir = __dirname + '/..';
 
-app.use(cors())
+// app.use(cors())
 app.use(express.json());
 app.use(
   express.urlencoded({
