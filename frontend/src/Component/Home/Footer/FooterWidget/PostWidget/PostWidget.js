@@ -33,7 +33,7 @@ const {randomPost, error} = getRandomArticles;
                                 <img src={data.image1_url} alt="gambar"/>
                                 <div className="post-content">
                                     <Link to="#">{data.category.category_name}</Link>
-                                    <h2><Link to={'#'}>{data.article_title}</Link></h2>
+                                    <h2><Link to={`/${data.uuid}`}>{data.article_title}</Link></h2>
                                     <ul className="post-tags">
                                         <li><i className="fa fa-clock-o"></i>
                                             {data.createdAt}        

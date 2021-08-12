@@ -50,6 +50,7 @@ const MainFeatureToday = () => {
                                 user={article.user.username}
                                 // comment={article.comment}
                                 title={article.article_title}
+                                articleId= {article.uuid}
                             />
                         </div>
                     })}

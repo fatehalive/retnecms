@@ -15,7 +15,7 @@ function App() {
           {/* MAIN */}
             <Switch>
               <Route exact path="/" component={HomePage} />
-              <Route path="/:articleId" component={SinglePost} />
+              <Route path="/:id" component={SinglePost} />
             </Switch>
           {/* FOOTER */}
           <Footer/>

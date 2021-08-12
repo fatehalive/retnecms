@@ -37,11 +37,11 @@ const MasonryBox = () => {
             <img width={'370px'} height={'260px'} src={data.image1_url} alt="gambar" />
         </div>
         <div className="post-title">
-            <Link to="#" className={`category-post ${data.category.category_name}`}>{data.category.category_name}</Link>
-            <h2><Link to="single-post.html">{data.article_title} </Link></h2>
+            <Link to='#' className={`category-post ${data.category.category_name}`}>{data.category.category_name}</Link>
+            <h2><Link to={`/${data.uuid}`}>{data.article_title} </Link></h2>
             <ul className="post-tags">
                 <li><i className="fa fa-clock-o"></i><Moment format="DD-MM-YYYY">{data.createdAt}</Moment></li>
-                <li><i className="fa fa-user"></i>by <Link to="#">{data.user.username}</Link></li>
+                <li><i className="fa fa-user"></i>by <Link to='#'>{data.user.username}</Link></li>
                 <li><Link to="#"><i className="fa fa-comments-o"></i><span>{data.comment}</span></Link></li>
             </ul>
         </div>

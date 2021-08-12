@@ -29,6 +29,7 @@ const TabContent = ()=>{
                                 imgSrc= {data.image1_url}
                                 date= {data.createdAt}
                                 title= {data.article_title}
+                                articleId= {data.uuid}
                             />
                      
                      })}
