@@ -54,7 +54,7 @@ function Create() {
 
     const axiosPost = async () => {
         try {
-            const response = await axios.post('http://localhost:5000/news-article', formData)
+            const response = await axios.post('http://api.retnecms.com/news-article', formData)
             const { message } = response.data;
             if (response.data) {
                 notifySuccess(message);
@@ -71,8 +71,8 @@ function Create() {
 
     // Hook: useEffect to get data from api then attach it to state
     React.useEffect(() => {
-        axiosGet('http://localhost:5000/user', 'User')
-        axiosGet('http://localhost:5000/category', 'Category');
+        axiosGet('http://api.retnecms.com/user', 'User')
+        axiosGet('http://api.retnecms.com/category', 'Category');
     }, [axiosGet]);
 
     // Event Handlers

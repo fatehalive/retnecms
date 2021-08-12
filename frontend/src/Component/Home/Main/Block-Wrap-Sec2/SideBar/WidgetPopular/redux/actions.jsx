@@ -22,7 +22,7 @@ export const sentWidgetRecentArticles = ()=> async (dispatch)=>{
         },
       };
       return await axios
-        .post("http://localhost:5000/news-article/find", params)
+        .post("http://api.retnecms.com/news-article/find", params)
         .then((response) => {
           const { items } = response.data.data;
           dispatch(getWidgetRecentArticles(items));

@@ -51,7 +51,7 @@ function Update() {
     }, []);
 
     const axiosGetId = React.useCallback(async () => {
-        axios.get(`http://localhost:5000/news-article/${postId}`)
+        axios.get(`http://api.retnecms.com/news-article/${postId}`)
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id News_Article Successfully') {
@@ -70,7 +70,7 @@ function Update() {
 
     const axiosPut = React.useCallback(async () => {
         try {
-            const response = await axios.put(`http://localhost:5000/news-article/${postId}`, post);
+            const response = await axios.put(`http://api.retnecms.com/news-article/${postId}`, post);
             const { message } = response.data;
             if (message === 'News_Article Successfully Updated') {
                 notifySuccess(message)
@@ -88,8 +88,8 @@ function Update() {
     // Hook: useEffect to get data then store to state
     React.useEffect(() => {
         axiosGetId();
-        axiosGet('http://localhost:5000/user', 'User');
-        axiosGet('http://localhost:5000/category', 'Category');
+        axiosGet('http://api.retnecms.com/user', 'User');
+        axiosGet('http://api.retnecms.com/category', 'Category');
     }, [axiosGet, axiosGetId]);
 
     // Event Handlers

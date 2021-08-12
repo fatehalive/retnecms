@@ -41,7 +41,7 @@ export const sentFashionFilter =()=> async(dispatch)=>{
                 category_name:'Fashion',
                 status: null
             }}
-        return axios.post('http://localhost:5000/news-article/find', params)
+        return axios.post('http://api.retnecms.com/news-article/find', params)
         .then(response =>{
             // const {data: {total_items, items} } = response.data
             // dispatch(fetchFashionArticles({total_items,items}))
@@ -63,7 +63,7 @@ export const sentFoodFilter =()=> async(dispatch)=>{
                 category_name:'Food & Health',
                 status: null
             }}
-        return axios.post('http://localhost:5000/news-article/find', params)
+        return axios.post('http://api.retnecms.com/news-article/find', params)
         .then(response =>{
             // const {data: {total_items, items} } = response.data
             // dispatch(fetchFashionArticles({total_items,items}))
@@ -85,7 +85,7 @@ export const sentChildFashionFilter =()=> async(dispatch)=>{
                 category_name:'Fashion',
                 status: null
             }}
-        return axios.post('http://localhost:5000/news-article/find', params)
+        return axios.post('http://api.retnecms.com/news-article/find', params)
         .then(response =>{
             // const {data: {total_items, items} } = response.data
             // dispatch(fetchFashionArticles({total_items,items}))
@@ -107,7 +107,7 @@ export const sentChildFoodFilter =()=> async(dispatch)=>{
                 category_name:'Food & Health',
                 status: null
             }}
-        return axios.post('http://localhost:5000/news-article/find', params)
+        return axios.post('http://api.retnecms.com/news-article/find', params)
         .then(response =>{
             // const {data: {total_items, items} } = response.data
             // dispatch(fetchFashionArticles({total_items,items}))

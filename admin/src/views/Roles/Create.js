@@ -15,7 +15,7 @@ function Create() {
     // Function to Interact API
     const axiosPost = React.useCallback(async() => {
         try {
-            const response = await axios.post('http://localhost:5000/role', role)
+            const response = await axios.post('http://api.retnecms.com/role', role)
             const { message } = response.data;
             if (message === 'Successfully Created') {
                 notifySuccess(message);

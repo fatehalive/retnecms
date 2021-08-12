@@ -57,7 +57,7 @@ function Single() {
     }, []);
 
     const axiosGetId = React.useCallback(async () => {
-        axios.get(`http://localhost:5000/news-article/${postId}`)
+        axios.get(`http://api.retnecms.com/news-article/${postId}`)
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id News_Article Successfully') {
@@ -76,7 +76,7 @@ function Single() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            const response = await axios.delete('http://localhost:5000/news-article/' + id);
+            const response = await axios.delete('http://api.retnecms.com/news-article/' + id);
             const { message } = response.data;
             notifySuccess(message);
             window.setTimeout(() => history.push('/admin/posts/index'), 1500);
@@ -88,8 +88,8 @@ function Single() {
 
     // Hook: useEffect to get data then store to state
     React.useEffect(() => {
-        axiosGet('http://localhost:5000/user', 'User');
-        axiosGet('http://localhost:5000/category', 'Category');
+        axiosGet('http://api.retnecms.com/user', 'User');
+        axiosGet('http://api.retnecms.com/category', 'Category');
         axiosGetId();
     }, [axiosGetId, axiosGet, postId]);
 

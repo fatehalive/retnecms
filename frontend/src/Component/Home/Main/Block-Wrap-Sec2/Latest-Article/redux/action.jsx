@@ -22,7 +22,7 @@ export const getLatestArticles = (data) => {
 //       },
 //     };
 //     return await axios
-//       .post("http://localhost:5000/news-article/find", params)
+//       .post("http://api.retnecms.com/news-article/find", params)
 //       .then((response) => {
 //         const { items } = response.data.data;
 //         dispatch(getLatestArticles(items));
@@ -35,7 +35,7 @@ export const getLatestArticles = (data) => {
 export const sentLatestArticles = () => async (dispatch) => {
   try {
     return await axios
-      .get("http://localhost:5000/news-article/")
+      .get("http://api.retnecms.com/news-article/")
       .then((response) => {
         const { rows } = response.data.data;
         dispatch(getLatestArticles(rows));

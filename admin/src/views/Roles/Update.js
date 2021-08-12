@@ -15,7 +15,7 @@ function Update() {
 
     // Function to Interact API
     const axiosGetId = React.useCallback(() => {
-        axios.get(`http://localhost:5000/role/${roleId}`)
+        axios.get(`http://api.retnecms.com/role/${roleId}`)
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id Role Successfully') {
@@ -34,7 +34,7 @@ function Update() {
 
     const axiosPut = React.useCallback(async() => {
         try {
-            const response = await axios.put(`http://localhost:5000/role/${roleId}`, role);
+            const response = await axios.put(`http://api.retnecms.com/role/${roleId}`, role);
             const { message } = response.data;
             if (message === 'Role Successfully Updated') {
                 notifySuccess(message)

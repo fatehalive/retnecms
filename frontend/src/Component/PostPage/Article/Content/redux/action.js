@@ -16,7 +16,7 @@ export const getNextArticlePage = (data)=>{
 
 export const sentArticlePage = (route)=> async(dispatch)=>{
   try{
-    const {data} = await axios.get(`http://localhost:5000/news-article/${route}`)
+    const {data} = await axios.get(`http://api.retnecms.com/news-article/${route}`)
     console.log(route)
     dispatch(getArticlePage(data))
   }catch(err){
@@ -26,7 +26,7 @@ export const sentArticlePage = (route)=> async(dispatch)=>{
 
 export const sentNextArticlePage = (nextRoute)=> async(dispatch)=>{
   try{
-    const {data} = await axios.get(`http://localhost:5000/news-article/${nextRoute}`)
+    const {data} = await axios.get(`http://api.retnecms.com/news-article/${nextRoute}`)
     console.log(data);
     dispatch(getNextArticlePage(data))
   }catch(err){

@@ -23,7 +23,7 @@ function Single() {
 
     // Function to Interact API
     const axiosGetId = React.useCallback(async() => {
-        axios.get(`http://localhost:5000/role/${roleId}`)
+        axios.get(`http://api.retnecms.com/role/${roleId}`)
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id Role Successfully') {
@@ -42,7 +42,7 @@ function Single() {
 
     const axiosDelete = React.useCallback(async(id) => {
         try {
-            const response = await axios.delete('http://localhost:5000/role/' + id);
+            const response = await axios.delete('http://api.retnecms.com/role/' + id);
             const { message } = response.data;
             notifySuccess(message);
             window.setTimeout(() => history.push('/admin/roles/index'), 1500);

@@ -20,7 +20,7 @@ export const sentFlickrPhotos = ()=> async (dispatch)=>{
                 category_name:'',
                 status: null
             }}
-        return axios.post('http://localhost:5000/news-article/find', params)
+        return axios.post('http://api.retnecms.com/news-article/find', params)
         .then(response =>{
             const {items} = response.data.data
             dispatch(getFlickrPhotos(items))
