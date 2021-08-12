@@ -551,31 +551,31 @@ $(window).on("resize", function() {
   $(function() {
     // Smooth Scroll
     // ----------------------------------
-    if ($('a.smooth-scroll[href*="#"]:not([href="#"])').length > 0) {
-      $('a.smooth-scroll[href*="#"]:not([href="#"])').on('click',function() {
-        if($(this).parents('ul').hasClass('doc-menu')){
-          $('.doc-menu li').removeClass('active');
-           $(this).parent('li').addClass('active')
-        }
+  //   if ($('a.smooth-scroll[href*="#"]:not([href="#"])').length > 0) {
+  //     $('a.smooth-scroll[href*="#"]:not([href="#"])').on('click',function() {
+  //       if($(this).parents('ul').hasClass('doc-menu')){
+  //         $('.doc-menu li').removeClass('active');
+  //          $(this).parent('li').addClass('active')
+  //       }
 
-        if (
-          location.pathname.replace(/^\//, "") ==
-          this.pathname.replace(/^\//, "") &&
-          location.hostname == this.hostname
-        ) {
-          var target = $(this.hash);
-          target = target.length ?
-          target :
-          $("[name=" + this.hash.slice(1) + "]");
-          if (target.length) {
-            $("html, body").animate({
-              scrollTop: target.offset().top - 75
-            },500);
-          return false;
-        }
-      }
-    });
-  }
+  //       if (
+  //         location.pathname.replace(/^\//, "") ==
+  //         this.pathname.replace(/^\//, "") &&
+  //         location.hostname == this.hostname
+  //       ) {
+  //         var target = $(this.hash);
+  //         target = target.length ?
+  //         target :
+  //         $("[name=" + this.hash.slice(1) + "]");
+  //         if (target.length) {
+  //           $("html, body").animate({
+  //             scrollTop: target.offset().top - 75
+  //           },500);
+  //         return false;
+  //       }
+  //     }
+  //   });
+  // }
 
   // Filter Toolbar Dropdown Menu
   // ----------------------------------
