@@ -5,8 +5,8 @@ import TickerNews from '../../Component/PostPage/Ticker-News/TickerNews'
 import Article from '../../Component/PostPage/Article/Article'
 
 
-class SinglePost extends Component{
-  render(){
+const SinglePost =()=>{
+
     return(
       <div>
 
@@ -15,6 +15,6 @@ class SinglePost extends Component{
 
       </div>
     )
-  }
+
 }
 export default SinglePost

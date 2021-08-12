@@ -28,6 +28,4 @@ export const sentFlickrPhotos = ()=> async (dispatch)=>{
     } catch (error) {
         console.error(error)
     }
-
-
 }

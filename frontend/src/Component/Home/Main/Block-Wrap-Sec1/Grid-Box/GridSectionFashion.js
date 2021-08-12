@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom'
 import React, { useEffect} from 'react';
 import { useSelector, useDispatch} from 'react-redux';
-import {Moment} from 'react-moment';
+import Moment from 'react-moment';
 
 // component
 import { sentChildFashionFilter } from './redux/actions';
