@@ -4,7 +4,8 @@ import art3 from '../../Upload/news-posts/art3.jpg'
 import art6 from '../../Upload/news-posts/art6.jpg'
 import art9 from '../../Upload/news-posts/art9.jpg'
 
-const Data = [{
+const Data = [
+    {
             title: 'Donec odio. Quisque volutpat mattis eros. ',
             date: '27 may 2013',
             comment: 23,

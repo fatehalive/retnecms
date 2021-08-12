@@ -46,6 +46,14 @@ const Data = [
     category:"tech",
     categoryPost: "category-post tech"
 },
+{user:"Ilham",
+    title:"Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam.",
+    comment: 23,
+    date:"27 may 2013",
+    img:img6,
+    category:"tech",
+    categoryPost: "category-post tech"
+}
 ]
 
 export default Data;

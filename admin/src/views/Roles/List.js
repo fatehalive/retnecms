@@ -116,17 +116,16 @@ function List() {
                                                     <th style={{ width: "2.5%" }}>No.</th>
                                                     <th style={{ width: "57.5%" }}>Role</th>
                                                     <th>Created Date</th>
-                                                    <th style={{ width: "13%", textAlign: "center" }}>Actions</th>
+                                                    <th style={{ width: "15%", textAlign: "center" }}>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {(loading && roles) ? roles.map((role, index) => {
-                                                    let d = role.createdAt;
                                                     return (
                                                         <tr key={index}>
                                                             <td>{index + 1}</td>
                                                             <td><b><Link to={`/admin/roles/single/${role.uuid}`}>{role.role}</Link></b></td>
-                                                            <td>{d.slice(0, 10)}</td>
+                                                            <td>{`${role.createdAt.slice(8, 10)}/${role.createdAt.slice(5,7)}/${role.createdAt.slice(0,4)}`}</td>
                                                             <td style={{ textAlign: "center" }}>
                                                                 <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Edit</Tooltip>)} placement="top">
                                                                     <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/roles/update/${role.uuid}`)}><i className="icons dripicons-pencil text-light"></i></button>

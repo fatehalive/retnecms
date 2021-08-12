@@ -1,7 +1,5 @@
 import { Component } from "react";
-import ContentArticle from "./Content/ContentArticle";
-import ContentSec from "./Content/ContentSec";
-import Details from "./Content/Details";
+import ContentSec from "./Content/ContentPage";
 import Sidebar from "./Sidebar/SidebarSec";
 
 class Article extends Component{

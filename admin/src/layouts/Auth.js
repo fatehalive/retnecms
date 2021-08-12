@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import LoginForm from '../components/Forms/LoginForm';
 import authservice from '../services/auth-service';
@@ -9,8 +8,6 @@ function Auth() {
         email: '',
         password: ''
     });
-
-    const history = useHistory();
 
     const handleChange = (e, name) => {
         const value = e.target.value
@@ -23,9 +20,7 @@ function Auth() {
         authservice.login(user.email, user.password)
             .then((response) => {
                 notifySuccess(response.message)
-                authservice.getCurrentUser()
-                    .then(response => console.log(response))
-                window.setTimeout(() => history.push('/admin'), 1500);
+                window.setTimeout(() => { window.location.assign('http://localhost:4000') }, 1500);
             })
             .catch((error) => notifyError(error))
     };

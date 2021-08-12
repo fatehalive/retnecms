@@ -1,12 +1,31 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { useHistory, useParams, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { fetchCategory } from './_redux/categoriesAction';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
 
 function Single() {
+
+    // redux
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchCategory(categoryId));
+    }, []);
+
+    const { currentState } = useSelector(
+        (state) => ({ currentState: state.categories }),
+        shallowEqual
+    )
+
+    const { actionsLoading, categoryForEdit, error, listLoading } = currentState
+
+    if (error) {
+        toast.error(error)
+    }
     // Hook: States
     const [category, setCategory] = React.useState({
         category_name: '',
@@ -22,25 +41,25 @@ function Single() {
     const history = useHistory();
 
     // Function to Interact API
-    const axiosGetId = React.useCallback(async() => {
+    const axiosGetId = React.useCallback(async () => {
         axios.get(`http://localhost:5000/category/${categoryId}`)
-        .then(response => {
-            const { message, data } = response.data;
-            if (message === 'Get Id Category Successfully') {
-                console.table(data);
-                setCategory(response.data.data);
-            } else {
-                notifyError(`API okay, Check Response`);
-                console.warn(response);
-            }
-        })
-        .catch(error => {
-            notifyError(`Check Your Network`);
-            console.error(error);
-        });
+            .then(response => {
+                const { message, data } = response.data;
+                if (message === 'Get Id Category Successfully') {
+                    console.table(data);
+                    setCategory(response.data.data);
+                } else {
+                    notifyError(`API okay, Check Response`);
+                    console.warn(response);
+                }
+            })
+            .catch(error => {
+                notifyError(`Check Your Network`);
+                console.error(error);
+            });
     }, [categoryId]);
 
-    const axiosDelete = React.useCallback(async(id)=> {
+    const axiosDelete = React.useCallback(async (id) => {
         try {
             const response = await axios.delete('http://localhost:5000/category/' + id);
             const { message } = response.data;
@@ -51,11 +70,13 @@ function Single() {
             console.warn(error);
         }
     }, [history]);
-
     // Hook: useEffect to get data then store to state
     React.useEffect(() => {
         axiosGetId();
     }, [axiosGetId]);
+
+
+
 
     // Event Handlers
     const handleDelete = (id) => {
@@ -77,10 +98,16 @@ function Single() {
     const notifyError = (msg) => toast.error(msg);
 
     // Custom variables
-    let cd = new Date(category.createdAt);
-    let ud = new Date(category.updatedAt);
+    let cd;
+    let ud;
+    if (categoryForEdit) {
+        cd = new Date(categoryForEdit.createdAt);
+        ud = new Date(categoryForEdit.updatedAt);
+    }
+
 
     return (
+
         <main className="content container-fluid">
             <header className="page-header">
                 <div className="d-flex align-items-center">
@@ -105,26 +132,29 @@ function Single() {
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-sm-12">
-                                        <table id="bs4-table" className="table table-striped table-bordered" style={{ width: "100%" }}>
-                                            <thead>
-                                                <tr>
-                                                    <th style={{ width: "40%" }}>Category</th>
-                                                    <th>Created Date</th>
-                                                    <th>Created Time</th>
-                                                    <th>Updated Date</th>
-                                                    <th>Updated Time</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>{category.category_name}</td>
-                                                    <td>{category.createdAt.slice(0, 10)}</td>
-                                                    <td>{String(cd).slice(16, 24)}</td>
-                                                    <td>{category.updatedAt.slice(0, 10)}</td>
-                                                    <td>{String(ud).slice(16, 24)}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        {
+                                            categoryForEdit && <table id="bs4-table" className="table table-striped table-bordered" style={{ width: "100%" }}>
+                                                <thead>
+                                                    <tr>
+                                                        <th style={{ width: "40%" }}>Category</th>
+                                                        <th>Created Date</th>
+                                                        <th>Created Time</th>
+                                                        <th>Updated Date</th>
+                                                        <th>Updated Time</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>{categoryForEdit.category_name}</td>
+                                                        <td>{categoryForEdit.createdAt.slice(0, 10)}</td>
+                                                        <td>{String(cd).slice(16, 24)}</td>
+                                                        <td>{categoryForEdit.updatedAt.slice(0, 10)}</td>
+                                                        <td>{String(ud).slice(16, 24)}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        }
+
                                     </div>
                                 </div>
                             </div>
