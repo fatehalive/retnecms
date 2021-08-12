@@ -1,5 +1,4 @@
 import axios from "axios";
-import { bindActionCreators } from "redux";
 import config from '../../../config';
 
 const API_URL = config.WS_BASE_URL;

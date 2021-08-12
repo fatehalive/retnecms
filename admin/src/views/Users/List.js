@@ -110,17 +110,16 @@ function List() {
                                                     <th style={{ width: "2.5%" }}>No.</th>
                                                     <th style={{ width: "57.5%" }}>Name</th>
                                                     <th>Created Date</th>
-                                                    <th style={{ width: "13%", textAlign: "center" }}>Actions</th>
+                                                    <th style={{ width: "15%", textAlign: "center" }}>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {(users && loading) ? users.map((user, index) => {
-                                                    let d = user.createdAt;
                                                     return (
                                                         <tr key={index}>
                                                             <td>{index + 1}</td>
                                                             <td><strong><Link to={`/admin/users/single/${user.uuid}`}>{user.username}</Link></strong></td>
-                                                            <td>{d.slice(0, 10)}</td>
+                                                            <td>{`${user.createdAt.slice(8, 10)}/${user.createdAt.slice(5,7)}/${user.createdAt.slice(0,4)}`}</td>
                                                             <td style={{ textAlign: "center" }}>
                                                                 <OverlayTrigger overlay={(props) => (<Tooltip {...props}>Edit</Tooltip>)} placement="top">
                                                                     <button className="btn btn-info btn-rounded btn-sm" onClick={() => history.push(`/admin/users/update/${user.uuid}`)}><i className="icons dripicons-pencil text-light"></i></button>
