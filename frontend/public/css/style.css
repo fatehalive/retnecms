@@ -1210,7 +1210,7 @@ section.features-today .owl-theme .owl-controls {
 }
 /*block wrapper section */
 div.block-content {
-  padding: 30px 0 60px;
+  padding: 30px 0 5px;
   position: relative;
 }
 div.block-content .advertisement {
@@ -2467,7 +2467,7 @@ section.big-slider .big-bxslider li .image-post2 .hover-box .inner-hover h2 {
 .sidebar .tab-posts-widget ul.nav-tabs li {
   float: left;
   /* width: 33.333333333333%; */
-  width: 50%;
+  width: 100%;
   border: none;
   margin: 0;
   padding-left: 1px;
