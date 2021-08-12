@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import React, { useEffect, useMemo, useState } from 'react';
+import config from '../../config';
 
 function SideBar() {
     const { currentState } = useSelector(
@@ -31,7 +32,7 @@ function SideBar() {
                         </li>
 
                         <li>
-                            <NavLink to="/admin/preview" target="_blank"><i className="icon dripicons-preview"></i><span className="mr-3">Preview Site</span><i className="ml-5 la la-external-link"></i></NavLink>
+                            <NavLink to={config.FE_DOMAIN} target="_blank"><i className="icon dripicons-preview"></i><span className="mr-3">Preview Site</span><i className="ml-5 la la-external-link"></i></NavLink>
                         </li>
                         {
                             user && user.role && user.role.role && postsAllow.includes(user.role.role) && (
