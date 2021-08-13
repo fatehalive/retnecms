@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import config from '../config';
 
 const API_URL = config.WS_BASE_URL;
@@ -11,7 +12,10 @@ const login = (email, password) => {
                 localStorage.setItem('user', JSON.stringify(response.data));
             }
             return response.data;
-        });
+        })
+        .catch((e) => {
+            toast.error(`Gagal`)
+        } );
 };
 
 const logout = async () => {

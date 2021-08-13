@@ -24,7 +24,9 @@ function Auth() {
                 notifySuccess(response.message)
                 window.setTimeout(() => { window.location.assign(config.DOMAIN_NAME) }, 1500);
             })
-            .catch((error) => notifyError(error))
+            .catch((error) => {
+                console.log(error)
+            })
     };
 
     const notifySuccess = (msg) => toast.success(msg);
