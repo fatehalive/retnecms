@@ -1,16 +1,16 @@
 import axios from 'axios';
 // items => filtered/sorted result
 export function findCategories(params) {
-  return axios.post('http://api.retnecms.com/category/find', params)
+  return axios.post('https://api.retnecms.com/category/find', params)
 }
 
 export function getCategoriesById(categoryId) {
-  return axios.get(`http://api.retnecms.com/category/${categoryId}`)
+  return axios.get(`https://api.retnecms.com/category/${categoryId}`)
 }
 
 export function updateCategory(categoryId, category) {
   console.log(categoryId, category);
-  return axios.put(`http://api.retnecms.com/category/${categoryId}`, category);
+  return axios.put(`https://api.retnecms.com/category/${categoryId}`, category);
 }
 
 // //Get By ID
@@ -35,7 +35,7 @@ export function updateCategory(categoryId, category) {
 
 
 // const axiosGet = React.useCallback(async () => {
-//   axios.get('http://api.retnecms.com/category')
+//   axios.get('https://api.retnecms.com/category')
 //       .then(response => {
 //           const { message, data } = response.data;
 //           if (message === 'Get Category Successfully') {

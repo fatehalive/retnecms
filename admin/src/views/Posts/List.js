@@ -43,7 +43,7 @@ function List() {
 
     // Functions to Interact with API
     const axiosGet = React.useCallback(async () => {
-        axios.get('http://api.retnecms.com/news-article')
+        axios.get('https://api.retnecms.com/news-article')
             .then(response => {
                 const { message } = response.data;
                 if (message === 'Get News_Article Successfully') {
@@ -62,7 +62,7 @@ function List() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            const response = await axios.delete('http://api.retnecms.com/news-article/' + id);
+            const response = await axios.delete('https://api.retnecms.com/news-article/' + id);
             const { message } = response.data;
             notifySuccess(message);
             axiosGet();

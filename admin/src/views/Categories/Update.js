@@ -38,7 +38,7 @@ function Update() {
 
     // Function to Interact API
     // const axiosGetId = React.useCallback(async () => {
-    //     axios.get(`http://api.retnecms.com/category/${categoryId}`)
+    //     axios.get(`https://api.retnecms.com/category/${categoryId}`)
     //         .then(response => {
     //             const { message, data } = response.data;
     //             if (message === 'Get Id Category Successfully') {
@@ -57,7 +57,7 @@ function Update() {
 
     // const axiosPut = React.useCallback(async () => {
     //     try {
-    //         const response = await axios.put(`http://api.retnecms.com/category/${categoryId}`, category);
+    //         const response = await axios.put(`https://api.retnecms.com/category/${categoryId}`, category);
     //         const { message } = response.data;
     //         if (message === 'Category Successfully Updated') {
     //             notifySuccess(message)

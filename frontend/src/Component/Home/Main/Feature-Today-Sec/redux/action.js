@@ -21,7 +21,7 @@ export const sentFeatureArticles = ()=> async(dispatch)=>{
         category_name: '',
         status: null
     }}
-       return axios.post('http://api.retnecms.com/news-article', params)
+       return axios.post('https://api.retnecms.com/news-article', params)
         .then(response =>{
             const {items} = response.data.data
                 // console.log('items =>', items)

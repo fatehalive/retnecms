@@ -18,7 +18,7 @@ export const sentTravelArticles = ()=> async(dispatch)=>{
                 category_name:'Fashion',
                 status: null
             }}
-        return await axios.post('http://api.retnecms.com/news-article/find', params)
+        return await axios.post('https://api.retnecms.com/news-article/find', params)
         .then(response =>{
             const {items} = response.data.data
             dispatch(fetchTravelArticles(items))

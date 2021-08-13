@@ -3,7 +3,7 @@
 
 // // API
 // // FOR ARTICLE:
-// let urlArticle = 'http://api.retnecms.com/news-article/find'
+// let urlArticle = 'https://api.retnecms.com/news-article/find'
 
 // export const reqGetFashion = ()=>{
 //     return axios.post(urlArticle,{

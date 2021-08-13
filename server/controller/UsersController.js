@@ -267,7 +267,7 @@ const createUserProfile = async (req, res, next) => {
   try {
     const data = await User_Profile.create({
       name: name,
-      profile_image_url: `http://api.retnecms.com/public/profile-image/${profilePicture.uuid}.${profilePicture.type}`,
+      profile_image_url: `https://api.retnecms.com/public/profile-image/${profilePicture.uuid}.${profilePicture.type}`,
       quotes: quotes ?? '-',
       facebook: facebook ?? '-',
       google_plus: google_plus ?? '-',
@@ -316,7 +316,7 @@ const updateUserProfile = async (req, res, next) => {
     if (!UserData) AppError(401, message.ID_USER_NOT_FOUND)
 
     let imageFixLocation = UserData.profile_image_url
-    let imageRelativeLocation = imageFixLocation.replace('http://api.retnecms.com/public/profile-image/', '')
+    let imageRelativeLocation = imageFixLocation.replace('https://api.retnecms.com/public/profile-image/', '')
 
     let profilePicture = null
     if (req.file) {
@@ -358,7 +358,7 @@ const updateUserProfile = async (req, res, next) => {
       Object.assign(updateData, { website: website });
     }
     if (profilePicture) {
-      Object.assign(updateData, { profile_image_url: `http://api.retnecms.com/public/profile-image/${profilePicture.uuid}.${profilePicture.type}` });
+      Object.assign(updateData, { profile_image_url: `https://api.retnecms.com/public/profile-image/${profilePicture.uuid}.${profilePicture.type}` });
     }
 
     const data = await User_Profile.update(updateData, {

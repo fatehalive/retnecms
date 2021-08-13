@@ -21,7 +21,7 @@ function List() {
     // Function to Interact API
     const axiosGet = React.useCallback(async () => {
         try {
-            axios.get('http://api.retnecms.com/role')
+            axios.get('https://api.retnecms.com/role')
                 .then(response => {
                     const { message, data } = response.data;
                     if (message === 'Successfully') {
@@ -45,7 +45,7 @@ function List() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            const response = await axios.delete('http://api.retnecms.com/role/' + id);
+            const response = await axios.delete('https://api.retnecms.com/role/' + id);
             const { message } = response.data;
             notifySuccess(message);
             axiosGet();

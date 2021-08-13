@@ -9,7 +9,7 @@ const Headline = (props)=>{
   const {data} = props
   // const {title, createdAt, username} = props
   // React.useEffect(()=>{
-  //   axios.get(`http://api.retnecms.com/news-article/${articleId}`)
+  //   axios.get(`https://api.retnecms.com/news-article/${articleId}`)
   //     .then(res=>{
   //       const {data, message} = res.data;
   //       if(message === "Get Id News_Article Successfully"){

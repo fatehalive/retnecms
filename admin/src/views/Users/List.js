@@ -20,7 +20,7 @@ function List() {
 
     // Functions to Interact with API
     const axiosGet = React.useCallback(async () => {
-        axios.get('http://api.retnecms.com/user')
+        axios.get('https://api.retnecms.com/user')
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get User Successfully') {
@@ -39,7 +39,7 @@ function List() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            const response = await axios.delete(`http://api.retnecms.com/user/${id}`);
+            const response = await axios.delete(`https://api.retnecms.com/user/${id}`);
             const { message } = response.data;
             notifySuccess(message);
             axiosGet();

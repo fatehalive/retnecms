@@ -41,7 +41,7 @@ function List() {
 
     // Function to Interact API
     const axiosGet = React.useCallback(async () => {
-        axios.get('http://api.retnecms.com/category')
+        axios.get('https://api.retnecms.com/category')
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Category Successfully') {
@@ -60,7 +60,7 @@ function List() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            axios.delete('http://api.retnecms.com/category/' + id).then(response => {
+            axios.delete('https://api.retnecms.com/category/' + id).then(response => {
                 const { message } = response.data;
                 notifySuccess(message);
                 dispatch(fetchCategories(categoriesUIProps.queryParams));

@@ -27,7 +27,7 @@ function Single() {
 
     // Function to Interact API
     const axiosGet = React.useCallback(async () => {
-        axios.get('http://api.retnecms.com/role')
+        axios.get('https://api.retnecms.com/role')
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Successfully') {
@@ -45,7 +45,7 @@ function Single() {
     }, []);
 
     const axiosGetId = React.useCallback(async () => {
-        axios.get(`http://api.retnecms.com/user/${userId}`)
+        axios.get(`https://api.retnecms.com/user/${userId}`)
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id User Successfully') {
@@ -64,7 +64,7 @@ function Single() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            const response = await axios.delete('http://api.retnecms.com/user/' + id);
+            const response = await axios.delete('https://api.retnecms.com/user/' + id);
             const { message } = response.data;
             notifySuccess(message);
             window.setTimeout(() => history.push('/admin/users/index'), 1500);

@@ -21,7 +21,7 @@ function Create() {
 
     // Functions to Interact with API
     const axiosGet = React.useCallback(async() => {
-        axios.get('http://api.retnecms.com/role')
+        axios.get('https://api.retnecms.com/role')
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Successfully') {
@@ -40,7 +40,7 @@ function Create() {
 
     const axiosPost = React.useCallback(async() => {
         try {
-            const response = await axios.post('http://api.retnecms.com/user', user)
+            const response = await axios.post('https://api.retnecms.com/user', user)
             const { message } = response.data;
             if (message === 'User Successfully Created') {
                 notifySuccess(message);
