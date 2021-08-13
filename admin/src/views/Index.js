@@ -1,4 +1,8 @@
+import { useSelector } from "react-redux";
+
 function Index() {
+    const whoisState = useSelector(state=>state.whois);
+
     return (
         <main className="content container-fluid">
             <header className="page-header">
@@ -16,7 +20,11 @@ function Index() {
             </header>
             <section className="page-content container-fluid">
                 <div className="row">
-                    <div className="col-lg-4">
+                    {whoisState.currentUser.user_profile
+                        ? <h1>{`Selamat Datang, ${whoisState.currentUser.user_profile.name} ! Anda Login sebagai ${whoisState.currentUser.role.role}`}</h1>
+                        : <h1>{`Selamat Datang, ${whoisState.currentUser.username} ! Anda Login sebagai ${whoisState.currentUser.role.role}`}</h1>
+                    }
+                    {/* <div className="col-lg-4">
                         <div className="card">
                             <h5 className="card-header">User list</h5>
                             <div className="card-body p-0">
@@ -107,7 +115,7 @@ function Index() {
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </section>
         </main>

@@ -81,7 +81,7 @@ const UserProfile = () => {
                                     <div className="col-md-12 col-lg-3">
                                         <div className="nav flex-column nav-pills" id="my-account-tabs" role="tablist" aria-orientation="vertical">
                                             <a className="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">Profile</a>
-                                            <a className="nav-link" id="v-pills-payment-tab" data-toggle="pill" href="#v-pills-payment" role="tab" aria-controls="v-pills-payment" aria-selected="false">User Info</a>
+                                            {/* <a className="nav-link" id="v-pills-payment-tab" data-toggle="pill" href="#v-pills-payment" role="tab" aria-controls="v-pills-payment" aria-selected="false">User Info</a> */}
                                         </div>
                                     </div>
                                     <div className="col-md-12 col-lg-9">
@@ -90,7 +90,7 @@ const UserProfile = () => {
                                                 <h4 className="card-heading p-b-20">Profile</h4>
                                                 <form>
                                                     <div className="form-group">
-                                                        {(whoisState.currentUser && whoisState.currentUser.user_profile.profile_image_url)
+                                                        {whoisState.currentUser.user_profile.profile_image_url
                                                         ? <img src={whoisState.currentUser.user_profile.profile_image_url} className="w-50 rounded-circle" alt={whoisState.currentUser.user_profile.name} />
                                                         : <img src="/assets/img/avatars/default.png" className="w-50 rounded-circle" alt={whoisState.currentUser.username} />}
                                                         
@@ -137,7 +137,7 @@ const UserProfile = () => {
                                                         <label>Bio</label>
                                                         <textarea className="form-control" value={data.quotes} onChange={handleChange} rows="3" name="quotes" ></textarea>
                                                     </div>
-                                                    <button onClick={handleSubmit} className="btn btn-primary btn-rounded">Update Profile</button>
+                                                    <button onClick={handleSubmit} className="btn btn-primary btn-rounded">Create Profile</button>
                                                     <button onClick={() => history.push('/admin')} className="btn btn-secondary btn-rounded">Back</button>
                                                 </form>
                                             </div>
