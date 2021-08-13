@@ -1,5 +1,6 @@
 import * as type from './types';
 import axios from 'axios';
+import config from '../../../../../config';
 
 export const  getFeatureArticles = (data)=>{
     return {
@@ -21,7 +22,7 @@ export const sentFeatureArticles = ()=> async(dispatch)=>{
         category_name: '',
         status: null
     }}
-       return axios.post('http://localhost:5000/news-article', params)
+       return axios.post(config.WS_BASE_URL + '/news-article', params)
         .then(response =>{
             const {items} = response.data.data
                 // console.log('items =>', items)

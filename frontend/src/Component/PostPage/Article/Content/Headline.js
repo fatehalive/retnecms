@@ -4,12 +4,13 @@ import {Link, useParams} from 'react-router-dom';
 import { useSelector, useDispatch} from 'react-redux';
 import { sentArticlePage } from "./redux/action";
 import Moment from 'react-moment'
+import config from "../../../../config";
 
 const Headline = (props)=>{
   const {data} = props
   // const {title, createdAt, username} = props
   // React.useEffect(()=>{
-  //   axios.get(`http://localhost:5000/news-article/${articleId}`)
+  //   axios.get(config.WS_BASE_URL + `/news-article/${articleId}`)
   //     .then(res=>{
   //       const {data, message} = res.data;
   //       if(message === "Get Id News_Article Successfully"){

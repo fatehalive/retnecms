@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as type from './types';
+import config from '../../../../../../config';
 
 // ACTIONS
 export const getFlickrPhotos = (articles)=>{
@@ -20,7 +21,7 @@ export const sentFlickrPhotos = ()=> async (dispatch)=>{
                 category_name:'',
                 status: null
             }}
-        return axios.post('http://localhost:5000/news-article/find', params)
+        return axios.post(config.WS_BASE_URL + '/news-article/find', params)
         .then(response =>{
             const {items} = response.data.data
             dispatch(getFlickrPhotos(items))

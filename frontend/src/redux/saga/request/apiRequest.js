@@ -3,7 +3,7 @@
 
 // // API
 // // FOR ARTICLE:
-// let urlArticle = 'http://localhost:5000/news-article/find'
+// let urlArticle = config.WS_BASE_URL + '/news-article/find'
 
 // export const reqGetFashion = ()=>{
 //     return axios.post(urlArticle,{

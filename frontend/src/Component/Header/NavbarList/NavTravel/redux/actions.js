@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as type from './types';
+import config from '../../../../../config';
 
 export const fetchTravelArticles = (articles)=>{
     return {
@@ -18,7 +19,7 @@ export const sentTravelArticles = ()=> async(dispatch)=>{
                 category_name:'Fashion',
                 status: null
             }}
-        return await axios.post('http://localhost:5000/news-article/find', params)
+        return await axios.post(config.WS_BASE_URL + '/news-article/find', params)
         .then(response =>{
             const {items} = response.data.data
             dispatch(fetchTravelArticles(items))
