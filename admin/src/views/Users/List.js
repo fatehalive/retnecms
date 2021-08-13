@@ -40,7 +40,7 @@ function List() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:5000/user/${id}`);
+            const response = await axios.delete(config.WS_BASE_URL + `/user/${id}`);
             const { message } = response.data;
             notifySuccess(message);
             axiosGet();

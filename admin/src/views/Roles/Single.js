@@ -24,7 +24,7 @@ function Single() {
 
     // Function to Interact API
     const axiosGetId = React.useCallback(async() => {
-        axios.get(`http://localhost:5000/role/${roleId}`)
+        axios.get(config.WS_BASE_URL + `/role/${roleId}`)
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id Role Successfully') {

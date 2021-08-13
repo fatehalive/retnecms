@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useHistory, useParams, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import config from '../../config';
 
 function Update() {
     // Hook: State
@@ -15,7 +16,7 @@ function Update() {
 
     // Function to Interact API
     const axiosGetId = React.useCallback(() => {
-        axios.get(`http://localhost:5000/role/${roleId}`)
+        axios.get(config.WS_BASE_URL + `/role/${roleId}`)
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id Role Successfully') {
@@ -34,7 +35,7 @@ function Update() {
 
     const axiosPut = React.useCallback(async() => {
         try {
-            const response = await axios.put(`http://localhost:5000/role/${roleId}`, role);
+            const response = await axios.put(config.WS_BASE_URL + `/role/${roleId}`, role);
             const { message } = response.data;
             if (message === 'Role Successfully Updated') {
                 notifySuccess(message)

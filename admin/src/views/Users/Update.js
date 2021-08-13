@@ -40,7 +40,7 @@ function Update() {
     }, []);
 
     const axiosGetId = React.useCallback(async () => {
-        axios.get(`http://localhost:5000/user/${userId}`)
+        axios.get(config.WS_BASE_URL + `/user/${userId}`)
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id User Successfully') {
@@ -59,7 +59,7 @@ function Update() {
 
     const axiosPut = React.useCallback(async () => {
         try {
-            const response = await axios.put(`http://localhost:5000/user/${userId}`, user);
+            const response = await axios.put(config.WS_BASE_URL + `/user/${userId}`, user);
             const { message } = response.data;
             if (message === 'User Successfully Updated') {
                 notifySuccess(message)
