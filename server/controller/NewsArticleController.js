@@ -191,8 +191,8 @@ const createNewsArticle = async (req, res, next) => {
       article_title: req.body.article_title,
       article_summary: req.body.article_summary,
       article_content: req.body.article_content,
-      image1_url: `http://localhost:5000/public/image/${image1.uuid}.${image1.type}`,
-      image2_url: `http://localhost:5000/public/image/${image2.uuid}.${image2.type}`,
+      image1_url: process.env.HOSTNAME + `/public/image/${image1.uuid}.${image1.type}`,
+      image2_url: process.env.HOSTNAME + `/public/image/${image2.uuid}.${image2.type}`,
       status: req.body.status,
       user_uuid: req.decoded.user_id,
       category_uuid: req.body.category_uuid
@@ -218,7 +218,7 @@ const updateNewsArticle = async (req, res, next) => {
     let image1 = null
     if (req.files.image1) {
       let imageFixLocation1 = News_ArticleData.image1_url
-      let imageRelativeLocation1 = imageFixLocation1.replace('http://localhost:5000/public/image/', '')
+      let imageRelativeLocation1 = imageFixLocation1.replace(process.env.HOSTNAME + '/public/image/', '')
       fs.unlinkSync(__basedir + '/server/public/image/' + imageRelativeLocation1)
       image1 = {
         uuid: req.files.image1[0].filename.slice(0, 36),
@@ -228,7 +228,7 @@ const updateNewsArticle = async (req, res, next) => {
     let image2 = null
     if (req.files.image1) {
       let imageFixLocation2 = News_ArticleData.image2_url
-      let imageRelativeLocation2 = imageFixLocation2.replace('http://localhost:5000/public/image/', '')
+      let imageRelativeLocation2 = imageFixLocation2.replace(process.env.HOSTNAME + '/public/image/', '')
       fs.unlinkSync(__basedir + '/server/public/image/' + imageRelativeLocation2)
       image2 = {
         uuid: req.files.image2[0].filename.slice(0, 36),
@@ -251,11 +251,11 @@ const updateNewsArticle = async (req, res, next) => {
     }
 
     if (image1 !== "") {
-      updateData['image1_url'] = `http://localhost:5000/public/image/${image1.uuid}.${image1.type}`;
+      updateData['image1_url'] = process.env.HOSTNAME + `/public/image/${image1.uuid}.${image1.type}`;
     }
 
     if (image2 !== "") {
-      updateData['image2_url'] = `http://localhost:5000/public/image/${image2.uuid}.${image2.type}`;
+      updateData['image2_url'] = process.env.HOSTNAME + `/public/image/${image2.uuid}.${image2.type}`;
     }
 
     if (status !== "") {
@@ -361,11 +361,11 @@ const deleteNewsArticle = async (req, res, next) => {
     });
 
     let imageFixLocation1 = articleData.image1_url
-    let imageRelativeLocation1 = imageFixLocation1.replace('http://localhost:5000/public/image/', '')
+    let imageRelativeLocation1 = imageFixLocation1.replace(process.env.HOSTNAME + '/public/image/', '')
     fs.unlinkSync(__basedir + '/server/public/image/' + imageRelativeLocation1)
 
     let imageFixLocation2 = articleData.image2_url
-    let imageRelativeLocation2 = imageFixLocation2.replace('http://localhost:5000/public/image/', '')
+    let imageRelativeLocation2 = imageFixLocation2.replace(process.env.HOSTNAME + '/public/image/', '')
     fs.unlinkSync(__basedir + '/server/public/image/' + imageRelativeLocation2)
 
     if (!NewsArticleData) {
