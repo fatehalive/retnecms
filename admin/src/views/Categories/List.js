@@ -61,7 +61,7 @@ function List() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            axios.delete(confing.WS_BASE_URL + '/category/' + id).then(response => {
+            axios.delete(config.WS_BASE_URL + '/category/' + id).then(response => {
                 const { message } = response.data;
                 notifySuccess(message);
                 dispatch(fetchCategories(categoriesUIProps.queryParams));

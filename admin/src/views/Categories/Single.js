@@ -43,7 +43,7 @@ function Single() {
 
     // Function to Interact API
     const axiosGetId = React.useCallback(async () => {
-        axios.get(config.WS_BASE_URL + '/category/${categoryId}`)
+        axios.get(config.WS_BASE_URL + `/category/${categoryId}`)
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id Category Successfully') {
