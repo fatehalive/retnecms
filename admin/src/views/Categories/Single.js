@@ -7,6 +7,7 @@ import { fetchCategory } from './_redux/categoriesAction';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
+import config from '../../config';
 
 function Single() {
 
@@ -42,7 +43,7 @@ function Single() {
 
     // Function to Interact API
     const axiosGetId = React.useCallback(async () => {
-        axios.get(`http://localhost:5000/category/${categoryId}`)
+        axios.get(config.WS_BASE_URL + '/category/${categoryId}`)
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id Category Successfully') {
@@ -61,7 +62,7 @@ function Single() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            const response = await axios.delete('http://localhost:5000/category/' + id);
+            const response = await axios.delete(config.WS_BASE_URL + '/category/' + id);
             const { message } = response.data;
             notifySuccess(message);
             window.setTimeout(() => history.push('/admin/categories/index'), 1500);

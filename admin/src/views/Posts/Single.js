@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
+import config from '../../config';
 
 function Single() {
     // Hook: States
@@ -57,7 +58,7 @@ function Single() {
     }, []);
 
     const axiosGetId = React.useCallback(async () => {
-        axios.get(`http://localhost:5000/news-article/${postId}`)
+        axios.get(config.WS_BASE_URL + `/news-article/${postId}`)
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id News_Article Successfully') {
@@ -76,7 +77,7 @@ function Single() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            const response = await axios.delete('http://localhost:5000/news-article/' + id);
+            const response = await axios.delete(config.WS_BASE_URL + '/news-article/' + id);
             const { message } = response.data;
             notifySuccess(message);
             window.setTimeout(() => history.push('/admin/posts/index'), 1500);
@@ -88,8 +89,8 @@ function Single() {
 
     // Hook: useEffect to get data then store to state
     React.useEffect(() => {
-        axiosGet('http://localhost:5000/user', 'User');
-        axiosGet('http://localhost:5000/category', 'Category');
+        axiosGet(config.WS_BASE_URL + '/user', 'User');
+        axiosGet(config.WS_BASE_URL + '/category', 'Category');
         axiosGetId();
     }, [axiosGetId, axiosGet, postId]);
 

@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useHistory, useParams, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import config from '../../config';
 
 function Update() {
     // Hook: States
@@ -51,7 +52,7 @@ function Update() {
     }, []);
 
     const axiosGetId = React.useCallback(async () => {
-        axios.get(`http://localhost:5000/news-article/${postId}`)
+        axios.get(config.WS_BASE_URL + `/news-article/${postId}`)
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id News_Article Successfully') {
@@ -70,7 +71,7 @@ function Update() {
 
     const axiosPut = React.useCallback(async () => {
         try {
-            const response = await axios.put(`http://localhost:5000/news-article/${postId}`, post);
+            const response = await axios.put(config.WS_BASE_URL + `/news-article/${postId}`, post);
             const { message } = response.data;
             if (message === 'News_Article Successfully Updated') {
                 notifySuccess(message)
@@ -88,8 +89,8 @@ function Update() {
     // Hook: useEffect to get data then store to state
     React.useEffect(() => {
         axiosGetId();
-        axiosGet('http://localhost:5000/user', 'User');
-        axiosGet('http://localhost:5000/category', 'Category');
+        axiosGet(config.WS_BASE_URL + '/user', 'User');
+        axiosGet(config.WS_BASE_URL + '/category', 'Category');
     }, [axiosGet, axiosGetId]);
 
     // Event Handlers

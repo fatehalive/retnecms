@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
+import config from '../../config';
 
 function Single() {
     // Hook: States
@@ -27,7 +28,7 @@ function Single() {
 
     // Function to Interact API
     const axiosGet = React.useCallback(async () => {
-        axios.get('http://localhost:5000/role')
+        axios.get(config.WS_BASE_URL + '/role')
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Successfully') {
@@ -45,7 +46,7 @@ function Single() {
     }, []);
 
     const axiosGetId = React.useCallback(async () => {
-        axios.get(`http://localhost:5000/user/${userId}`)
+        axios.get(config.WS_BASE_URL + `/user/${userId}`)
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Id User Successfully') {
@@ -64,7 +65,7 @@ function Single() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            const response = await axios.delete('http://localhost:5000/user/' + id);
+            const response = await axios.delete(config.WS_BASE_URL + '/user/' + id);
             const { message } = response.data;
             notifySuccess(message);
             window.setTimeout(() => history.push('/admin/users/index'), 1500);

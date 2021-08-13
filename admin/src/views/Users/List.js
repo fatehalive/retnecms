@@ -6,6 +6,7 @@ import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
+import config from '../../config';
 
 function List() {
     // Hook: States
@@ -20,7 +21,7 @@ function List() {
 
     // Functions to Interact with API
     const axiosGet = React.useCallback(async () => {
-        axios.get('http://localhost:5000/user')
+        axios.get(config.WS_BASE_URL + '/user')
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get User Successfully') {

@@ -18,6 +18,7 @@ import CategoriesFilter from './CategoriesFilter/CategoriesFilter';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
+import config from '../../config';
 
 function List() {
 
@@ -41,7 +42,7 @@ function List() {
 
     // Function to Interact API
     const axiosGet = React.useCallback(async () => {
-        axios.get('http://localhost:5000/category')
+        axios.get(config.WS_BASE_URL + '/category')
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Get Category Successfully') {
@@ -60,7 +61,7 @@ function List() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            axios.delete('http://localhost:5000/category/' + id).then(response => {
+            axios.delete(confing.WS_BASE_URL + '/category/' + id).then(response => {
                 const { message } = response.data;
                 notifySuccess(message);
                 dispatch(fetchCategories(categoriesUIProps.queryParams));

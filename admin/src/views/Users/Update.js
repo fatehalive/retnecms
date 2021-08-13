@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useHistory, useParams, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import config from '../../config';
 
 function Update() {
     // Hook: States
@@ -21,7 +22,7 @@ function Update() {
 
     // Function to Interact API
     const axiosGet = React.useCallback(async () => {
-        axios.get('http://localhost:5000/role')
+        axios.get(config.WS_BASE_URL + '/role')
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Successfully') {

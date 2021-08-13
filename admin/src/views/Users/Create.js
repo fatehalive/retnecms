@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import config from '../../config';
 
 function Create() {
     // Hooks: States
@@ -21,7 +22,7 @@ function Create() {
 
     // Functions to Interact with API
     const axiosGet = React.useCallback(async() => {
-        axios.get('http://localhost:5000/role')
+        axios.get(config.WS_BASE_URL + '/role')
             .then(response => {
                 const { message, data } = response.data;
                 if (message === 'Successfully') {
@@ -40,7 +41,7 @@ function Create() {
 
     const axiosPost = React.useCallback(async() => {
         try {
-            const response = await axios.post('http://localhost:5000/user', user)
+            const response = await axios.post(config.WS_BASE_URL + '/user', user)
             const { message } = response.data;
             if (message === 'User Successfully Created') {
                 notifySuccess(message);

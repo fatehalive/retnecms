@@ -1,16 +1,17 @@
 import axios from 'axios';
+import config from '../../../config';
 // items => filtered/sorted result
 export function findCategories(params) {
-  return axios.post('http://localhost:5000/category/find', params)
+  return axios.post(config.WS_BASE_URL + '/category/find', params)
 }
 
 export function getCategoriesById(categoryId) {
-  return axios.get(`http://localhost:5000/category/${categoryId}`)
+  return axios.get(config.WS_BASE_URL + `/category/${categoryId}`)
 }
 
 export function updateCategory(categoryId, category) {
   console.log(categoryId, category);
-  return axios.put(`http://localhost:5000/category/${categoryId}`, category);
+  return axios.put(config.WS_BASE_URL + `/category/${categoryId}`, category);
 }
 
 // //Get By ID
@@ -35,7 +36,7 @@ export function updateCategory(categoryId, category) {
 
 
 // const axiosGet = React.useCallback(async () => {
-//   axios.get('http://localhost:5000/category')
+//   axios.get(config.WS_BASE_URL + '/category')
 //       .then(response => {
 //           const { message, data } = response.data;
 //           if (message === 'Get Category Successfully') {

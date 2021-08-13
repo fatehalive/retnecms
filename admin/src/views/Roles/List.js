@@ -6,6 +6,7 @@ import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
+import config from '../../config';
 
 function List() {
     // Hook: States
@@ -21,7 +22,7 @@ function List() {
     // Function to Interact API
     const axiosGet = React.useCallback(async () => {
         try {
-            axios.get('http://localhost:5000/role')
+            axios.get(config.WS_BASE_URL + '/role')
                 .then(response => {
                     const { message, data } = response.data;
                     if (message === 'Successfully') {
@@ -45,7 +46,7 @@ function List() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            const response = await axios.delete('http://localhost:5000/role/' + id);
+            const response = await axios.delete(config.WS_BASE_URL + '/role/' + id);
             const { message } = response.data;
             notifySuccess(message);
             axiosGet();

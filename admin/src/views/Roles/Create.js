@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import config from '../../config';
 
 function Create() {
     // Hook: States
@@ -15,7 +16,7 @@ function Create() {
     // Function to Interact API
     const axiosPost = React.useCallback(async() => {
         try {
-            const response = await axios.post('http://localhost:5000/role', role)
+            const response = await axios.post(config.WS_BASE_URL + '/role', role)
             const { message } = response.data;
             if (message === 'Successfully Created') {
                 notifySuccess(message);

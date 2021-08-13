@@ -8,6 +8,7 @@ import { fetchCategory, updateCategory } from './_redux/categoriesAction';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Spinner } from 'react-bootstrap';
+import config from '../../config';
 
 function Update() {
 
@@ -38,7 +39,7 @@ function Update() {
 
     // Function to Interact API
     // const axiosGetId = React.useCallback(async () => {
-    //     axios.get(`http://localhost:5000/category/${categoryId}`)
+    //     axios.get(config.WS_BASE_URL + '/category/${categoryId}`)
     //         .then(response => {
     //             const { message, data } = response.data;
     //             if (message === 'Get Id Category Successfully') {
@@ -57,7 +58,7 @@ function Update() {
 
     // const axiosPut = React.useCallback(async () => {
     //     try {
-    //         const response = await axios.put(`http://localhost:5000/category/${categoryId}`, category);
+    //         const response = await axios.put(config.WS_BASE_URL + '/category/${categoryId}`, category);
     //         const { message } = response.data;
     //         if (message === 'Category Successfully Updated') {
     //             notifySuccess(message)

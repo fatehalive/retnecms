@@ -19,6 +19,7 @@ import PostsFilter from './PostsFilter/PostsFilter';
 
 // Modal
 import DeleteConfirmation from '../../components/Modals/DeleteConfirmation';
+import config from '../../config';
 
 function List() {
     // context
@@ -43,7 +44,7 @@ function List() {
 
     // Functions to Interact with API
     const axiosGet = React.useCallback(async () => {
-        axios.get('http://localhost:5000/news-article')
+        axios.get(config.WS_BASE_URL + '/news-article')
             .then(response => {
                 const { message } = response.data;
                 if (message === 'Get News_Article Successfully') {
@@ -62,7 +63,7 @@ function List() {
 
     const axiosDelete = React.useCallback(async (id) => {
         try {
-            const response = await axios.delete('http://localhost:5000/news-article/' + id);
+            const response = await axios.delete(config.WS_BASE_URL + '/news-article/' + id);
             const { message } = response.data;
             notifySuccess(message);
             axiosGet();
